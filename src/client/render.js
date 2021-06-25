@@ -1,11 +1,12 @@
 // Learn more about this file at:
 // https://victorzhou.com/blog/build-an-io-game-part-1/#5-client-rendering
 import { debounce } from 'throttle-debounce';
+import { BERRY_RADIUS } from '../shared/constants';
 import { getAsset } from './assets';
 import { getCurrentState } from './state';
+//var state = require('./state.js');
 
 const Constants = require('../shared/constants');
-
 const { PLAYER_RADIUS, PLAYER_MAX_HP, BULLET_RADIUS, MAP_SIZE } = Constants;
 
 // Get the canvas graphics context
@@ -23,8 +24,10 @@ function setCanvasDimensions() {
 
 window.addEventListener('resize', debounce(40, setCanvasDimensions));
 
-function render() {
-  const { me, others, bullets } = getCurrentState();
+
+function render() 
+{
+  const { me, others, bullets, berries} = getCurrentState();
   if (!me) {
     return;
   }
@@ -43,24 +46,23 @@ function render() {
   // Draw all players
   renderPlayer(me, me);
   others.forEach(renderPlayer.bind(null, me));
+
+  // Draw all berries
+  berries.forEach(renderBerry.bind(null, me));
 }
 
-function renderBackground(x, y) {
-  const backgroundX = MAP_SIZE / 2 - x + canvas.width / 2;
-  const backgroundY = MAP_SIZE / 2 - y + canvas.height / 2;
-  const backgroundGradient = context.createRadialGradient(
-    backgroundX,
-    backgroundY,
-    MAP_SIZE / 10,
-    backgroundX,
-    backgroundY,
-    MAP_SIZE / 2,
-  );
-  backgroundGradient.addColorStop(0, 'black');
-  backgroundGradient.addColorStop(1, 'gray');
-  context.fillStyle = backgroundGradient;
-  context.fillRect(0, 0, canvas.width, canvas.height);
+function renderBackground() {
+  context.fillStyle = "#40ba55";
+  context.fillRect(0,0,canvas.width,canvas.height);
 }
+
+/*function renderBerry()
+{
+  context.drawImage(getAsset('berry.png'), berryPosX-me.x, berryPosY-me.y, BERRY_RADIUS, BERRY_RADIUS);
+  //context.drawImage(getAsset('berry.png'), x, y, BERRY_RADIUS, BERRY_RADIUS);
+  //x: (canvas.width/2)-me.x + Math.floor(Math.random()*canvas.height)
+  //y: (canvas.height/2)-me.y + Math.floor(Math.random()*canvas.height)
+}*/
 
 // Renders a ship at the given coordinates
 function renderPlayer(me, player) {
@@ -72,8 +74,9 @@ function renderPlayer(me, player) {
   context.save();
   context.translate(canvasX, canvasY);
   context.rotate(direction);
+  //will add tiers code later
   context.drawImage(
-    getAsset('ship.svg'),
+    getAsset('robo mouse.png'),
     -PLAYER_RADIUS,
     -PLAYER_RADIUS,
     PLAYER_RADIUS * 2,
@@ -82,19 +85,19 @@ function renderPlayer(me, player) {
   context.restore();
 
   // Draw health bar
-  context.fillStyle = 'white';
+  context.fillStyle = "#19CD2A";
   context.fillRect(
-    canvasX - PLAYER_RADIUS,
-    canvasY + PLAYER_RADIUS + 8,
-    PLAYER_RADIUS * 2,
-    2,
+    canvasX - 0.5 * PLAYER_RADIUS,
+    canvasY + PLAYER_RADIUS - 90,
+    PLAYER_RADIUS,
+    12,
   );
   context.fillStyle = 'red';
   context.fillRect(
-    canvasX - PLAYER_RADIUS + PLAYER_RADIUS * 2 * player.hp / PLAYER_MAX_HP,
-    canvasY + PLAYER_RADIUS + 8,
-    PLAYER_RADIUS * 2 * (1 - player.hp / PLAYER_MAX_HP),
-    2,
+    canvasX - 0.5 * PLAYER_RADIUS + PLAYER_RADIUS * 2 * player.hp / PLAYER_MAX_HP,
+    canvasY + PLAYER_RADIUS - 90,
+    PLAYER_RADIUS * (1 - player.hp / PLAYER_MAX_HP),
+    12,
   );
 }
 
@@ -109,6 +112,17 @@ function renderBullet(me, bullet) {
   );
 }
 
+function renderBerry(me, berry) {
+  const { x, y } = berry;
+  context.drawImage(
+    getAsset('berry.png'),
+    canvas.width / 2 + x - me.x - BERRY_RADIUS,
+    canvas.height / 2 + y - me.y - BERRY_RADIUS,
+    BERRY_RADIUS * 2,
+    BERRY_RADIUS * 2,
+  );
+}
+
 function renderMainMenu() {
   const t = Date.now() / 7500;
   const x = MAP_SIZE / 2 + 800 * Math.cos(t);
@@ -116,8 +130,6 @@ function renderMainMenu() {
   renderBackground(x, y);
 }
 
-// Note: you should use requestAnimationFrame() here instead. setInterval works fine,
-// but requestAnimationFrame() is specifically made for render loops like this.
 let renderInterval = setInterval(renderMainMenu, 1000 / 60);
 
 // Replaces main menu rendering with game rendering.

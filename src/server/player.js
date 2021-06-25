@@ -35,6 +35,10 @@ class Player extends ObjectClass {
   takeBulletDamage() {
     this.hp -= Constants.BULLET_DAMAGE;
   }
+  
+  giveBerryXP() {
+    this.score += Constants.BERRY_XP;
+  }
 
   onDealtDamage() {
     this.score += Constants.SCORE_BULLET_HIT;
@@ -48,5 +52,4 @@ class Player extends ObjectClass {
     };
   }
 }
-
 module.exports = Player;
