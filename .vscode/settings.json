@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/db16557e-7afb-4092-ba58-b124c906f257/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/animale-io",
+    "appService.deploySubpath": "."
+}
