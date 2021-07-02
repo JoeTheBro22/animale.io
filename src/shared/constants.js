@@ -1,7 +1,7 @@
 module.exports = Object.freeze({
   PLAYER_RADIUS: 40,
   PLAYER_MAX_HP: 100,
-  PLAYER_SPEED: 400,
+  PLAYER_SPEED: 150,
   PLAYER_FIRE_COOLDOWN: 0.25,
 
   BULLET_RADIUS: 0,
@@ -12,15 +12,86 @@ module.exports = Object.freeze({
   SCORE_PER_SECOND: 0,
 
   //foods
-  BERRY_XP: 1000,
+  BERRY_XP: 1,
   BERRY_RADIUS: 15,
   BERRY_AMOUNT: 25,
+
+  //Terrain
+  LAVA_RADIUS: 100,
+  LAVA_DAMAGE: 0.5,
+  LAVA_AMOUNT: 3,
+
+  ROCK_RADIUS: 100,
+  ROCK_AMOUNT: 4,
+
+  // HP and player
+  REGEN_AMOUNT: 0.05,
+  HIT_DAMAGE: 25,
+  KILL_XP_MULTIPLIER: 0.9,
+  BOOST_COOLDOWN: 250,
+  
+  // Tiers
+  /* ORIGINAL VALUES:
+  TIER_1_XP: 50,
+  TIER_2_XP: 200,
+  TIER_3_XP: 450,
+  TIER_4_XP: 1000,
+  TIER_5_XP: 2100,
+  TIER_6_XP: 4200,
+  TIER_7_XP: 7900,
+  TIER_8_XP: 15000,
+  TIER_9_XP: 28500,
+  TIER_10_XP: 54000,
+  TIER_11_XP: 105000,
+  TIER_12_XP: 250000,
+  TIER_13_XP: 500000,
+  TIER_14_XP: 1000000,
+  TIER_15_XP: 5000000,
+  TIER_16_XP: 10000000,*/
+
+  TIER_1_XP: 10,
+  TIER_2_XP: 20,
+  TIER_3_XP: 30,
+  TIER_4_XP: 40,
+  TIER_5_XP: 50,
+  TIER_6_XP: 60,
+  TIER_7_XP: 70,
+  TIER_8_XP: 80,
+  TIER_9_XP: 90,
+  TIER_10_XP: 100,
+  TIER_11_XP: 120,
+  TIER_12_XP: 140,
+  TIER_13_XP: 160,
+  TIER_14_XP: 180,
+  TIER_15_XP: 200,
+  TIER_16_XP: 300,
+
+  //Relative Animal Sizes
+  TIER_1_SIZE: 0.5,
+  TIER_2_SIZE: 1,
+  TIER_3_SIZE: 0.6,
+  TIER_4_SIZE: 1.5,
+  TIER_5_SIZE: 1.2,
+  TIER_6_SIZE: 1.2,
+  TIER_7_SIZE: 1.3,
+  TIER_8_SIZE: 1.5,
+  TIER_9_SIZE: 1,
+  TIER_10_SIZE: 1.5,
+  TIER_11_SIZE: 0.1,
+  TIER_12_SIZE: 1.2,
+  TIER_13_SIZE: 2,
+  TIER_14_SIZE: 0.7,
+  TIER_15_SIZE: 10,
+  TIER_16_SIZE: 3,
+  // To Do: make the code dependant on the array instead of the individual values
+  RelativeSizes: [0.5, 1, 0.6, 1.5, 1.2, 1.2, 1.3, 1.5, 1, 1.5, 0.1, 1.2, 2, 0.7, 10, 3],
 
   MAP_SIZE: 1000,
   MSG_TYPES: {
     JOIN_GAME: 'join_game',
     GAME_UPDATE: 'update',
     INPUT: 'input',
+    MOUSEINPUT: 'mouseinput',
     GAME_OVER: 'dead',
   },
 });

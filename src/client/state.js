@@ -62,13 +62,18 @@ export function getCurrentState() {
     return gameUpdates[gameUpdates.length - 1];
   } else {
     const baseUpdate = gameUpdates[base];
+
     const next = gameUpdates[base + 1];
     const ratio = (serverTime - baseUpdate.t) / (next.t - baseUpdate.t);
     return {
       me: interpolateObject(baseUpdate.me, next.me, ratio),
+      meD1: baseUpdate.me,
+      meD2: next.me,
       others: interpolateObjectArray(baseUpdate.others, next.others, ratio),
       bullets: interpolateObjectArray(baseUpdate.bullets, next.bullets, ratio),
       berries: interpolateObjectArray(baseUpdate.berries, next.berries, ratio),
+      lavas: interpolateObjectArray(baseUpdate.lavas, next.lavas, ratio),
+      //rocks: interpolateObjectArray(baseUpdate.rocks, next.rocks, ratio),
     };
   }
 }
@@ -101,7 +106,7 @@ function interpolateDirection(d1, d2, ratio) {
   if (absD >= Math.PI) {
     // The angle between the directions is large - we should rotate the other way
     if (d1 > d2) {
-      return d1 + (d2 + 2 * Math.PI - d1) * ratio;
+      return d1 + (d2 + 2 * Math.PI - d1) * ratio; //d1 + (d2 + 2 * Math.PI - d1) * ratio;
     } else {
       return d1 - (d2 - 2 * Math.PI - d1) * ratio;
     }

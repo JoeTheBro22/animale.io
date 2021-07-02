@@ -23,3 +23,4 @@ export function setLeaderboardHidden(hidden) {
     leaderboard.classList.remove('hidden');
   }
 }
+

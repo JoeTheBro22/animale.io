@@ -34,8 +34,8 @@ io.on('connection', socket => {
 
   socket.on(Constants.MSG_TYPES.JOIN_GAME, joinGame);
   socket.on(Constants.MSG_TYPES.INPUT, handleInput);
+  socket.on(Constants.MSG_TYPES.MOUSEINPUT, handleClick);
   socket.on('disconnect', onDisconnect);
-  //socket.on(spawnBerry);
 });
 
 // Setup the Game
@@ -45,14 +45,12 @@ function joinGame(username) {
   game.addPlayer(this, username);
 }
 
-/*function spawnBerries() {
-  for(var i; i >= 0; i--){
-    game.addBerry();
-  }
-}*/
-
 function handleInput(dir) {
   game.handleInput(this, dir);
+}
+
+function handleClick() {
+  game.handleClick(this);
 }
 
 function onDisconnect() {

@@ -22,6 +22,16 @@ class Object {
     this.direction = dir;
   }
 
+  boost(dt, cooldown) {
+    cooldown -= dt;
+    if(cooldown <= 0){
+      this.x += 0.5 * this.speed * Math.sin(this.direction);
+      this.y -= 0.5 * this.speed * Math.cos(this.direction);
+      cooldown = 100000;
+    }
+    //console.log(cooldown);
+  }
+
   serializeForUpdate() {
     return {
       id: this.id,
