@@ -22,8 +22,7 @@ class Player extends ObjectClass {
     // Update tier based on XP
     if(this.score < Constants.TIER_2_XP){
       this.tier = 0;
-    } 
-    else if (this.score < Constants.TIER_3_XP){
+    }    else if (this.score < Constants.TIER_3_XP){
       this.tier = 1;
     }    else if (this.score < Constants.TIER_4_XP){
       this.tier = 2;
@@ -96,13 +95,69 @@ class Player extends ObjectClass {
     this.hp += Constants.REGEN_AMOUNT;
   }
 
-  takeKnockback(deltaTime) {
-    this.x -= 20 * deltaTime * this.speed * Math.sin(this.direction);
-    this.y += 20 * deltaTime * this.speed * Math.cos(this.direction);
+  takeKnockback(otherX, otherY) {
+    let xDir = this.x - otherX;
+    let yDir = this.y - otherY;
+    if(xDir <= 50){
+      xDir = 50;
+    }
+    if(yDir <= 50){
+      yDir = 50;
+    }
+    this.x += 0.02 * this.speed * xDir;
+    this.y += 0.02 * this.speed * yDir;
   }
   
   giveBerryXP() {
     this.score += Constants.BERRY_XP;
+  }
+
+  giveMelonXP() {
+    this.score += Constants.MELON_XP;
+  }
+
+  giveBlackberryXP() {
+    this.score += Constants.BLACKBERRY_XP;
+  }
+
+  giveCarrotXP() {
+    this.score += Constants.CARROT_XP;
+  }
+  
+  giveLilypadXP() {
+    this.score += Constants.LILYPAD_XP;
+  }
+
+  giveRedMushroomXP() {
+    this.score += Constants.RED_MUSHROOM_XP;
+  }
+  
+  giveWatermelonSliceXP() {
+    this.score += Constants.WATERMELON_SLICE_XP;
+  }
+
+  giveBananaXP() {
+    this.score += Constants.BANANA_XP;
+  }
+  
+  giveCoconutXP() {
+    this.score += Constants.COCONUT_XP;
+  }
+
+  givePearXP() {
+    this.score += Constants.PEAR_XP;
+  }
+  
+  giveMushroomBushXP() {
+    this.score += Constants.MUSHROOM_BUSH_XP;
+  }
+
+  giveWatermelonXP() {
+    this.score += Constants.WATERMELON_XP;
+  }
+
+  giveMushroomXP() {
+    this.score += Constants.MUSHROOM_XP;
   }
 
   onDealtDamage() {
@@ -119,6 +174,7 @@ class Player extends ObjectClass {
       direction: this.direction,
       hp: this.hp,
       tier: this.tier,
+      score: this.score,
     };
   }
 }

@@ -4,6 +4,18 @@ const ASSET_NAMES = [
   'devil croc.png',
   'rooster.png',
   'berry.png',
+  'melon.png',
+  'blackberry.png',
+  'carrot.png',
+  'lilypad.png',
+  'red mushroom.png',
+  'watermelon slice.png',
+  'banana.png',
+  'coconut.png',
+  'pear.png',
+  'mushroom bush.png',
+  'watermelon.png',
+  'mushroom.png',
   'slime.png',
   'robo mouse.png',
   'rock.png',
@@ -23,6 +35,8 @@ const ASSET_NAMES = [
   'old rabbit.png',
   'old zebra.png',
   'Pakistan Shahbaz.png',
+  'lava.png',
+  'ostrich.png',
   //REMEBER TO ADD ALL ASSETS TO THIS :D
 ];
 

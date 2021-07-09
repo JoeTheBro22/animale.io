@@ -47,7 +47,7 @@ function getBaseUpdate() {
   return -1;
 }
 
-// Returns { me, others, bullets, berries }
+// Returns { me, others, bullets, berries, melons, mushrooms, other foods }
 export function getCurrentState() {
   if (!firstServerTimestamp) {
     return {};
@@ -72,6 +72,18 @@ export function getCurrentState() {
       others: interpolateObjectArray(baseUpdate.others, next.others, ratio),
       bullets: interpolateObjectArray(baseUpdate.bullets, next.bullets, ratio),
       berries: interpolateObjectArray(baseUpdate.berries, next.berries, ratio),
+      melons: interpolateObjectArray(baseUpdate.melons, next.melons, ratio),
+      blackberries: interpolateObjectArray(baseUpdate.blackberries, next.blackberries, ratio),
+      carrots: interpolateObjectArray(baseUpdate.carrots, next.carrots, ratio),
+      lilypads: interpolateObjectArray(baseUpdate.lilypads, next.lilypads, ratio),
+      redMushrooms: interpolateObjectArray(baseUpdate.redMushrooms, next.redMushrooms, ratio),
+      watermelonSlices: interpolateObjectArray(baseUpdate.watermelonSlices, next.watermelonSlices, ratio),
+      bananas: interpolateObjectArray(baseUpdate.bananas, next.bananas, ratio),
+      coconuts: interpolateObjectArray(baseUpdate.coconuts, next.coconuts, ratio),
+      pears: interpolateObjectArray(baseUpdate.pears, next.pears, ratio),
+      mushroomBushes: interpolateObjectArray(baseUpdate.mushroomBushes, next.mushroomBushes, ratio),
+      watermelons: interpolateObjectArray(baseUpdate.watermelons, next.watermelons, ratio),
+      mushrooms: interpolateObjectArray(baseUpdate.mushrooms, next.mushrooms, ratio),
       lavas: interpolateObjectArray(baseUpdate.lavas, next.lavas, ratio),
       //rocks: interpolateObjectArray(baseUpdate.rocks, next.rocks, ratio),
     };

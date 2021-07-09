@@ -36,11 +36,15 @@ function applyCollisions(players, otherObj, collisionType/*, playerSize, otherOb
   //let otherObjSize = 1;
   for (let i = 0; i < otherObj.length; i++) {
     for (let j = 0; j < players.length; j++) {
+
       const otherObject = otherObj[i];
       const player = players[j];
       let nonPlayerRadius = 0;
       let playerRadius = Constants.PLAYER_RADIUS;
+      let destroyObject = true;
+
       playerRadius = Constants.RelativeSizes[playerTier] * Constants.PLAYER_RADIUS;
+
       if(collisionType == 0){
         nonPlayerRadius = Constants.BERRY_RADIUS;
       } else if(collisionType == 1){
@@ -49,36 +53,214 @@ function applyCollisions(players, otherObj, collisionType/*, playerSize, otherOb
         nonPlayerRadius = Constants.ROCK_RADIUS;
       } else if(collisionType == 3){
         nonPlayerRadius = Constants.PLAYER_RADIUS;
-        //otherObjSize = Constants.PLAYER_RADIUS;
+      } else if (collisionType == 4){
+        nonPlayerRadius = Constants.MELON_RADIUS;
+      } else if (collisionType == 5){
+        nonPlayerRadius = Constants.MUSHROOM_RADIUS;
+      } else if (collisionType == 6){
+        nonPlayerRadius = Constants.BLACKBERRY_RADIUS;
+      } else if (collisionType == 7){
+        nonPlayerRadius = Constants.CARROT_RADIUS;
+      } else if (collisionType == 8){
+        nonPlayerRadius = Constants.LILYPAD_RADIUS;
+      } else if (collisionType == 9){
+        nonPlayerRadius = Constants.RED_MUSHROOM_RADIUS;
+      } else if (collisionType == 10){
+        nonPlayerRadius = Constants.WATERMELON_SLICE_RADIUS;
+      } else if (collisionType == 11){
+        nonPlayerRadius = Constants.BANANA_RADIUS;
+      } else if (collisionType == 12){
+        nonPlayerRadius = Constants.COCONUT_RADIUS;
+      } else if (collisionType == 13){
+        nonPlayerRadius = Constants.PEAR_RADIUS;
+      } else if (collisionType == 14){
+        nonPlayerRadius = Constants.MUSHROOM_BUSH_RADIUS;
+      } else if (collisionType == 15){
+        nonPlayerRadius = Constants.WATERMELON_RADIUS;
       }
       if (player.distanceTo(otherObject) <= playerRadius + nonPlayerRadius) {
         if(collisionType == 0){
           player.giveBerryXP();
         } else if (collisionType == 1){
-          player.takeLavaDamage();
+          if(player.tier <= 11){
+            player.takeLavaDamage();
+          }
         } else if (collisionType == 2){
           // push player away from rock
         } else if (collisionType == 3){
-          if(player.tier > otherObject.tier){
-            otherObject.takeKnockback(deltaTime);
-            otherObject.takeHitDamage();
-            if(otherObject.hp <= 0){
-              player.getKillXP(100);
-              break;
+            if(player.tier > otherObject.tier){
+              if(Math.abs((player.direction - otherObject.direction) <= 0.5 /*player is biting otherObject*/ && player.direction > 0 && otherObject.direction > 0) && otherObject.x < player.x){
+                // They are both facing right. Compare them on the X axis
+                otherObject.takeKnockback(deltaTime, player.x, player.y);
+                player.takeHitDamage();
+                if(player.hp <= 0){
+                  otherObject.getKillXP(player.score * 0.5 + otherObject.score * 0.05);
+                  break;
+                }
+              } 
+              
+              else if((Math.abs(player.direction - otherObject.direction) <= 0.5 /*player is biting otherObject*/ && player.direction < 0 && otherObject.direction < 0) && otherObject.x > player.x){
+                otherObject.takeKnockback(deltaTime, player.x, player.y);
+                player.takeHitDamage();
+                if(player.hp <= 0){
+                  otherObject.getKillXP(player.score * 0.5 + otherObject.score * 0.05);
+                  break;
+                }
+                // They are both facing left. Compare them on the x axis
+              } 
+              
+              else if(Math.abs(player.direction - otherObject.direction) >= 2 * Math.PI - 0.5  /*player is biting otherObject*/ && player.direction > 0 && otherObject.direction < 0 && otherObject.y < player.y){
+                // Case 3
+                otherObject.takeKnockback(deltaTime, player.x, player.y);
+                player.takeHitDamage();
+                if(player.hp <= 0){
+                  otherObject.getKillXP(player.score * 0.5 + otherObject.score * 0.05);
+                  break;
+                }
+              } 
+              
+              else if(Math.abs(player.direction - otherObject.direction) <= 0.5 /*player is biting otherObject*/ && player.direction < 0 && otherObject.direction > 0 && otherObject.y > player.y){
+                // Case 4
+                otherObject.takeKnockback(deltaTime, player.x, player.y);
+                player.takeHitDamage();
+                if(player.hp <= 0){
+                  otherObject.getKillXP(player.score * 0.5 + otherObject.score * 0.05);
+                  break;
+                }
+              }
+
+              else{
+                // Normal biting (bigger player eats smaller one)
+                otherObject.takeKnockback(player.x, player.y);
+                otherObject.takeHitDamage();
+              
+                if(player.hp <= 0){
+                  otherObject.getKillXP(player.score * 0.5 + otherObject.score * 0.05);
+                  break;
+                }
+              }
+            } 
+          
+          else if(player.tier < otherObject.tier){
+            if(Math.abs((otherObject.direction - player.direction) <= 0.5 && otherObject.direction > 0 && player.direction > 0) && player.x < otherObject.x){
+              player.takeKnockback(deltaTime, otherObject.x, otherObject.y);
+              otherObject.takeHitDamage();
+              if(otherObject.hp <= 0){
+                player.getKillXP(otherObject.score * 0.5 + player.score * 0.05);
+                break;
+              }
+            } 
+            
+            else if((Math.abs(otherObject.direction - player.direction) <= 0.5 && otherObject.direction < 0 && player.direction < 0) && player.x > otherObject.x){
+              player.takeKnockback(deltaTime, otherObject.x, otherObject.y);
+              otherObject.takeHitDamage();
+              if(otherObject.hp <= 0){
+                player.getKillXP(otherObject.score * 0.5 + player.score * 0.05);
+                break;
+              }
+            } 
+            
+            else if(Math.abs(otherObject.direction - player.direction) >= 2 * Math.PI - 0.5 && otherObject.direction > 0 && player.direction < 0 && player.y < otherObject.y){
+              player.takeKnockback(deltaTime, otherObject.x, otherObject.y);
+              otherObject.takeHitDamage();
+              if(otherObject.hp <= 0){
+                player.getKillXP(otherObject.score * 0.5 + player.score * 0.05);
+                break;
+              }
+            } 
+            
+            else if(Math.abs(otherObject.direction - player.direction) <= 0.5 && otherObject.direction < 0 && player.direction > 0 && player.y > otherObject.y){
+              player.takeKnockback(deltaTime, otherObject.x, otherObject.y);
+              otherObject.takeHitDamage();
+              if(otherObject.hp <= 0){
+                player.getKillXP(otherObject.score * 0.5 + player.score * 0.05);
+                break;
+              }
             }
-          } else if(player.tier < otherObject.tier){
-            player.takeKnockback(deltaTime);
-            player.takeHitDamage();
-            if(player.hp <= 0){
-              otherObject.getKillXP(100);
-              break;
+            
+            else{
+              // Normal biting (bigger player eats smaller one)
+              player.takeKnockback(otherObject.x, otherObject.y);
+              player.takeHitDamage();
+            
+              if(player.hp <= 0){
+                otherObject.getKillXP(player.score * 0.5 + otherObject.score * 0.05);
+                break;
+              }
             }
+          } 
+          else{
+            // If i decide to have players of the same tier pushed back, i will do it here
+          }
+        } else if (collisionType == 4){
+          // Checking if the player's tier is high enough, and only destroying the object when it is
+          if(player.tier >= 2){
+            player.giveMelonXP();
           } else{
-            // If i decide to have players pushed back, i will do it here
+            destroyObject = false;
+          }
+        } else if (collisionType == 5){
+          player.giveMushroomXP();
+        } else if (collisionType == 6){
+          if(player.tier >= 4){
+            player.giveBlackberryXP();
+          } else{
+            destroyObject = false;
+          }
+        } else if (collisionType == 7){
+          player.giveCarrotXP();
+        } else if (collisionType == 8){
+          if(player.tier >= 4){
+            player.giveLilypadXP();
+          } else{
+            destroyObject = false;
+          }
+        } else if (collisionType == 9){
+          if(player.tier >= 5){
+            player.giveRedMushroomXP();
+          } else{
+            destroyObject = false;
+          }
+        } else if (collisionType == 10){
+          if(player.tier >= 5){
+            player.giveWatermelonSliceXP();
+          } else{
+            destroyObject = false;
+          }
+        } else if (collisionType == 11){
+          if(player.tier >= 7){
+            player.giveBananaXP();
+          } else{
+            destroyObject = false;
+          }
+        } else if (collisionType == 12){
+          if(player.tier >= 7){
+            player.giveCoconutXP();
+          } else{
+            destroyObject = false;
+          }
+        } else if (collisionType == 13){
+          if(player.tier >= 7){
+            player.givePearXP();
+          } else{
+            destroyObject = false;
+          }
+        } else if (collisionType == 14){
+          if(player.tier >= 11){
+            player.giveMushroomBushXP();
+          } else{
+            destroyObject = false;
+          }
+        } else if (collisionType == 15){
+          if(player.tier >= 12){
+            player.giveWatermelonXP();
+          } else{
+            destroyObject = false;
           }
         }
-        
-        destroyedObj.push(otherObject);
+        if(destroyObject){
+          destroyedObj.push(otherObject);
+        }
         break;
       }
     }

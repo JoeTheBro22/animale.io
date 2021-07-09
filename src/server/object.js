@@ -22,12 +22,15 @@ class Object {
     this.direction = dir;
   }
 
-  boost(dt, cooldown) {
+  boost(dt, cooldown, boostCooldown) {
     cooldown -= dt;
-    if(cooldown <= 0){
+    if(cooldown <= -boostCooldown){
       this.x += 0.5 * this.speed * Math.sin(this.direction);
       this.y -= 0.5 * this.speed * Math.cos(this.direction);
-      cooldown = 100000;
+      cooldown = 0;
+      return true;
+    } else{
+      return false;
     }
     //console.log(cooldown);
   }
