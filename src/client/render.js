@@ -122,7 +122,7 @@ function renderPlayer(me, player) {
   {
   if(player.tier < 1){
     context.drawImage(
-      getAsset('old mouse.png'),
+      getAsset('termite.png'),
       -PLAYER_RADIUS * TIER_1_SIZE,
       -PLAYER_RADIUS * TIER_1_SIZE,
       PLAYER_RADIUS * 2 * TIER_1_SIZE,
@@ -131,7 +131,7 @@ function renderPlayer(me, player) {
   }
   else if(player.tier < 2){
     context.drawImage(
-      getAsset('old rabbit.png'),
+      getAsset('ant.png'),
       -PLAYER_RADIUS * TIER_2_SIZE,
       -PLAYER_RADIUS * TIER_2_SIZE,
       PLAYER_RADIUS * 2 * TIER_2_SIZE,
@@ -139,7 +139,7 @@ function renderPlayer(me, player) {
     );
   } else if(player.tier <3){
     context.drawImage(
-      getAsset('old mole.png'),
+      getAsset('squirrel.png'),
       -PLAYER_RADIUS * TIER_3_SIZE,
       -PLAYER_RADIUS * TIER_3_SIZE,
       PLAYER_RADIUS * 2 * TIER_3_SIZE,

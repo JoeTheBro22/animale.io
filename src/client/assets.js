@@ -37,6 +37,9 @@ const ASSET_NAMES = [
   'Pakistan Shahbaz.png',
   'lava.png',
   'ostrich.png',
+  'ant.png',
+  'termite.png',
+  'squirrel.png',
   //REMEBER TO ADD ALL ASSETS TO THIS :D
 ];
 

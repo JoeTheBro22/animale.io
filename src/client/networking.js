@@ -41,3 +41,7 @@ export const updateDirection = throttle(20, dir => {
 export const clickMessage = click => {
   socket.emit(Constants.MSG_TYPES.MOUSEINPUT);
 }
+
+export const KeyMessage = keyDown => {
+  socket.emit(Constants.MSG_TYPES.KEY_PRESSED);
+}

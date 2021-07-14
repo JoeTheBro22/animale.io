@@ -174,6 +174,14 @@ class Game {
     }
   }
 
+  handleKeyPressed(socket) {
+    if(this.players[socket.id]){
+      if(KeyboardEvent.code === 81){
+        debug.log("q");
+      }
+    }
+  }
+
   update() {
     function generateRandomPos() {
       var berryPosX = Constants.MAP_SIZE * (Math.random());
