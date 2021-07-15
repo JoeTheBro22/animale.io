@@ -148,7 +148,7 @@ function renderPlayer(me, player) {
   }
   else if(player.tier <4){
     context.drawImage(
-      getAsset('old pig.png'),
+      getAsset('garden snake.png'),
       -PLAYER_RADIUS * TIER_4_SIZE,
       -PLAYER_RADIUS * TIER_4_SIZE,
       PLAYER_RADIUS * 2 * TIER_4_SIZE,

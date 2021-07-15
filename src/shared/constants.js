@@ -1,7 +1,7 @@
 module.exports = Object.freeze({
   PLAYER_RADIUS: 40,
   PLAYER_MAX_HP: 100,
-  PLAYER_SPEED: 150,
+  PLAYER_SPEED: 80,
   PLAYER_FIRE_COOLDOWN: 0.25,
 
   BULLET_RADIUS: 0,
@@ -132,10 +132,10 @@ module.exports = Object.freeze({
   TIER_12_SIZE: 2.4,
   TIER_13_SIZE: 4,
   TIER_14_SIZE: 1.4,
-  TIER_15_SIZE: 20,
-  TIER_16_SIZE: 20,
+  TIER_15_SIZE: 5,
+  TIER_16_SIZE: 5,
   // To Do: make the code dependant on the array instead of the individual values
-  RelativeSizes: [1, 2, 1.2, 3, 2.4, 2.4, 2.6, 3, 2.5, 3, 3, 2.4, 4, 1.4, 20, 20],
+  RelativeSizes: [1, 2, 1.2, 3, 2.4, 2.4, 2.6, 3, 2.5, 3, 3, 2.4, 4, 1.4, 5, 5],
 
   MAP_SIZE: 1000,
   MSG_TYPES: {
