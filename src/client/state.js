@@ -44,7 +44,7 @@ function getBaseUpdate() {
       return i;
     }
   }
-  return -1;
+  return gameUpdates[i].t;
 }
 
 // Returns { me, others, bullets, berries, melons, mushrooms, other foods }

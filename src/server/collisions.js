@@ -252,7 +252,7 @@ function applyCollisions(players, otherObj, collisionType/*, playerSize, otherOb
             destroyObject = false;
           }
         } else if (collisionType == 15){
-          if(player.tier >= 12){
+          if(player.tier >= 9){
             player.giveWatermelonXP();
           } else{
             destroyObject = false;

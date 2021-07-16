@@ -74,7 +74,7 @@ module.exports = Object.freeze({
 
   // HP and player
   REGEN_AMOUNT: 0.05,
-  HIT_DAMAGE: 10,
+  HIT_DAMAGE: 30,
   KILL_XP_MULTIPLIER: 0.9,
   BOOST_COOLDOWN: 0.25,
   
@@ -118,13 +118,13 @@ module.exports = Object.freeze({
   TIER_16_XP: 300,*/
 
   //Relative Animal Sizes
-  TIER_1_SIZE: 1,
-  TIER_2_SIZE: 2,
+  TIER_1_SIZE: 0.4,
+  TIER_2_SIZE: 0.5,
   TIER_3_SIZE: 1.2,
-  TIER_4_SIZE: 3,
-  TIER_5_SIZE: 2.4,
-  TIER_6_SIZE: 2.4,
-  TIER_7_SIZE: 2.6,
+  TIER_4_SIZE: 1.4,
+  TIER_5_SIZE: 1.4,
+  TIER_6_SIZE: 1.5,
+  TIER_7_SIZE: 1.5,
   TIER_8_SIZE: 3,
   TIER_9_SIZE: 2.5,
   TIER_10_SIZE: 3,
@@ -135,7 +135,7 @@ module.exports = Object.freeze({
   TIER_15_SIZE: 5,
   TIER_16_SIZE: 5,
   // To Do: make the code dependant on the array instead of the individual values
-  RelativeSizes: [1, 2, 1.2, 3, 2.4, 2.4, 2.6, 3, 2.5, 3, 3, 2.4, 4, 1.4, 5, 5],
+  RelativeSizes: [0.4, 0.5, 1.2, 1.4, 1.4, 1.5, 1.5, 3, 2.5, 3, 3, 2.4, 4, 1.4, 5, 5],
 
   MAP_SIZE: 1000,
   MSG_TYPES: {

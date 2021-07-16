@@ -157,7 +157,7 @@ function renderPlayer(me, player) {
   }
   else if(player.tier <5){
     context.drawImage(
-      getAsset('old deer.png'),
+      getAsset('hummingbird.png'),
       -PLAYER_RADIUS * TIER_5_SIZE,
       -PLAYER_RADIUS * TIER_5_SIZE,
       PLAYER_RADIUS * 2 * TIER_5_SIZE,
@@ -167,7 +167,7 @@ function renderPlayer(me, player) {
 
   else if(player.tier <6){
     context.drawImage(
-      getAsset('old fox.png'),
+      getAsset('rooster.png'),
       -PLAYER_RADIUS * TIER_6_SIZE,
       -PLAYER_RADIUS * TIER_6_SIZE,
       PLAYER_RADIUS * 2 * TIER_6_SIZE,
