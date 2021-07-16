@@ -42,6 +42,8 @@ const ASSET_NAMES = [
   'squirrel.png',
   'garden snake.png',
   'hummingbird.png',
+  'barn owl.png',
+  'ocelot.png',
   //REMEBER TO ADD ALL ASSETS TO THIS :D
 ];
 

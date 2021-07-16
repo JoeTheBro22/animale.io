@@ -66,7 +66,7 @@ module.exports = Object.freeze({
 
   //Terrain
   LAVA_RADIUS: 100,
-  LAVA_DAMAGE: 0.5,
+  LAVA_DAMAGE: 0.3,
   LAVA_AMOUNT: 3,
 
   ROCK_RADIUS: 100,
@@ -123,9 +123,9 @@ module.exports = Object.freeze({
   TIER_3_SIZE: 1.2,
   TIER_4_SIZE: 1.4,
   TIER_5_SIZE: 1.4,
-  TIER_6_SIZE: 1.5,
+  TIER_6_SIZE: 0.5,
   TIER_7_SIZE: 1.5,
-  TIER_8_SIZE: 3,
+  TIER_8_SIZE: 1.6,
   TIER_9_SIZE: 2.5,
   TIER_10_SIZE: 3,
   TIER_11_SIZE: 3,
@@ -135,7 +135,7 @@ module.exports = Object.freeze({
   TIER_15_SIZE: 5,
   TIER_16_SIZE: 5,
   // To Do: make the code dependant on the array instead of the individual values
-  RelativeSizes: [0.4, 0.5, 1.2, 1.4, 1.4, 1.5, 1.5, 3, 2.5, 3, 3, 2.4, 4, 1.4, 5, 5],
+  RelativeSizes: [0.4, 0.5, 1.2, 1.4, 1.4, 0.5, 1.5, 1.6, 2.5, 3, 3, 2.4, 4, 1.4, 5, 5],
 
   MAP_SIZE: 1000,
   MSG_TYPES: {
