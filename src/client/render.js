@@ -44,7 +44,7 @@ window.addEventListener('resize', debounce(40, setCanvasDimensions));
 
 function render() 
 {
-  const { me, meD1, meD2, others, bullets, berries, melons, blackberries, carrots, lilypads, redMushrooms, watermelonSlices, bananas, coconuts, pears, mushroomBushes, watermelons, mushrooms, lavas/*, rocks*/} = getCurrentState();
+  const { me, others, bullets, berries, melons, blackberries, carrots, lilypads, redMushrooms, watermelonSlices, bananas, coconuts, pears, mushroomBushes, watermelons, mushrooms, lavas/*, rocks*/} = getCurrentState();
   if (!me) {
     return;
   }
