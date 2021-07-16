@@ -25,6 +25,7 @@ var state = require('./state.js');
 
 const Constants = require('../shared/constants');
 const { PLAYER_RADIUS, PLAYER_MAX_HP, BULLET_RADIUS, MAP_SIZE } = Constants;
+var badUpdateCounter = 0;
 
 // Get the canvas graphics context
 const canvas = document.getElementById('game-canvas');

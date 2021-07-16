@@ -40,7 +40,7 @@ function currentServerTime() {
 function getBaseUpdate() {
   const serverTime = currentServerTime();
   for (let i = gameUpdates.length - 1; i >= 0; i--) {
-    if (gameUpdates[i].t <= serverTime && serverTime - gameUpdates[i].t <= 200) {
+    if (gameUpdates[i].t <= serverTime) {
       return i;
     }
   }
@@ -59,10 +59,16 @@ export function getCurrentState() {
   // If base is the most recent update we have, use its state.
   // Otherwise, interpolate between its state and the state of (base + 1).
   if (base < 0 || base === gameUpdates.length - 1) {
-    return gameUpdates[gameUpdates.length - 1];
-  } else if (base === gameUpdates.length - 1) {
-  return gameUpdates[base];
-  } else {
+    //return gameUpdates[gameUpdates.length - 1];
+    return null;
+  } 
+
+  else if (base === gameUpdates.length - 1) {
+    //return gameUpdates[base];
+    return null;
+  } 
+  
+  else {
     const baseUpdate = gameUpdates[base];
     const next = gameUpdates[base + 1];
     const ratio = (serverTime - baseUpdate.t) / (next.t - baseUpdate.t);
