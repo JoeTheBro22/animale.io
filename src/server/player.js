@@ -171,6 +171,7 @@ class Player extends ObjectClass {
   serializeForUpdate() {
     return {
       ...(super.serializeForUpdate()),
+      username: this.username,
       direction: this.direction,
       hp: this.hp,
       tier: this.tier,

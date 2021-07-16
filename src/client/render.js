@@ -279,6 +279,24 @@ function renderPlayer(me, player) {
   }
   context.restore();
 
+  // Draw name
+  context.fillStyle = "white";
+  context.font = "15px Arial";
+  context.textAlign = "center";
+  var UsernameFix = player.username.replace('NaN','');
+  if(UsernameFix.length <= 12){
+    context.fillText(UsernameFix, canvasX, canvasY - 15 - PLAYER_RADIUS * Constants.RelativeSizes[player.tier]);
+  } else{
+    context.fillText(UsernameFix.slice(0, 12) , canvasX, canvasY - 15 - PLAYER_RADIUS * Constants.RelativeSizes[player.tier]);
+  }
+  
+  /*
+  -PLAYER_RADIUS * TIER_1_SIZE,
+  -PLAYER_RADIUS * TIER_1_SIZE,
+  PLAYER_RADIUS * 2 * TIER_1_SIZE,
+  PLAYER_RADIUS * 2 * TIER_1_SIZE,
+  */
+
   // Draw health bar
   context.fillStyle = "#19CD2A";
   context.fillRect(
@@ -330,6 +348,7 @@ function renderXPBar(me, player) {
   context.fillStyle = 'white';
   const nextTierXP = Constants.TierXP[player.tier + 1];
   context.font = "15px Arial";
+  context.textAlign = "center";
   context.fillText(Math.floor(player.score) + " xp (Next animal at " + nextTierXP + " xp)", canvas.width / 2, canvas.height - 7.5);
 }
 

@@ -55,18 +55,17 @@ export function getCurrentState() {
 
   const base = getBaseUpdate();
   const serverTime = currentServerTime();
-
   // If base is the most recent update we have, use its state.
   // Otherwise, interpolate between its state and the state of (base + 1).
   if (base < 0 || base === gameUpdates.length - 1) {
-    //return gameUpdates[gameUpdates.length - 1];
-    return null;
-  } 
+    return gameUpdates[gameUpdates.length - 1];
+    //return null;
+  }
 
   else if (base === gameUpdates.length - 1) {
-    //return gameUpdates[base];
-    return null;
-  } 
+    return gameUpdates[base];
+    //return null;
+  }
   
   else {
     const baseUpdate = gameUpdates[base];
