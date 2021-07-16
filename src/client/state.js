@@ -4,7 +4,7 @@ import { updateLeaderboard } from './leaderboard';
 
 // The "current" state will always be RENDER_DELAY ms behind server time.
 // This makes gameplay smoother and lag less noticeable.
-const RENDER_DELAY = 100;
+const RENDER_DELAY = 300;
 
 const gameUpdates = [];
 let gameStart = 0;
@@ -44,7 +44,7 @@ function getBaseUpdate() {
       return i;
     }
   }
-  return gameUpdates[i].t;
+  return -1;
 }
 
 // Returns { me, others, bullets, berries, melons, mushrooms, other foods }
