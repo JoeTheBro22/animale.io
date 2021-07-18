@@ -177,7 +177,7 @@ class Game {
   handleKeyPressed(socket) {
     if(this.players[socket.id]){
       if(KeyboardEvent.code === 81){
-        debug.log("q");
+        //debug.log("q");
       }
     }
   }
