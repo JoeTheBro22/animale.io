@@ -277,7 +277,7 @@ class Game {
       const player = this.players[playerID];
       const newBullet = player.update(dt);
       if (newBullet) {
-        this.bullets.push(newBullet);
+        //this.bullets.push(newBullet);
       }
     });
 
