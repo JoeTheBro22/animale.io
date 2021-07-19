@@ -352,10 +352,10 @@ class Game {
     this.watermelons = this.watermelons.filter(berry => !destroyedWatermelons.includes(berry));
 
     const destroyedLavas = applyCollisions(Object.values(this.players), this.lavas, 1, dt, availablePlayerTier);
-    this.lavas = this.lavas.filter(lava => !destroyedBerries.includes(lava));
+    //this.lavas = this.lavas.filter(lava => !destroyedBerries.includes(lava));
 
     const destroyedPlayers = applyCollisions(Object.values(this.players), Object.values(this.players), 3, dt, availablePlayerTier);
-
+    
     // Send a game update to each player every other time
     if (this.shouldSendUpdate) {
       const leaderboard = this.getLeaderboard();

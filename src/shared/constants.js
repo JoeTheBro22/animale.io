@@ -120,7 +120,7 @@ module.exports = Object.freeze({
   //Relative Animal Sizes
   TIER_1_SIZE: 0.4,
   TIER_2_SIZE: 0.5,
-  TIER_3_SIZE: 1.2,
+  TIER_3_SIZE: 3,
   TIER_4_SIZE: 1.4,
   TIER_5_SIZE: 1.4,
   TIER_6_SIZE: 0.5,
@@ -135,7 +135,7 @@ module.exports = Object.freeze({
   TIER_15_SIZE: 5,
   TIER_16_SIZE: 5,
   // To Do: make the code dependant on the array instead of the individual values
-  RelativeSizes: [0.4, 0.5, 1.2, 1.4, 1.4, 0.5, 1.5, 1.6, 2.5, 3, 3, 2.4, 4, 1.4, 5, 5],
+  RelativeSizes: [0.4, 0.5, 3, 1.4, 1.4, 0.5, 1.5, 1.6, 2.5, 3, 3, 2.4, 4, 1.4, 5, 5],
 
   MAP_SIZE: 1000,
   MSG_TYPES: {

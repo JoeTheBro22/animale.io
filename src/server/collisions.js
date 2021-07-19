@@ -1,5 +1,6 @@
 const e = require('express');
 const { debug } = require('webpack');
+const constants = require('../shared/constants');
 const Constants = require('../shared/constants');
 
 // Returns an array of bullets to be destroyed.
@@ -31,19 +32,17 @@ function regenHP(players){
   }
 }*/
 
-function applyCollisions(players, otherObj, collisionType/*, playerSize, otherObjSize*/, deltaTime, playerTier) {
+function applyCollisions(players, otherObj, collisionType, deltaTime, playerTier) {
   const destroyedObj = [];
-  //let otherObjSize = 1;
+
   for (let i = 0; i < otherObj.length; i++) {
     for (let j = 0; j < players.length; j++) {
 
       const otherObject = otherObj[i];
       const player = players[j];
-      let nonPlayerRadius = 0;
-      let playerRadius = Constants.PLAYER_RADIUS;
+      let nonPlayerRadius = constants.PLAYER_RADIUS;
+      let playerRadius = player.radius;
       let destroyObject = true;
-
-      playerRadius = Constants.RelativeSizes[playerTier] * Constants.PLAYER_RADIUS;
 
       if(collisionType == 0){
         nonPlayerRadius = Constants.BERRY_RADIUS;
@@ -52,7 +51,7 @@ function applyCollisions(players, otherObj, collisionType/*, playerSize, otherOb
       } else if(collisionType == 2){
         nonPlayerRadius = Constants.ROCK_RADIUS;
       } else if(collisionType == 3){
-        nonPlayerRadius = Constants.PLAYER_RADIUS;
+        nonPlayerRadius = otherObject.radius;
       } else if (collisionType == 4){
         nonPlayerRadius = Constants.MELON_RADIUS;
       } else if (collisionType == 5){
