@@ -1,3 +1,5 @@
+const constants = require("../shared/constants");
+
 class Object {
   constructor(id, x, y, dir, speed) {
     this.id = id;
@@ -22,17 +24,14 @@ class Object {
     this.direction = dir;
   }
 
-  boost(dt, cooldown, boostCooldown) {
-    cooldown -= dt;
-    if(cooldown <= -boostCooldown){
+  boost(boostCooldown) {
+    if(boostCooldown <= 0){
       this.x += 0.5 * this.speed * Math.sin(this.direction);
       this.y -= 0.5 * this.speed * Math.cos(this.direction);
-      cooldown = 0;
       return true;
     } else{
       return false;
     }
-    //console.log(cooldown);
   }
 
   serializeForUpdate() {

@@ -283,11 +283,14 @@ function renderPlayer(me, player) {
   context.fillStyle = "white";
   context.font = "15px Arial";
   context.textAlign = "center";
-  var UsernameFix = player.username.replace('NaN','');
-  if(UsernameFix.length <= 12){
+  let UsernameFix = player.username.replace('NaN','');
+  if(UsernameFix.length <= 1 || (parseInt(UsernameFix) != undefined && parseInt(UsernameFix) >= 0)){
+    context.fillText("Anonymous", canvasX, canvasY - 15 - PLAYER_RADIUS * Constants.RelativeSizes[player.tier]);
+  }
+  else if(UsernameFix.length <= 15){
     context.fillText(UsernameFix, canvasX, canvasY - 15 - PLAYER_RADIUS * Constants.RelativeSizes[player.tier]);
   } else{
-    context.fillText(UsernameFix.slice(0, 12) , canvasX, canvasY - 15 - PLAYER_RADIUS * Constants.RelativeSizes[player.tier]);
+    context.fillText(UsernameFix.slice(0, 15) , canvasX, canvasY - 15 - PLAYER_RADIUS * Constants.RelativeSizes[player.tier]);
   }
   
   /*

@@ -167,9 +167,9 @@ class Game {
   handleClick(socket) {
     const clickDT = (Date.now() - this.lastClickUpdateTime) / 1000;
     if(this.players[socket.id]){
-      const boosted = this.players[socket.id].boost(clickDT, 0, Constants.BOOST_COOLDOWN);
+      const boosted = this.players[socket.id].boost(this.players[socket.id].boostCooldown);
       if(boosted){
-        this.lastClickUpdateTime = Date.now();
+        this.players[socket.id].boostCooldown = Constants.BOOST_COOLDOWN;
       }
     }
   }

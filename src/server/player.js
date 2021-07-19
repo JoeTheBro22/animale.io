@@ -3,7 +3,7 @@ const Bullet = require('./bullet');
 const Constants = require('../shared/constants');
 
 class Player extends ObjectClass {
-  constructor(id, username, x, y, radius) {
+  constructor(id, username, x, y, radius, boostCooldown) {
     super(id, x, y, Math.random() * 2 * Math.PI, Constants.PLAYER_SPEED);
     this.username = username;
     this.hp = Constants.PLAYER_MAX_HP;
@@ -11,6 +11,7 @@ class Player extends ObjectClass {
     this.score = 0;
     this.tier = 0;
     this.radius = Constants.PLAYER_RADIUS;
+    this.boostCooldown = Constants.BOOST_COOLDOWN;
   }
 
   // Returns a newly created bullet, or null.
@@ -56,7 +57,7 @@ class Player extends ObjectClass {
     }
 
     this.radius = Constants.RelativeSizes[this.tier] * Constants.PLAYER_RADIUS;
-    //console.log(this.radius);
+    this.boostCooldown -= dt;
 
     // Make sure the player stays in bounds
     this.x = Math.max(0, Math.min(Constants.MAP_SIZE, this.x));
@@ -187,6 +188,7 @@ class Player extends ObjectClass {
       tier: this.tier,
       score: this.score,
       radius: this.radius,
+      boostCooldown: this.boostCooldown,
     };
   }
 }
