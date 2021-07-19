@@ -198,7 +198,7 @@ function renderPlayer(me, player) {
 
   else if(player.tier <9){
     context.drawImage(
-      getAsset('old bear.png'),
+      getAsset('zebra.png'),
       -PLAYER_RADIUS * TIER_9_SIZE,
       -PLAYER_RADIUS * TIER_9_SIZE,
       PLAYER_RADIUS * 2 * TIER_9_SIZE,
@@ -208,7 +208,7 @@ function renderPlayer(me, player) {
 
   else if(player.tier <10){
     context.drawImage(
-      getAsset('old crocodile.png'),
+      getAsset('kangaroo.png'),
       -PLAYER_RADIUS * TIER_10_SIZE,
       -PLAYER_RADIUS * TIER_10_SIZE,
       PLAYER_RADIUS * 2 * TIER_10_SIZE,

@@ -90,7 +90,7 @@ function applyCollisions(players, otherObj, collisionType, deltaTime, playerTier
             if(player.tier > otherObject.tier){
               if(Math.abs((player.direction - otherObject.direction) <= 0.5 /*player is biting otherObject*/ && player.direction > 0 && otherObject.direction > 0) && otherObject.x < player.x){
                 // They are both facing right. Compare them on the X axis
-                otherObject.takeKnockback(deltaTime, player.x, player.y);
+                otherObject.takeKnockback(otherObject.direction);
                 player.takeHitDamage();
                 if(player.hp <= 0){
                   otherObject.getKillXP(player.score * 0.5 + otherObject.score * 0.05);
@@ -99,7 +99,7 @@ function applyCollisions(players, otherObj, collisionType, deltaTime, playerTier
               } 
               
               else if((Math.abs(player.direction - otherObject.direction) <= 0.5 /*player is biting otherObject*/ && player.direction < 0 && otherObject.direction < 0) && otherObject.x > player.x){
-                otherObject.takeKnockback(deltaTime, player.x, player.y);
+                otherObject.takeKnockback(otherObject.direction);
                 player.takeHitDamage();
                 if(player.hp <= 0){
                   otherObject.getKillXP(player.score * 0.5 + otherObject.score * 0.05);
@@ -110,7 +110,7 @@ function applyCollisions(players, otherObj, collisionType, deltaTime, playerTier
               
               else if(Math.abs(player.direction - otherObject.direction) >= 2 * Math.PI - 0.5  /*player is biting otherObject*/ && player.direction > 0 && otherObject.direction < 0 && otherObject.y < player.y){
                 // Case 3
-                otherObject.takeKnockback(deltaTime, player.x, player.y);
+                otherObject.takeKnockback(otherObject.direction);
                 player.takeHitDamage();
                 if(player.hp <= 0){
                   otherObject.getKillXP(player.score * 0.5 + otherObject.score * 0.05);
@@ -120,7 +120,7 @@ function applyCollisions(players, otherObj, collisionType, deltaTime, playerTier
               
               else if(Math.abs(player.direction - otherObject.direction) <= 0.5 /*player is biting otherObject*/ && player.direction < 0 && otherObject.direction > 0 && otherObject.y > player.y){
                 // Case 4
-                otherObject.takeKnockback(deltaTime, player.x, player.y);
+                otherObject.takeKnockback(otherObject.direction);
                 player.takeHitDamage();
                 if(player.hp <= 0){
                   otherObject.getKillXP(player.score * 0.5 + otherObject.score * 0.05);
@@ -130,7 +130,7 @@ function applyCollisions(players, otherObj, collisionType, deltaTime, playerTier
 
               else{
                 // Normal biting (bigger player eats smaller one)
-                otherObject.takeKnockback(player.x, player.y);
+                otherObject.takeKnockback(-player.direction);
                 otherObject.takeHitDamage();
               
                 if(player.hp <= 0){
@@ -142,7 +142,7 @@ function applyCollisions(players, otherObj, collisionType, deltaTime, playerTier
           
           else if(player.tier < otherObject.tier){
             if(Math.abs((otherObject.direction - player.direction) <= 0.5 && otherObject.direction > 0 && player.direction > 0) && player.x < otherObject.x){
-              player.takeKnockback(deltaTime, otherObject.x, otherObject.y);
+              player.takeKnockback(player.direction);
               otherObject.takeHitDamage();
               if(otherObject.hp <= 0){
                 player.getKillXP(otherObject.score * 0.5 + player.score * 0.05);
@@ -151,7 +151,7 @@ function applyCollisions(players, otherObj, collisionType, deltaTime, playerTier
             } 
             
             else if((Math.abs(otherObject.direction - player.direction) <= 0.5 && otherObject.direction < 0 && player.direction < 0) && player.x > otherObject.x){
-              player.takeKnockback(deltaTime, otherObject.x, otherObject.y);
+              player.takeKnockback(player.direction);
               otherObject.takeHitDamage();
               if(otherObject.hp <= 0){
                 player.getKillXP(otherObject.score * 0.5 + player.score * 0.05);
@@ -160,7 +160,7 @@ function applyCollisions(players, otherObj, collisionType, deltaTime, playerTier
             } 
             
             else if(Math.abs(otherObject.direction - player.direction) >= 2 * Math.PI - 0.5 && otherObject.direction > 0 && player.direction < 0 && player.y < otherObject.y){
-              player.takeKnockback(deltaTime, otherObject.x, otherObject.y);
+              player.takeKnockback(player.direction);
               otherObject.takeHitDamage();
               if(otherObject.hp <= 0){
                 player.getKillXP(otherObject.score * 0.5 + player.score * 0.05);
@@ -169,7 +169,7 @@ function applyCollisions(players, otherObj, collisionType, deltaTime, playerTier
             } 
             
             else if(Math.abs(otherObject.direction - player.direction) <= 0.5 && otherObject.direction < 0 && player.direction > 0 && player.y > otherObject.y){
-              player.takeKnockback(deltaTime, otherObject.x, otherObject.y);
+              player.takeKnockback(player.direction);
               otherObject.takeHitDamage();
               if(otherObject.hp <= 0){
                 player.getKillXP(otherObject.score * 0.5 + player.score * 0.05);
@@ -179,7 +179,7 @@ function applyCollisions(players, otherObj, collisionType, deltaTime, playerTier
             
             else{
               // Normal biting (bigger player eats smaller one)
-              player.takeKnockback(otherObject.x, otherObject.y);
+              player.takeKnockback(-otherObject.direction);
               player.takeHitDamage();
             
               if(player.hp <= 0){

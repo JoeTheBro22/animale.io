@@ -106,17 +106,11 @@ class Player extends ObjectClass {
     this.hp += Constants.REGEN_AMOUNT;
   }
 
-  takeKnockback(otherX, otherY) {
-    let xDir = this.x - otherX;
-    let yDir = this.y - otherY;
-    if(xDir <= 50){
-      xDir = 50;
-    }
-    if(yDir <= 50){
-      yDir = 50;
-    }
-    this.x += 0.02 * this.speed * xDir;
-    this.y += 0.02 * this.speed * yDir;
+  takeKnockback(direction) {
+    // If it is a tail bite, then use the smaller player's direction
+    // Otherwise, use the bigger player's direction
+    this.x -= 0.5 * this.speed * Math.sin(direction);
+    this.y += 0.5 * this.speed * Math.cos(direction);
   }
   
   giveBerryXP() {
