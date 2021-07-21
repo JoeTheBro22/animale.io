@@ -25,7 +25,6 @@ class Object {
   }
 
   setSpeed(x, y, canvasWidth, canvasHeight) {
-    console.log(this.speed);
     this.speed = 1000 * Math.abs(Math.sqrt((x - canvasWidth/2) * (x - canvasWidth/2) / canvasWidth / canvasWidth + (y - canvasHeight/2) * (y - canvasHeight/2) / canvasHeight / canvasHeight)); 
     if(this.speed > 100){
       this.speed = 100;

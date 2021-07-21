@@ -139,7 +139,7 @@ function renderPlayer(me, player) {
     );
   } else if(player.tier <3){
     context.drawImage(
-      getAsset('squirrel.png'),
+      getAsset('party squirrel.png'),
       -PLAYER_RADIUS * TIER_3_SIZE,
       -PLAYER_RADIUS * TIER_3_SIZE,
       PLAYER_RADIUS * 2 * TIER_3_SIZE,

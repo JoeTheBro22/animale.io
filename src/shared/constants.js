@@ -120,7 +120,7 @@ module.exports = Object.freeze({
   //Relative Animal Sizes (for the size that it will b rendered in)
   TIER_1_SIZE: 0.4,
   TIER_2_SIZE: 0.5,
-  TIER_3_SIZE: 1.2,
+  TIER_3_SIZE: 3,
   TIER_4_SIZE: 1.4,
   TIER_5_SIZE: 1.4,
   TIER_6_SIZE: 0.5,
@@ -135,7 +135,7 @@ module.exports = Object.freeze({
   TIER_15_SIZE: 1.8,
   TIER_16_SIZE: 2,
   // Relative Animal Sizes (for collision)
-  RelativeSizes: [0.4, 0.5, 1.2, 1.4, 1.4, 0.5, 1.5, 1.6, 1.5, 2, 1.8, 2.4, 4, 1.4, 1.8, 2],
+  RelativeSizes: [0.4, 0.5, 3, 1.4, 1.4, 0.5, 1.5, 1.6, 1.5, 2, 1.8, 2.4, 4, 1.4, 1.8, 2],
 
   MAP_SIZE: 1000,
   MSG_TYPES: {
