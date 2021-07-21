@@ -25,7 +25,6 @@ var state = require('./state.js');
 
 const Constants = require('../shared/constants');
 const { PLAYER_RADIUS, PLAYER_MAX_HP, BULLET_RADIUS, MAP_SIZE } = Constants;
-var badUpdateCounter = 0;
 
 // Get the canvas graphics context
 const canvas = document.getElementById('game-canvas');
@@ -149,7 +148,7 @@ function renderPlayer(me, player) {
   }
   else if(player.tier <4){
     context.drawImage(
-      getAsset('garden snake.png'),
+      getAsset('hummingbird.png'),
       -PLAYER_RADIUS * TIER_4_SIZE,
       -PLAYER_RADIUS * TIER_4_SIZE,
       PLAYER_RADIUS * 2 * TIER_4_SIZE,
@@ -158,7 +157,7 @@ function renderPlayer(me, player) {
   }
   else if(player.tier <5){
     context.drawImage(
-      getAsset('hummingbird.png'),
+      getAsset('garden snake.png'),
       -PLAYER_RADIUS * TIER_5_SIZE,
       -PLAYER_RADIUS * TIER_5_SIZE,
       PLAYER_RADIUS * 2 * TIER_5_SIZE,
@@ -228,7 +227,7 @@ function renderPlayer(me, player) {
 
   else if(player.tier <12){
     context.drawImage(
-      getAsset('old lion.png'),
+      getAsset('mammoth.png'),
       -PLAYER_RADIUS * TIER_12_SIZE,
       -PLAYER_RADIUS * TIER_12_SIZE,
       PLAYER_RADIUS * 2 * TIER_12_SIZE,
@@ -238,7 +237,7 @@ function renderPlayer(me, player) {
 
   else if(player.tier <13){
     context.drawImage(
-      getAsset('old dragon.png'),
+      getAsset('horse.png'),
       -PLAYER_RADIUS * TIER_13_SIZE,
       -PLAYER_RADIUS * TIER_13_SIZE,
       PLAYER_RADIUS * 2 * TIER_13_SIZE,

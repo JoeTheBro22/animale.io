@@ -1,4 +1,4 @@
-const constants = require("../shared/constants");
+const Constants = require("../shared/constants");
 
 class Object {
   constructor(id, x, y, dir, speed) {
@@ -24,10 +24,18 @@ class Object {
     this.direction = dir;
   }
 
+  setSpeed(x, y, canvasWidth, canvasHeight) {
+    console.log(this.speed);
+    this.speed = 1000 * Math.abs(Math.sqrt((x - canvasWidth/2) * (x - canvasWidth/2) / canvasWidth / canvasWidth + (y - canvasHeight/2) * (y - canvasHeight/2) / canvasHeight / canvasHeight)); 
+    if(this.speed > 100){
+      this.speed = 100;
+    }
+  }
+
   boost(boostCooldown) {
     if(boostCooldown <= 0){
-      this.x += 0.5 * this.speed * Math.sin(this.direction);
-      this.y -= 0.5 * this.speed * Math.cos(this.direction);
+      this.x += 50 * Math.sin(this.direction);
+      this.y -= 50 * Math.cos(this.direction);
       return true;
     } else{
       return false;

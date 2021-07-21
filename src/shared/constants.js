@@ -117,7 +117,7 @@ module.exports = Object.freeze({
   TIER_15_XP: 200,
   TIER_16_XP: 300,*/
 
-  //Relative Animal Sizes
+  //Relative Animal Sizes (for the size that it will b rendered in)
   TIER_1_SIZE: 0.4,
   TIER_2_SIZE: 0.5,
   TIER_3_SIZE: 1.2,
@@ -128,21 +128,22 @@ module.exports = Object.freeze({
   TIER_8_SIZE: 1.6,
   TIER_9_SIZE: 1.5,
   TIER_10_SIZE: 2,
-  TIER_11_SIZE: 3,
+  TIER_11_SIZE: 1.8,
   TIER_12_SIZE: 2.4,
   TIER_13_SIZE: 4,
   TIER_14_SIZE: 1.4,
-  TIER_15_SIZE: 5,
-  TIER_16_SIZE: 5,
-  // To Do: make the code dependant on the array instead of the individual values
-  RelativeSizes: [0.4, 0.5, 1.2, 1.4, 1.4, 0.5, 1.5, 1.6, 1.5, 2, 3, 2.4, 4, 1.4, 5, 5],
+  TIER_15_SIZE: 1.8,
+  TIER_16_SIZE: 2,
+  // Relative Animal Sizes (for collision)
+  RelativeSizes: [0.4, 0.5, 1.2, 1.4, 1.4, 0.5, 1.5, 1.6, 1.5, 2, 1.8, 2.4, 4, 1.4, 1.8, 2],
 
   MAP_SIZE: 1000,
   MSG_TYPES: {
     JOIN_GAME: 'join_game',
     GAME_UPDATE: 'update',
     INPUT: 'input',
-    MOUSEINPUT: 'mouseinput',
+    MOUSE_INPUT: 'mouseinput',
+    SPEED_INPUT: 'speedinput',
     GAME_OVER: 'dead',
     KEY_PRESSED: 'keypressed',
   },

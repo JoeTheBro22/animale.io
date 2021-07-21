@@ -38,10 +38,10 @@ export const updateDirection = throttle(20, dir => {
   socket.emit(Constants.MSG_TYPES.INPUT, dir);
 });
 
-export const clickMessage = click => {
-  socket.emit(Constants.MSG_TYPES.MOUSEINPUT);
-}
+export const updateSpeed = throttle(20, (x, y, canvasWidth, canvasHeight) => {
+  socket.emit(Constants.MSG_TYPES.SPEED_INPUT, x, y, canvasWidth, canvasHeight);
+});
 
-export const KeyMessage = keyDown => {
-  socket.emit(Constants.MSG_TYPES.KEY_PRESSED);
+export const clickMessage = click => {
+  socket.emit(Constants.MSG_TYPES.MOUSE_INPUT);
 }

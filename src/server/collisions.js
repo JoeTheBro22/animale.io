@@ -81,7 +81,7 @@ function applyCollisions(players, otherObj, collisionType, deltaTime, playerTier
         if(collisionType == 0){
           player.giveBerryXP();
         } else if (collisionType == 1){
-          if(player.tier <= 11){
+          if(player.tier <= 12){
             player.takeLavaDamage();
           }
         } else if (collisionType == 2){

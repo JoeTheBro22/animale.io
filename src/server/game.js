@@ -142,8 +142,6 @@ class Game {
     setInterval(this.update.bind(this), 10);
   }
 
-
-
   addPlayer(socket, username) {
     this.sockets[socket.id] = socket;
 
@@ -164,20 +162,17 @@ class Game {
     }
   }
 
+  handleSpeed(socket, x, y, canvasWidth, canvasHeight) {
+    if (this.players[socket.id]) {
+      this.players[socket.id].setSpeed(x, y, canvasWidth, canvasHeight);
+    }
+  }
+
   handleClick(socket) {
-    const clickDT = (Date.now() - this.lastClickUpdateTime) / 1000;
     if(this.players[socket.id]){
       const boosted = this.players[socket.id].boost(this.players[socket.id].boostCooldown);
       if(boosted){
         this.players[socket.id].boostCooldown = Constants.BOOST_COOLDOWN;
-      }
-    }
-  }
-
-  handleKeyPressed(socket) {
-    if(this.players[socket.id]){
-      if(KeyboardEvent.code === 81){
-        //debug.log("q");
       }
     }
   }
