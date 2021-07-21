@@ -247,7 +247,7 @@ function renderPlayer(me, player) {
 
   else if(player.tier <14){
     context.drawImage(
-      getAsset('devil croc.png'),
+      getAsset('slime.png'),
       -PLAYER_RADIUS * TIER_14_SIZE,
       -PLAYER_RADIUS * TIER_14_SIZE,
       PLAYER_RADIUS * 2 * TIER_14_SIZE,
@@ -356,6 +356,31 @@ function renderXPBar(me, player) {
 
 function renderBerry(me, berry) {
   const { x, y } = berry;
+
+  // Drawing the outline
+  var dArr = [-1,-1, 0,-1, 1,-1, -1,0, 1,0, -1,1, 0,1, 1,1], // offset array
+      s = 2,  // thickness scale
+      i = 0,  // iterator
+      finalX = x,  // final position
+      finalY = y;
+
+  for(; i < dArr.length; i += 2){
+    context.drawImage(
+      getAsset('berry outline.png'),
+      canvas.width / 2 + x - me.x - BERRY_RADIUS + dArr[i]*s,
+      canvas.height / 2 + y - me.y - BERRY_RADIUS + dArr[i+1]*s,
+      BERRY_RADIUS * 2,
+      BERRY_RADIUS * 2,
+    );
+  }
+  
+  // fill with color
+  /*context.globalCompositeOperation = "source-atop";
+  context.fillStyle = "red";
+  context.fillRect(0,0,canvas.width, canvas.height);*/
+  
+  //Drawing the original image
+  context.globalCompositeOperation = "source-over";
   context.drawImage(
     getAsset('berry.png'),
     canvas.width / 2 + x - me.x - BERRY_RADIUS,
@@ -378,6 +403,24 @@ function renderMelon(me, melon) {
 
 function renderMushroom(me, mushroom) {
   const { x, y } = mushroom;
+
+  // Drawing the outline
+  var dArr = [-1,0, 1,0, -1,1, 0,1, 1,1], // offset array
+    s = 2,  // thickness scale
+    i = 0,  // iterator
+    finalX = x,  // final position
+    finalY = y;
+
+  for(; i < dArr.length; i += 2){
+    context.drawImage(
+      getAsset('mushroom outline.png'),
+      canvas.width / 2 + x - me.x - MUSHROOM_RADIUS + dArr[i]*s,
+      canvas.height / 2 + y - me.y - MUSHROOM_RADIUS + dArr[i+1]*s,
+      MUSHROOM_RADIUS * 2,
+      MUSHROOM_RADIUS * 2,
+    );
+  }
+
   context.drawImage(
     getAsset('mushroom.png'),
     canvas.width / 2 + x - me.x - MUSHROOM_RADIUS,

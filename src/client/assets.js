@@ -16,7 +16,7 @@ const ASSET_NAMES = [
   'mushroom bush.png',
   'watermelon.png',
   'mushroom.png',
-  'slime.png',
+  'old slime.png',
   'robo mouse.png',
   'rock.png',
   'panda uwu.png',
@@ -48,7 +48,11 @@ const ASSET_NAMES = [
   'kangaroo.png',
   'mammoth.png',
   'horse.png',
-  'party squirrel.png'
+  'party squirrel.png',
+  'slime.png',
+  'berry outline.png',
+  'mushroom outline.png',
+  'mushroom outline 2.png',
   //REMEBER TO ADD ALL ASSETS TO THIS :D
 ];
 

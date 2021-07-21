@@ -199,7 +199,11 @@ function applyCollisions(players, otherObj, collisionType, deltaTime, playerTier
             destroyObject = false;
           }
         } else if (collisionType == 5){
-          player.giveMushroomXP();
+          if(player.tier >= 1){
+            player.giveMushroomXP();
+          } else{
+            destroyObject = false;
+          }
         } else if (collisionType == 6){
           if(player.tier >= 4){
             player.giveBlackberryXP();
