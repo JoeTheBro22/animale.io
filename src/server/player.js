@@ -60,8 +60,8 @@ class Player extends ObjectClass {
     this.boostCooldown -= dt;
 
     // Make sure the player stays in bounds
-    this.x = Math.max(0, Math.min(Constants.MAP_SIZE, this.x));
-    this.y = Math.max(0, Math.min(Constants.MAP_SIZE, this.y));
+    this.x = Math.max(this.radius, Math.min(Constants.MAP_SIZE - this.radius, this.x));
+    this.y = Math.max(this.radius, Math.min(Constants.MAP_SIZE - this.radius, this.y));
 
     // Regen HP
     if(this.hp < Constants.PLAYER_MAX_HP){
@@ -109,8 +109,8 @@ class Player extends ObjectClass {
   takeKnockback(direction) {
     // If it is a tail bite, then use the smaller player's direction
     // Otherwise, use the bigger player's direction
-    this.x -= 0.5 * this.speed * Math.sin(direction);
-    this.y += 0.5 * this.speed * Math.cos(direction);
+    this.x += 0.5 * 100 * Math.sin(direction);
+    this.y -= 0.5 * 100 * Math.cos(direction);
   }
   
   giveBerryXP() {

@@ -307,49 +307,49 @@ class Game {
     });
 
     // Apply collisions
-    const destroyedBerries = applyCollisions(Object.values(this.players), this.berries, 0, dt, availablePlayerTier);
+    const destroyedBerries = applyCollisions(Object.values(this.players), this.berries, 0);
     this.berries = this.berries.filter(berry => !destroyedBerries.includes(berry));
 
-    const destroyedMelons = applyCollisions(Object.values(this.players), this.melons, 4, dt, availablePlayerTier);
+    const destroyedMelons = applyCollisions(Object.values(this.players), this.melons, 4);
     this.melons = this.melons.filter(berry => !destroyedMelons.includes(berry));
 
-    const destroyedMushrooms = applyCollisions(Object.values(this.players), this.mushrooms, 5, dt, availablePlayerTier);
+    const destroyedMushrooms = applyCollisions(Object.values(this.players), this.mushrooms, 5);
     this.mushrooms = this.mushrooms.filter(berry => !destroyedMushrooms.includes(berry));
 
-    const destroyedBlackberries = applyCollisions(Object.values(this.players), this.blackberries, 6, dt, availablePlayerTier);
+    const destroyedBlackberries = applyCollisions(Object.values(this.players), this.blackberries, 6);
     this.blackberries = this.blackberries.filter(berry => !destroyedBlackberries.includes(berry));
 
-    const destroyedCarrots = applyCollisions(Object.values(this.players), this.carrots, 7, dt, availablePlayerTier);
+    const destroyedCarrots = applyCollisions(Object.values(this.players), this.carrots, 7);
     this.carrots = this.carrots.filter(berry => !destroyedCarrots.includes(berry));
 
-    const destroyedLilypads = applyCollisions(Object.values(this.players), this.lilypads, 8, dt, availablePlayerTier);
+    const destroyedLilypads = applyCollisions(Object.values(this.players), this.lilypads, 8);
     this.lilypads = this.lilypads.filter(berry => !destroyedLilypads.includes(berry));
 
-    const destroyedRedMushrooms = applyCollisions(Object.values(this.players), this.redMushrooms, 9, dt, availablePlayerTier);
+    const destroyedRedMushrooms = applyCollisions(Object.values(this.players), this.redMushrooms, 9);
     this.redMushrooms = this.redMushrooms.filter(berry => !destroyedRedMushrooms.includes(berry));
 
-    const destroyedWatermelonSlices = applyCollisions(Object.values(this.players), this.watermelonSlices, 10, dt, availablePlayerTier);
+    const destroyedWatermelonSlices = applyCollisions(Object.values(this.players), this.watermelonSlices, 10);
     this.watermelonSlices = this.watermelonSlices.filter(berry => !destroyedWatermelonSlices.includes(berry));
 
-    const destroyedBananas = applyCollisions(Object.values(this.players), this.bananas, 11, dt, availablePlayerTier);
+    const destroyedBananas = applyCollisions(Object.values(this.players), this.bananas, 11);
     this.bananas = this.bananas.filter(berry => !destroyedBananas.includes(berry));
 
-    const destroyedCoconuts = applyCollisions(Object.values(this.players), this.coconuts, 12, dt, availablePlayerTier);
+    const destroyedCoconuts = applyCollisions(Object.values(this.players), this.coconuts, 12);
     this.coconuts = this.coconuts.filter(berry => !destroyedCoconuts.includes(berry));
 
-    const destroyedPears = applyCollisions(Object.values(this.players), this.pears, 13, dt, availablePlayerTier);
+    const destroyedPears = applyCollisions(Object.values(this.players), this.pears, 13);
     this.pears = this.pears.filter(berry => !destroyedPears.includes(berry));
 
-    const destroyedMushroomBushes = applyCollisions(Object.values(this.players), this.mushroomBushes, 14, dt, availablePlayerTier);
+    const destroyedMushroomBushes = applyCollisions(Object.values(this.players), this.mushroomBushes, 14);
     this.mushroomBushes = this.mushroomBushes.filter(berry => !destroyedMushroomBushes.includes(berry));
     
-    const destroyedWatermelons = applyCollisions(Object.values(this.players), this.watermelons, 15, dt, availablePlayerTier);
+    const destroyedWatermelons = applyCollisions(Object.values(this.players), this.watermelons, 15);
     this.watermelons = this.watermelons.filter(berry => !destroyedWatermelons.includes(berry));
 
-    const destroyedLavas = applyCollisions(Object.values(this.players), this.lavas, 1, dt, availablePlayerTier);
+    const destroyedLavas = applyCollisions(Object.values(this.players), this.lavas, 1);
     //this.lavas = this.lavas.filter(lava => !destroyedBerries.includes(lava));
 
-    const destroyedPlayers = applyCollisions(Object.values(this.players), Object.values(this.players), 3, dt, availablePlayerTier);
+    const destroyedPlayers = applyCollisions(Object.values(this.players), Object.values(this.players), 3);
     
     // Send a game update to each player every other time
     if (this.shouldSendUpdate) {

@@ -32,7 +32,7 @@ function regenHP(players){
   }
 }*/
 
-function applyCollisions(players, otherObj, collisionType, deltaTime, playerTier) {
+function applyCollisions(players, otherObj, collisionType) {
   const destroyedObj = [];
 
   for (let i = 0; i < otherObj.length; i++) {
@@ -87,111 +87,59 @@ function applyCollisions(players, otherObj, collisionType, deltaTime, playerTier
         } else if (collisionType == 2){
           // push player away from rock
         } else if (collisionType == 3){
+          var tailbite;
             if(player.tier > otherObject.tier){
-              if(Math.abs((player.direction - otherObject.direction) <= 0.5 /*player is biting otherObject*/ && player.direction > 0 && otherObject.direction > 0) && otherObject.x < player.x){
-                // They are both facing right. Compare them on the X axis
-                otherObject.takeKnockback(otherObject.direction);
-                player.takeHitDamage();
-                if(player.hp <= 0){
-                  otherObject.getKillXP(player.score * 0.5 + otherObject.score * 0.05);
-                  break;
-                }
-              } 
-              
-              else if((Math.abs(player.direction - otherObject.direction) <= 0.5 /*player is biting otherObject*/ && player.direction < 0 && otherObject.direction < 0) && otherObject.x > player.x){
-                otherObject.takeKnockback(otherObject.direction);
-                player.takeHitDamage();
-                if(player.hp <= 0){
-                  otherObject.getKillXP(player.score * 0.5 + otherObject.score * 0.05);
-                  break;
-                }
-                // They are both facing left. Compare them on the x axis
-              } 
-              
-              else if(Math.abs(player.direction - otherObject.direction) >= 2 * Math.PI - 0.5  /*player is biting otherObject*/ && player.direction > 0 && otherObject.direction < 0 && otherObject.y < player.y){
-                // Case 3
-                otherObject.takeKnockback(otherObject.direction);
-                player.takeHitDamage();
-                if(player.hp <= 0){
-                  otherObject.getKillXP(player.score * 0.5 + otherObject.score * 0.05);
-                  break;
-                }
-              } 
-              
-              else if(Math.abs(player.direction - otherObject.direction) <= 0.5 /*player is biting otherObject*/ && player.direction < 0 && otherObject.direction > 0 && otherObject.y > player.y){
-                // Case 4
-                otherObject.takeKnockback(otherObject.direction);
-                player.takeHitDamage();
-                if(player.hp <= 0){
-                  otherObject.getKillXP(player.score * 0.5 + otherObject.score * 0.05);
-                  break;
-                }
-              }
-
-              else{
-                // Normal biting (bigger player eats smaller one)
+              tailbite = CheckTailbite(otherObject, player);
+              if(tailbite == true){
                 otherObject.takeKnockback(-player.direction);
+                player.takeHitDamage();
+                if(player.hp <= 0){
+                  otherObject.getKillXP(player.score * 0.5 + otherObject.score * 0.05);
+                  break;
+                }
+              } else if(tailbite == false){
+                // Normal biting (bigger player eats smaller one)
+                otherObject.takeKnockback(player.direction);
                 otherObject.takeHitDamage();
               
+                if(otherObject.hp <= 0){
+                  player.getKillXP(otherObject.score * 0.5 + player.score * 0.05);
+                  break;
+                }
+              } else {
+                otherObject.takeKnockback(-player.direction);
+              }
+            } 
+
+            else if(player.tier < otherObject.tier){
+              tailbite = CheckTailbite(player, otherObject);
+              if(tailbite == true){
+                player.takeKnockback(-otherObject.direction);
+                otherObject.takeHitDamage();
+                if(otherObject.hp <= 0){
+                  player.getKillXP(otherObject.score * 0.5 + player.score * 0.05);
+                  break;
+                }
+              } else if(tailbite == false){
+                // Normal biting (bigger player eats smaller one)
+                player.takeKnockback(otherObject.direction);
+                player.takeHitDamage();
+              
                 if(player.hp <= 0){
                   otherObject.getKillXP(player.score * 0.5 + otherObject.score * 0.05);
                   break;
                 }
-              }
-            } 
-          
-          else if(player.tier < otherObject.tier){
-            if(Math.abs((otherObject.direction - player.direction) <= 0.5 && otherObject.direction > 0 && player.direction > 0) && player.x < otherObject.x){
-              player.takeKnockback(player.direction);
-              otherObject.takeHitDamage();
-              if(otherObject.hp <= 0){
-                player.getKillXP(otherObject.score * 0.5 + player.score * 0.05);
-                break;
-              }
-            } 
-            
-            else if((Math.abs(otherObject.direction - player.direction) <= 0.5 && otherObject.direction < 0 && player.direction < 0) && player.x > otherObject.x){
-              player.takeKnockback(player.direction);
-              otherObject.takeHitDamage();
-              if(otherObject.hp <= 0){
-                player.getKillXP(otherObject.score * 0.5 + player.score * 0.05);
-                break;
-              }
-            } 
-            
-            else if(Math.abs(otherObject.direction - player.direction) >= 2 * Math.PI - 0.5 && otherObject.direction > 0 && player.direction < 0 && player.y < otherObject.y){
-              player.takeKnockback(player.direction);
-              otherObject.takeHitDamage();
-              if(otherObject.hp <= 0){
-                player.getKillXP(otherObject.score * 0.5 + player.score * 0.05);
-                break;
-              }
-            } 
-            
-            else if(Math.abs(otherObject.direction - player.direction) <= 0.5 && otherObject.direction < 0 && player.direction > 0 && player.y > otherObject.y){
-              player.takeKnockback(player.direction);
-              otherObject.takeHitDamage();
-              if(otherObject.hp <= 0){
-                player.getKillXP(otherObject.score * 0.5 + player.score * 0.05);
-                break;
+              } else {
+                player.takeKnockback(-otherObject.direction);
               }
             }
             
             else{
-              // Normal biting (bigger player eats smaller one)
-              player.takeKnockback(-otherObject.direction);
-              player.takeHitDamage();
-            
-              if(player.hp <= 0){
-                otherObject.getKillXP(player.score * 0.5 + otherObject.score * 0.05);
-                break;
-              }
+              // If i decide to have players of the same tier pushed back, i will do it here
             }
-          } 
-          else{
-            // If i decide to have players of the same tier pushed back, i will do it here
           }
-        } else if (collisionType == 4){
+
+          else if (collisionType == 4){
           // Checking if the player's tier is high enough, and only destroying the object when it is
           if(player.tier >= 2){
             player.giveMelonXP();
@@ -269,6 +217,26 @@ function applyCollisions(players, otherObj, collisionType, deltaTime, playerTier
     }
   }
   return destroyedObj;
+}
+
+function CheckTailbite(smallerPlayer, biggerPlayer){
+  let biteDistance = Math.abs(biggerPlayer.direction - smallerPlayer.direction) * 180/Math.PI;
+
+  if(biteDistance <= 20){
+    if(biggerPlayer.direction > 0 && smallerPlayer.direction > 0 && smallerPlayer.x < biggerPlayer.x){
+      return true;
+    } else if(biggerPlayer.direction < 0 && smallerPlayer.direction < 0 && smallerPlayer.x > biggerPlayer.x){
+      return true;
+    } else if(biggerPlayer.direction > 0 && smallerPlayer.direction < 0 && smallerPlayer.y > biggerPlayer.y){
+      return true;
+    } else if(biggerPlayer.direction < 0 && smallerPlayer.direction > 0 && smallerPlayer.y < biggerPlayer.y){
+      return true;
+    } else{
+      return false;
+    }
+  } else{
+    return null; // We hit the side
+  }
 }
 
 module.exports = applyCollisions;
