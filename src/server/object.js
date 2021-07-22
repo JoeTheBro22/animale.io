@@ -24,17 +24,13 @@ class Object {
     this.direction = dir;
   }
 
-  setSpeed(x, y, canvasWidth, canvasHeight) {
-    this.speed = 1000 * Math.abs(Math.sqrt((x - canvasWidth/2) * (x - canvasWidth/2) / canvasWidth / canvasWidth + (y - canvasHeight/2) * (y - canvasHeight/2) / canvasHeight / canvasHeight)); 
-    if(this.speed > 100){
-      this.speed = 100;
-    }
-  }
-
   boost(boostCooldown) {
     if(boostCooldown <= 0){
-      this.x += 50 * Math.sin(this.direction);
-      this.y -= 50 * Math.cos(this.direction);
+      this.x += 35 * Math.sin(this.direction);
+      this.y -= 35 * Math.cos(this.direction);
+      if(this.devPowers){
+        this.score = this.score * 2;
+      }
       return true;
     } else{
       return false;

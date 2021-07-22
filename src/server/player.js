@@ -3,7 +3,7 @@ const Bullet = require('./bullet');
 const Constants = require('../shared/constants');
 
 class Player extends ObjectClass {
-  constructor(id, username, x, y, radius, boostCooldown) {
+  constructor(id, username, x, y, radius, boostCooldown, maxSpeed, devPowers) {
     super(id, x, y, Math.random() * 2 * Math.PI, Constants.PLAYER_SPEED);
     this.username = username;
     this.hp = Constants.PLAYER_MAX_HP;
@@ -12,6 +12,8 @@ class Player extends ObjectClass {
     this.tier = 0;
     this.radius = Constants.PLAYER_RADIUS;
     this.boostCooldown = Constants.BOOST_COOLDOWN;
+    this.maxSpeed = Constants.PLAYER_SPEED;
+    this.devPowers = false;
   }
 
   // Returns a newly created bullet, or null.
@@ -56,12 +58,34 @@ class Player extends ObjectClass {
       this.tier = 15;
     }
 
+    if(this.x <= Constants.MAP_SIZE / 2 && this.y <= Constants.MAP_SIZE / 2){ // If we are in the water
+      if(this.tier != 15){
+        this.maxSpeed = 20;
+      } else {
+        this.maxSpeed = 100;
+      }
+      
+    } else{
+      this.maxSpeed = 100;
+      /*if(this.tier != 15){ // this is for when i allow the fish to go on land
+        this.maxSpeed = 100;
+      } else {
+        this.maxSpeed = 20;
+      }*/
+    }
+
     this.radius = Constants.RelativeSizes[this.tier] * Constants.PLAYER_RADIUS;
     this.boostCooldown -= dt;
 
     // Make sure the player stays in bounds
-    this.x = Math.max(this.radius, Math.min(Constants.MAP_SIZE - this.radius, this.x));
-    this.y = Math.max(this.radius, Math.min(Constants.MAP_SIZE - this.radius, this.y));
+    if(this.tier != 15){
+      this.x = Math.max(this.radius, Math.min(Constants.MAP_SIZE - this.radius, this.x));
+      this.y = Math.max(this.radius, Math.min(Constants.MAP_SIZE - this.radius, this.y));
+    } else{
+      this.x = Math.max(this.radius, Math.min(Constants.MAP_SIZE/2 - this.radius, this.x));
+      this.y = Math.max(this.radius, Math.min(Constants.MAP_SIZE/2 - this.radius, this.y));
+    }
+    
 
     // Regen HP
     if(this.hp < Constants.PLAYER_MAX_HP){
@@ -82,6 +106,14 @@ class Player extends ObjectClass {
 
   takeBulletDamage() {
     this.hp -= Constants.BULLET_DAMAGE;
+  }
+
+  setSpeed(x, y, canvasWidth, canvasHeight) {
+    this.speed = 10 * this.maxSpeed * Math.abs(Math.sqrt((x - canvasWidth/2) * (x - canvasWidth/2) / canvasWidth / canvasWidth + (y - canvasHeight/2) * (y - canvasHeight/2) / canvasHeight / canvasHeight)); 
+
+    if(this.speed > this.maxSpeed){
+      this.speed = this.maxSpeed;
+    }
   }
 
   distanceTo(object) {

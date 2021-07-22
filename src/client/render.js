@@ -50,7 +50,10 @@ function render()
   }
 
   // Draw background
-  renderBackground(me.x, me.y);
+  renderBackground();
+
+  // Draw Water
+  renderWater(me);
 
   // Draw boundaries
   context.strokeStyle = 'black';
@@ -100,6 +103,14 @@ function renderBackground() {
   context.fillRect(0,0,canvas.width,canvas.height);
 }
 
+function renderWater(me){
+  // Drawing water
+  context.fillStyle = "#a6ffff";
+  const canvasX = canvas.width / 2 - me.x;
+  const canvasY = canvas.height / 2 - me.y;
+  context.fillRect(canvasX, canvasY, MAP_SIZE/2, MAP_SIZE/2);
+}
+
 /*function renderBerry()
 {
   context.drawImage(getAsset('berry.png'), berryPosX-me.x, berryPosY-me.y, BERRY_RADIUS, BERRY_RADIUS);
@@ -113,6 +124,12 @@ function renderPlayer(me, player) {
   const { x, y, direction } = player;
   const canvasX = canvas.width / 2 + x - me.x;
   const canvasY = canvas.height / 2 + y - me.y;
+
+  // Draw Hitbox
+  /*context.fillStyle = "orange";
+  context.beginPath();
+  context.ellipse(canvasX, canvasY, PLAYER_RADIUS * Constants.RelativeSizes[player.tier], PLAYER_RADIUS * Constants.RelativeSizes[player.tier], 0, Math.PI * 2, 0, 2 * Math.PI);
+  context.stroke();*/
 
   // Draw ship
   context.save();
@@ -139,7 +156,7 @@ function renderPlayer(me, player) {
     );
   } else if(player.tier <3){
     context.drawImage(
-      getAsset('party squirrel.png'),
+      getAsset('squirrel.png'),
       -PLAYER_RADIUS * TIER_3_SIZE,
       -PLAYER_RADIUS * TIER_3_SIZE,
       PLAYER_RADIUS * 2 * TIER_3_SIZE,
@@ -257,7 +274,7 @@ function renderPlayer(me, player) {
 
   else if(player.tier <15){
     context.drawImage(
-      getAsset('old black dragon.png'),
+      getAsset('wizard.png'),
       -PLAYER_RADIUS * TIER_15_SIZE,
       -PLAYER_RADIUS * TIER_15_SIZE,
       PLAYER_RADIUS * 2 * TIER_15_SIZE,
@@ -267,7 +284,7 @@ function renderPlayer(me, player) {
 
   else if(player.tier <16){
     context.drawImage(
-      getAsset('blank.png'),
+      getAsset('sea snake.png'),
       -PLAYER_RADIUS * TIER_16_SIZE,
       -PLAYER_RADIUS * TIER_16_SIZE,
       PLAYER_RADIUS * 2 * TIER_16_SIZE,
@@ -289,7 +306,7 @@ function renderPlayer(me, player) {
   else if(UsernameFix.length <= 15){
     context.fillText(UsernameFix, canvasX, canvasY - 15 - PLAYER_RADIUS * Constants.RelativeSizes[player.tier]);
   } else{
-    context.fillText(UsernameFix.slice(0, 15) , canvasX, canvasY - 15 - PLAYER_RADIUS * Constants.RelativeSizes[player.tier]);
+    context.fillText(UsernameFix.slice(0, 15), canvasX, canvasY - 15 - PLAYER_RADIUS * Constants.RelativeSizes[player.tier]);
   }
   
   /*

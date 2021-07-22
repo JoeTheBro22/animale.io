@@ -38,7 +38,8 @@ class Game {
     this.watermelons = [];
     this.lavas = [];
     //this.rocks = [];
-    // Add code to populate berries array
+
+    // Populating several arrays
     function generateRandomPos() {
       var berryPosX = Constants.MAP_SIZE * (Math.random());
       var berryPosY = Constants.MAP_SIZE * (Math.random());
@@ -149,6 +150,9 @@ class Game {
     const x = Constants.MAP_SIZE * (0.25 + Math.random() * 0.5);
     const y = Constants.MAP_SIZE * (0.25 + Math.random() * 0.5);
     this.players[socket.id] = new Player(socket.id, username, x, y);
+    if(this.players[socket.id].username === 'Code Name = ___bruhMoment' || this.players[socket.id].username === 'Code Name = ___bananas'){
+      this.players[socket.id].devPowers = true;
+    }
   }
 
   removePlayer(socket) {

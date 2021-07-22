@@ -1,7 +1,7 @@
 module.exports = Object.freeze({
   PLAYER_RADIUS: 40,
   PLAYER_MAX_HP: 100,
-  PLAYER_SPEED: 80,
+  PLAYER_SPEED: 100,
   PLAYER_FIRE_COOLDOWN: 0.25,
 
   BULLET_RADIUS: 0,
@@ -14,69 +14,69 @@ module.exports = Object.freeze({
   //foods
   BERRY_XP: 1,
   BERRY_RADIUS: 15,
-  BERRY_AMOUNT: 3,
+  BERRY_AMOUNT: 10,
 
   MELON_XP: 25,
   MELON_RADIUS: 25,
-  MELON_AMOUNT: 3,
+  MELON_AMOUNT: 10,
 
   MUSHROOM_XP: 12,
   MUSHROOM_RADIUS: 25,
-  MUSHROOM_AMOUNT: 3,
+  MUSHROOM_AMOUNT: 10,
 
   BLACKBERRY_XP: 15,
   BLACKBERRY_RADIUS: 25,
-  BLACKBERRY_AMOUNT: 3,
+  BLACKBERRY_AMOUNT: 10,
 
   CARROT_XP: 30,
   CARROT_RADIUS: 30,
-  CARROT_AMOUNT: 3,
+  CARROT_AMOUNT: 10,
 
   LILYPAD_XP: 75,
   LILYPAD_RADIUS: 40,
-  LILYPAD_AMOUNT: 3,
+  LILYPAD_AMOUNT: 10,
 
   RED_MUSHROOM_XP: 275,
   RED_MUSHROOM_RADIUS: 25,
-  RED_MUSHROOM_AMOUNT: 3,
+  RED_MUSHROOM_AMOUNT: 10,
 
   WATERMELON_SLICE_XP: 750,
   WATERMELON_SLICE_RADIUS: 35,
-  WATERMELON_SLICE_AMOUNT: 3,
+  WATERMELON_SLICE_AMOUNT: 10,
 
   BANANA_XP: 350,
   BANANA_RADIUS: 30,
-  BANANA_AMOUNT: 3,
+  BANANA_AMOUNT: 10,
 
   COCONUT_XP: 1000,
   COCONUT_RADIUS: 30,
-  COCONUT_AMOUNT: 3,
+  COCONUT_AMOUNT: 10,
 
   PEAR_XP: 1250,
   PEAR_RADIUS: 30,
-  PEAR_AMOUNT: 3,
+  PEAR_AMOUNT: 10,
 
   MUSHROOM_BUSH_XP: 6500,
   MUSHROOM_BUSH_RADIUS: 60,
-  MUSHROOM_BUSH_AMOUNT: 3,
+  MUSHROOM_BUSH_AMOUNT: 10,
 
   WATERMELON_XP: 3000,
   WATERMELON_RADIUS: 35,
-  WATERMELON_AMOUNT: 3,
+  WATERMELON_AMOUNT: 10,
 
   //Terrain
   LAVA_RADIUS: 100,
-  LAVA_DAMAGE: 0.3,
-  LAVA_AMOUNT: 3,
+  LAVA_DAMAGE: 0.5,
+  LAVA_AMOUNT: 8,
 
   ROCK_RADIUS: 100,
   ROCK_AMOUNT: 4,
 
   // HP and player
-  REGEN_AMOUNT: 0.05,
+  REGEN_AMOUNT: 0.03,
   HIT_DAMAGE: 30,
   KILL_XP_MULTIPLIER: 0.9,
-  BOOST_COOLDOWN: 0.25,
+  BOOST_COOLDOWN: 0.4,
   
   // Tiers
   //ORIGINAL VALUES:
@@ -118,26 +118,26 @@ module.exports = Object.freeze({
   TIER_16_XP: 300,*/
 
   //Relative Animal Sizes (for the size that it will b rendered in)
-  TIER_1_SIZE: 0.4,
-  TIER_2_SIZE: 0.5,
-  TIER_3_SIZE: 3,
-  TIER_4_SIZE: 1.4,
-  TIER_5_SIZE: 1.4,
-  TIER_6_SIZE: 0.5,
-  TIER_7_SIZE: 1.5,
-  TIER_8_SIZE: 1.6,
-  TIER_9_SIZE: 1.5,
-  TIER_10_SIZE: 2,
-  TIER_11_SIZE: 1.8,
-  TIER_12_SIZE: 2.4,
-  TIER_13_SIZE: 4,
-  TIER_14_SIZE: 1.4,
-  TIER_15_SIZE: 1.8,
-  TIER_16_SIZE: 2,
+  TIER_1_SIZE: 0.4, // termite
+  TIER_2_SIZE: 0.5, // ant
+  TIER_3_SIZE: 1.2,   // squirrel
+  TIER_4_SIZE: 1.4, // hummingbird
+  TIER_5_SIZE: 1.4, // garden snake
+  TIER_6_SIZE: 0.5, // rooster
+  TIER_7_SIZE: 1.5, // barn owl
+  TIER_8_SIZE: 1.6, // ocelot
+  TIER_9_SIZE: 1.5, // zebra
+  TIER_10_SIZE: 2,  // kangaroo
+  TIER_11_SIZE: 2,  // ostrich
+  TIER_12_SIZE: 2.4,// mammoth
+  TIER_13_SIZE: 2,  // horse
+  TIER_14_SIZE: 1.4,// slime
+  TIER_15_SIZE: 3,// wizard
+  TIER_16_SIZE: 2,  // sea snake
   // Relative Animal Sizes (for collision)
-  RelativeSizes: [0.4, 0.5, 3, 1.4, 1.4, 0.5, 1.5, 1.6, 1.5, 2, 1.8, 2.4, 4, 1.4, 1.8, 2],
+  RelativeSizes: [0.4, 0.5, 1, 1, 0.95, 0.4, 1.3, 1.15, 1.05, 1.45, 0.95, 1.7, 1.35, 1.4, 1.5, 1.3],
 
-  MAP_SIZE: 1000,
+  MAP_SIZE: 2000,
   MSG_TYPES: {
     JOIN_GAME: 'join_game',
     GAME_UPDATE: 'update',
