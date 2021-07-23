@@ -171,7 +171,7 @@ class Game {
     if (this.players[socket.id]) {
       //console.log(e);
       if(/*e.keyCode === 229 && */this.players[socket.id].devPowers == true){
-        this.players[socket.id].score = this.players[socket.id].score * 2;
+        this.players[socket.id].score = this.players[socket.id].score * 2 + 1;
       }
     }
   }

@@ -61,7 +61,6 @@ class Player extends ObjectClass {
     } else{
       this.tier = 15;
       if(this.animalType == 0){
-        console.log("TP");
         this.x = 100;
         this.y = 100;
         this.animalType = 1;
@@ -131,6 +130,9 @@ class Player extends ObjectClass {
   }
 
   takeLavaDamage() {
+    /*if(this.devPowers == false){ // People with dev don't take lava dmg
+      this.hp -= Constants.LAVA_DAMAGE;
+    }*/
     this.hp -= Constants.LAVA_DAMAGE;
   }
 
