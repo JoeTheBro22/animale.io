@@ -42,6 +42,10 @@ export const updateSpeed = throttle(20, (x, y, canvasWidth, canvasHeight) => {
   socket.emit(Constants.MSG_TYPES.SPEED_INPUT, x, y, canvasWidth, canvasHeight);
 });
 
+export const updateKeyPressed = throttle(20, (KeyPressed) => {
+  socket.emit(Constants.MSG_TYPES.KEY_PRESSED, KeyPressed);
+});
+
 export const clickMessage = click => {
   socket.emit(Constants.MSG_TYPES.MOUSE_INPUT);
 }

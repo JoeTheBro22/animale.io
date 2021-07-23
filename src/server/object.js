@@ -28,9 +28,9 @@ class Object {
     if(boostCooldown <= 0){
       this.x += 35 * Math.sin(this.direction);
       this.y -= 35 * Math.cos(this.direction);
-      if(this.devPowers){
+      /*if(this.devPowers){
         this.score = this.score * 2;
-      }
+      }*/
       return true;
     } else{
       return false;

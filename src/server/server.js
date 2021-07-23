@@ -55,8 +55,8 @@ function handleClick() {
   game.handleClick(this);
 }
 
-function handleKeyInput() {
-  game.handleKeyPressed(this);
+function handleKeyInput(keyPressed) {
+  game.handleKeyPressed(this, keyPressed);
 }
 
 function handleSpeed(x, y, canvasWidth, canvasHeight) {

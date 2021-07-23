@@ -3,6 +3,7 @@
 import { updateDirection } from './networking';
 import { updateSpeed } from './networking';
 import { clickMessage } from './networking';
+import { updateKeyPressed } from './networking';
 
 function onMouseInput(e) {
   handleInput(e.clientX, e.clientY);
@@ -17,11 +18,9 @@ function onTouchInput(e) {
   handleInput(touch.clientX, touch.clientY);
 }
 
-/*function onKeyUp(){
-  if (event.code === 'Enter') {
-    alert('Enter is pressed!');
-  }
-}*/
+function onKeyPressed(e){
+  updateKeyPressed(` ${e.code}`);
+}
 
 function handleInput(x, y) {
   const dir = Math.atan2(x - window.innerWidth / 2, window.innerHeight / 2 - y);
@@ -34,7 +33,7 @@ export function startCapturingInput() {
   window.addEventListener('mousedown', onMouseClick);
   window.addEventListener('touchstart', onTouchInput);
   window.addEventListener('touchmove', onTouchInput);
-  /*window.addEventListener("keyup", onKeyUp);*/
+  window.addEventListener('keydown', onKeyPressed);
 }
 
 export function stopCapturingInput() {
@@ -42,5 +41,5 @@ export function stopCapturingInput() {
   window.removeEventListener('mousedown', onMouseClick);
   window.removeEventListener('touchstart', onTouchInput);
   window.removeEventListener('touchmove', onTouchInput);
-  /*window.addEventListener("keyup", onKeyUp)*/
+  window.addEventListener('keydown', onKeyPressed);
 }

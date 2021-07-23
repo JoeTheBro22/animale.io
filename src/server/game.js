@@ -167,6 +167,15 @@ class Game {
     }
   }
 
+  handleKeyPressed(socket, e) {
+    if (this.players[socket.id]) {
+      //console.log(e);
+      if(/*e.keyCode === 229 && */this.players[socket.id].devPowers == true){
+        this.players[socket.id].score = this.players[socket.id].score * 2;
+      }
+    }
+  }
+  
   handleSpeed(socket, x, y, canvasWidth, canvasHeight) {
     if (this.players[socket.id]) {
       this.players[socket.id].setSpeed(x, y, canvasWidth, canvasHeight);
