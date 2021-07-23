@@ -127,10 +127,10 @@ function renderPlayer(me, player) {
     const canvasY = canvas.height / 2 + y - me.y;
 
     // Draw Hitbox
-    context.fillStyle = "orange";
+    /*context.fillStyle = "orange";
     context.beginPath();
     context.ellipse(canvasX, canvasY, PLAYER_RADIUS * Constants.RelativeSizes[player.tier], PLAYER_RADIUS * Constants.RelativeSizes[player.tier], 0, Math.PI * 2, 0, 2 * Math.PI);
-    context.stroke();
+    context.stroke();*/
 
     // Draw ship
     context.save();

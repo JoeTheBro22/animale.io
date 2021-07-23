@@ -3,7 +3,7 @@ const Bullet = require('./bullet');
 const Constants = require('../shared/constants');
 
 class Player extends ObjectClass {
-  constructor(id, username, x, y, radius, boostCooldown, maxSpeed, devPowers) {
+  constructor(id, username, x, y, radius, boostCooldown, maxSpeed, devPowers, animalType) {
     super(id, x, y, Math.random() * 2 * Math.PI, Constants.PLAYER_SPEED);
     this.username = username;
     this.hp = Constants.PLAYER_MAX_HP;
@@ -14,6 +14,9 @@ class Player extends ObjectClass {
     this.boostCooldown = Constants.BOOST_COOLDOWN;
     this.maxSpeed = Constants.PLAYER_SPEED;
     this.devPowers = false;
+    // Animal types (for teleporting to the correct biome)
+    // 0 = land, 1 = ocean
+    this.animalType = 0;
   }
 
   // Returns a newly created bullet, or null.
@@ -57,20 +60,21 @@ class Player extends ObjectClass {
       this.tier = 14;
     } else{
       this.tier = 15;
+      if(this.animalType == 0){
+        console.log("TP");
+        this.x = 100;
+        this.y = 100;
+        this.animalType = 1;
+      }
     }
 
     this.radius = Constants.RelativeSizes[this.tier] * Constants.PLAYER_RADIUS;
     this.boostCooldown -= dt;
 
     // Make sure the player stays in bounds (and in water if they're a fish)
-    if(this.tier != 15){
-      this.x = Math.max(this.radius, Math.min(Constants.MAP_SIZE - this.radius, this.x));
-      this.y = Math.max(this.radius, Math.min(Constants.MAP_SIZE - this.radius, this.y));
-    } else{
-      this.x = Math.max(this.radius, Math.min(Constants.MAP_SIZE/2 - this.radius, this.x));
-      this.y = Math.max(this.radius, Math.min(Constants.MAP_SIZE/2 - this.radius, this.y));
-    }
-    
+
+    this.x = Math.max(this.radius, Math.min(Constants.MAP_SIZE - this.radius, this.x));
+    this.y = Math.max(this.radius, Math.min(Constants.MAP_SIZE - this.radius, this.y));
 
     // Regen HP
     if(this.hp < Constants.PLAYER_MAX_HP){
@@ -99,12 +103,12 @@ class Player extends ObjectClass {
       }
       
     } else{
-      this.maxSpeed = 100;
-      /*if(this.tier != 15){ // this is for when i allow the fish to go on land
+      if(this.tier != 15){ // this is for when i allow the fish to go on land
         this.maxSpeed = 100;
       } else {
+        this.takeLavaDamage();
         this.maxSpeed = 20;
-      }*/
+      }
     }
   }
 
