@@ -19,6 +19,7 @@ class Player extends ObjectClass {
   // Returns a newly created bullet, or null.
   update(dt) {
     super.update(dt);
+    this.checkWaterSpeed();
 
     // Update score
     this.score += dt * Constants.SCORE_PER_SECOND;
@@ -58,26 +59,10 @@ class Player extends ObjectClass {
       this.tier = 15;
     }
 
-    if(this.x <= Constants.MAP_SIZE / 2 && this.y <= Constants.MAP_SIZE / 2){ // If we are in the water
-      if(this.tier != 15){
-        this.maxSpeed = 20;
-      } else {
-        this.maxSpeed = 100;
-      }
-      
-    } else{
-      this.maxSpeed = 100;
-      /*if(this.tier != 15){ // this is for when i allow the fish to go on land
-        this.maxSpeed = 100;
-      } else {
-        this.maxSpeed = 20;
-      }*/
-    }
-
     this.radius = Constants.RelativeSizes[this.tier] * Constants.PLAYER_RADIUS;
     this.boostCooldown -= dt;
 
-    // Make sure the player stays in bounds
+    // Make sure the player stays in bounds (and in water if they're a fish)
     if(this.tier != 15){
       this.x = Math.max(this.radius, Math.min(Constants.MAP_SIZE - this.radius, this.x));
       this.y = Math.max(this.radius, Math.min(Constants.MAP_SIZE - this.radius, this.y));
@@ -102,6 +87,25 @@ class Player extends ObjectClass {
     }
 
     return null;
+  }
+
+  checkWaterSpeed(){
+    // Check if the player is in water
+    if(this.x <= Constants.MAP_SIZE / 2 && this.y <= Constants.MAP_SIZE / 2){ // If we are in the water
+      if(this.tier != 15){
+        this.maxSpeed = 20;
+      } else {
+        this.maxSpeed = 100;
+      }
+      
+    } else{
+      this.maxSpeed = 100;
+      /*if(this.tier != 15){ // this is for when i allow the fish to go on land
+        this.maxSpeed = 100;
+      } else {
+        this.maxSpeed = 20;
+      }*/
+    }
   }
 
   takeBulletDamage() {

@@ -9,7 +9,7 @@ function onMouseInput(e) {
 }
 
 function onMouseClick() {
-  handleClick();
+  clickMessage();
 }
 
 function onTouchInput(e) {
@@ -17,14 +17,16 @@ function onTouchInput(e) {
   handleInput(touch.clientX, touch.clientY);
 }
 
+/*function onKeyUp(){
+  if (event.code === 'Enter') {
+    alert('Enter is pressed!');
+  }
+}*/
+
 function handleInput(x, y) {
   const dir = Math.atan2(x - window.innerWidth / 2, window.innerHeight / 2 - y);
   updateDirection(dir);
   updateSpeed(x, y, Math.max(1, 800 / window.innerWidth) * window.innerWidth, Math.max(1, 800 / window.innerWidth) * window.innerHeight); //Math.max(1, 800 / window.innerWidth) * window.innerWidth
-}
-
-function handleClick() {
-  clickMessage();
 }
 
 export function startCapturingInput() {
@@ -32,6 +34,7 @@ export function startCapturingInput() {
   window.addEventListener('mousedown', onMouseClick);
   window.addEventListener('touchstart', onTouchInput);
   window.addEventListener('touchmove', onTouchInput);
+  /*window.addEventListener("keyup", onKeyUp);*/
 }
 
 export function stopCapturingInput() {
@@ -39,4 +42,5 @@ export function stopCapturingInput() {
   window.removeEventListener('mousedown', onMouseClick);
   window.removeEventListener('touchstart', onTouchInput);
   window.removeEventListener('touchmove', onTouchInput);
+  /*window.addEventListener("keyup", onKeyUp)*/
 }

@@ -108,7 +108,7 @@ function renderWater(me){
   context.fillStyle = "#a6ffff";
   const canvasX = canvas.width / 2 - me.x;
   const canvasY = canvas.height / 2 - me.y;
-  context.fillRect(canvasX, canvasY, MAP_SIZE/2, MAP_SIZE/2);
+  context.fillRect(canvasX, canvasY, MAP_SIZE / 2, MAP_SIZE / 2);
 }
 
 /*function renderBerry()
@@ -121,216 +121,218 @@ function renderWater(me){
 
 // Renders a ship at the given coordinates
 function renderPlayer(me, player) {
-  const { x, y, direction } = player;
-  const canvasX = canvas.width / 2 + x - me.x;
-  const canvasY = canvas.height / 2 + y - me.y;
+  if(Math.abs(player.x - me.x) <= canvas.width + 10 && Math.abs(player.y - me.y) <= canvas.height + 10){
+    const { x, y, direction } = player;
+    const canvasX = canvas.width / 2 + x - me.x;
+    const canvasY = canvas.height / 2 + y - me.y;
 
-  // Draw Hitbox
-  /*context.fillStyle = "orange";
-  context.beginPath();
-  context.ellipse(canvasX, canvasY, PLAYER_RADIUS * Constants.RelativeSizes[player.tier], PLAYER_RADIUS * Constants.RelativeSizes[player.tier], 0, Math.PI * 2, 0, 2 * Math.PI);
-  context.stroke();*/
+    // Draw Hitbox
+    /*context.fillStyle = "orange";
+    context.beginPath();
+    context.ellipse(canvasX, canvasY, PLAYER_RADIUS * Constants.RelativeSizes[player.tier], PLAYER_RADIUS * Constants.RelativeSizes[player.tier], 0, Math.PI * 2, 0, 2 * Math.PI);
+    context.stroke();*/
 
-  // Draw ship
-  context.save();
-  context.translate(canvasX, canvasY);
-  context.rotate(direction);
-  //tiers
-  {
-  if(player.tier < 1){
-    context.drawImage(
-      getAsset('termite.png'),
-      -PLAYER_RADIUS * TIER_1_SIZE,
-      -PLAYER_RADIUS * TIER_1_SIZE,
-      PLAYER_RADIUS * 2 * TIER_1_SIZE,
-      PLAYER_RADIUS * 2 * TIER_1_SIZE,
-    );
-  }
-  else if(player.tier < 2){
-    context.drawImage(
-      getAsset('ant.png'),
-      -PLAYER_RADIUS * TIER_2_SIZE,
-      -PLAYER_RADIUS * TIER_2_SIZE,
-      PLAYER_RADIUS * 2 * TIER_2_SIZE,
-      PLAYER_RADIUS * 2 * TIER_2_SIZE,
-    );
-  } else if(player.tier <3){
-    context.drawImage(
-      getAsset('squirrel.png'),
-      -PLAYER_RADIUS * TIER_3_SIZE,
-      -PLAYER_RADIUS * TIER_3_SIZE,
-      PLAYER_RADIUS * 2 * TIER_3_SIZE,
-      PLAYER_RADIUS * 2 * TIER_3_SIZE,
-    );
-  }
-  else if(player.tier <4){
-    context.drawImage(
-      getAsset('hummingbird.png'),
-      -PLAYER_RADIUS * TIER_4_SIZE,
-      -PLAYER_RADIUS * TIER_4_SIZE,
-      PLAYER_RADIUS * 2 * TIER_4_SIZE,
-      PLAYER_RADIUS * 2 * TIER_4_SIZE,
-    );
-  }
-  else if(player.tier <5){
-    context.drawImage(
-      getAsset('garden snake.png'),
-      -PLAYER_RADIUS * TIER_5_SIZE,
-      -PLAYER_RADIUS * TIER_5_SIZE,
-      PLAYER_RADIUS * 2 * TIER_5_SIZE,
-      PLAYER_RADIUS * 2 * TIER_5_SIZE,
-    );
-  }
+    // Draw ship
+    context.save();
+    context.translate(canvasX, canvasY);
+    context.rotate(direction);
+    //tiers
+    {
+    if(player.tier < 1){
+      context.drawImage(
+        getAsset('termite.png'),
+        -PLAYER_RADIUS * TIER_1_SIZE,
+        -PLAYER_RADIUS * TIER_1_SIZE,
+        PLAYER_RADIUS * 2 * TIER_1_SIZE,
+        PLAYER_RADIUS * 2 * TIER_1_SIZE,
+      );
+    }
+    else if(player.tier < 2){
+      context.drawImage(
+        getAsset('ant.png'),
+        -PLAYER_RADIUS * TIER_2_SIZE,
+        -PLAYER_RADIUS * TIER_2_SIZE,
+        PLAYER_RADIUS * 2 * TIER_2_SIZE,
+        PLAYER_RADIUS * 2 * TIER_2_SIZE,
+      );
+    } else if(player.tier <3){
+      context.drawImage(
+        getAsset('squirrel.png'),
+        -PLAYER_RADIUS * TIER_3_SIZE,
+        -PLAYER_RADIUS * TIER_3_SIZE,
+        PLAYER_RADIUS * 2 * TIER_3_SIZE,
+        PLAYER_RADIUS * 2 * TIER_3_SIZE,
+      );
+    }
+    else if(player.tier <4){
+      context.drawImage(
+        getAsset('hummingbird.png'),
+        -PLAYER_RADIUS * TIER_4_SIZE,
+        -PLAYER_RADIUS * TIER_4_SIZE,
+        PLAYER_RADIUS * 2 * TIER_4_SIZE,
+        PLAYER_RADIUS * 2 * TIER_4_SIZE,
+      );
+    }
+    else if(player.tier <5){
+      context.drawImage(
+        getAsset('garden snake.png'),
+        -PLAYER_RADIUS * TIER_5_SIZE,
+        -PLAYER_RADIUS * TIER_5_SIZE,
+        PLAYER_RADIUS * 2 * TIER_5_SIZE,
+        PLAYER_RADIUS * 2 * TIER_5_SIZE,
+      );
+    }
 
-  else if(player.tier <6){
-    context.drawImage(
-      getAsset('rooster.png'),
-      -PLAYER_RADIUS * TIER_6_SIZE,
-      -PLAYER_RADIUS * TIER_6_SIZE,
-      PLAYER_RADIUS * 2 * TIER_6_SIZE,
-      PLAYER_RADIUS * 2 * TIER_6_SIZE,
+    else if(player.tier <6){
+      context.drawImage(
+        getAsset('rooster.png'),
+        -PLAYER_RADIUS * TIER_6_SIZE,
+        -PLAYER_RADIUS * TIER_6_SIZE,
+        PLAYER_RADIUS * 2 * TIER_6_SIZE,
+        PLAYER_RADIUS * 2 * TIER_6_SIZE,
+      );
+    }
+
+    else if(player.tier <7){
+      context.drawImage(
+        getAsset('barn owl.png'),
+        -PLAYER_RADIUS * TIER_7_SIZE,
+        -PLAYER_RADIUS * TIER_7_SIZE,
+        PLAYER_RADIUS * 2 * TIER_7_SIZE,
+        PLAYER_RADIUS * 2 * TIER_7_SIZE,
+      );
+    }
+
+    else if(player.tier <8){
+      context.drawImage(
+        getAsset('ocelot.png'),
+        -PLAYER_RADIUS * TIER_8_SIZE,
+        -PLAYER_RADIUS * TIER_8_SIZE,
+        PLAYER_RADIUS * 2 * TIER_8_SIZE,
+        PLAYER_RADIUS * 2 * TIER_8_SIZE,
+      );
+    }
+
+    else if(player.tier <9){
+      context.drawImage(
+        getAsset('zebra.png'),
+        -PLAYER_RADIUS * TIER_9_SIZE,
+        -PLAYER_RADIUS * TIER_9_SIZE,
+        PLAYER_RADIUS * 2 * TIER_9_SIZE,
+        PLAYER_RADIUS * 2 * TIER_9_SIZE,
+      );
+    }
+
+    else if(player.tier <10){
+      context.drawImage(
+        getAsset('kangaroo.png'),
+        -PLAYER_RADIUS * TIER_10_SIZE,
+        -PLAYER_RADIUS * TIER_10_SIZE,
+        PLAYER_RADIUS * 2 * TIER_10_SIZE,
+        PLAYER_RADIUS * 2 * TIER_10_SIZE,
+      );
+    }
+
+    else if(player.tier <11){
+      context.drawImage(
+        getAsset('ostrich.png'),
+        -PLAYER_RADIUS * TIER_11_SIZE,
+        -PLAYER_RADIUS * TIER_11_SIZE,
+        PLAYER_RADIUS * 2 * TIER_11_SIZE,
+        PLAYER_RADIUS * 2 * TIER_11_SIZE,
+      );
+    }
+
+    else if(player.tier <12){
+      context.drawImage(
+        getAsset('mammoth.png'),
+        -PLAYER_RADIUS * TIER_12_SIZE,
+        -PLAYER_RADIUS * TIER_12_SIZE,
+        PLAYER_RADIUS * 2 * TIER_12_SIZE,
+        PLAYER_RADIUS * 2 * TIER_12_SIZE,
+      );
+    }
+
+    else if(player.tier <13){
+      context.drawImage(
+        getAsset('horse.png'),
+        -PLAYER_RADIUS * TIER_13_SIZE,
+        -PLAYER_RADIUS * TIER_13_SIZE,
+        PLAYER_RADIUS * 2 * TIER_13_SIZE,
+        PLAYER_RADIUS * 2 * TIER_13_SIZE,
+      );
+    }
+
+    else if(player.tier <14){
+      context.drawImage(
+        getAsset('slime.png'),
+        -PLAYER_RADIUS * TIER_14_SIZE,
+        -PLAYER_RADIUS * TIER_14_SIZE,
+        PLAYER_RADIUS * 2 * TIER_14_SIZE,
+        PLAYER_RADIUS * 2 * TIER_14_SIZE,
+      );
+    }
+
+    else if(player.tier <15){
+      context.drawImage(
+        getAsset('wizard.png'),
+        -PLAYER_RADIUS * TIER_15_SIZE,
+        -PLAYER_RADIUS * TIER_15_SIZE,
+        PLAYER_RADIUS * 2 * TIER_15_SIZE,
+        PLAYER_RADIUS * 2 * TIER_15_SIZE,
+      );
+    }
+
+    else if(player.tier <16){
+      context.drawImage(
+        getAsset('sea snake.png'),
+        -PLAYER_RADIUS * TIER_16_SIZE,
+        -PLAYER_RADIUS * TIER_16_SIZE,
+        PLAYER_RADIUS * 2 * TIER_16_SIZE,
+        PLAYER_RADIUS * 2 * TIER_16_SIZE,
+      );
+    } 
+    
+    }
+    context.restore();
+
+    // Draw name
+    context.fillStyle = "white";
+    context.font = "15px Arial";
+    context.textAlign = "center";
+    let UsernameFix = player.username.replace('NaN','');
+    if(UsernameFix.length <= 1 || (parseInt(UsernameFix) != undefined && parseInt(UsernameFix) >= 0)){
+      context.fillText("Anonymous", canvasX, canvasY - 15 - PLAYER_RADIUS * Constants.RelativeSizes[player.tier]);
+    }
+    else if(UsernameFix.length <= 15){
+      context.fillText(UsernameFix, canvasX, canvasY - 15 - PLAYER_RADIUS * Constants.RelativeSizes[player.tier]);
+    } else{
+      context.fillText(UsernameFix.slice(0, 15), canvasX, canvasY - 15 - PLAYER_RADIUS * Constants.RelativeSizes[player.tier]);
+    }
+    
+    /*
+    -PLAYER_RADIUS * TIER_1_SIZE,
+    -PLAYER_RADIUS * TIER_1_SIZE,
+    PLAYER_RADIUS * 2 * TIER_1_SIZE,
+    PLAYER_RADIUS * 2 * TIER_1_SIZE,
+    */
+
+    // Draw health bar
+    context.fillStyle = "#19CD2A";
+    context.fillRect(
+      canvasX - 0.5 * PLAYER_RADIUS * Constants.RelativeSizes[player.tier],
+      canvasY - PLAYER_RADIUS * Constants.RelativeSizes[player.tier] - 10,
+      PLAYER_RADIUS * Constants.RelativeSizes[player.tier],
+      12,
     );
+    context.fillStyle = 'red';
+    context.fillRect(
+      canvasX - 0.5 * PLAYER_RADIUS * Constants.RelativeSizes[player.tier] + PLAYER_RADIUS * Constants.RelativeSizes[player.tier] * player.hp / PLAYER_MAX_HP,
+      canvasY - PLAYER_RADIUS * Constants.RelativeSizes[player.tier] - 10,
+      PLAYER_RADIUS * (1 - player.hp / PLAYER_MAX_HP) * Constants.RelativeSizes[player.tier],
+      12,
+    );  
   }
-
-  else if(player.tier <7){
-    context.drawImage(
-      getAsset('barn owl.png'),
-      -PLAYER_RADIUS * TIER_7_SIZE,
-      -PLAYER_RADIUS * TIER_7_SIZE,
-      PLAYER_RADIUS * 2 * TIER_7_SIZE,
-      PLAYER_RADIUS * 2 * TIER_7_SIZE,
-    );
-  }
-
-  else if(player.tier <8){
-    context.drawImage(
-      getAsset('ocelot.png'),
-      -PLAYER_RADIUS * TIER_8_SIZE,
-      -PLAYER_RADIUS * TIER_8_SIZE,
-      PLAYER_RADIUS * 2 * TIER_8_SIZE,
-      PLAYER_RADIUS * 2 * TIER_8_SIZE,
-    );
-  }
-
-  else if(player.tier <9){
-    context.drawImage(
-      getAsset('zebra.png'),
-      -PLAYER_RADIUS * TIER_9_SIZE,
-      -PLAYER_RADIUS * TIER_9_SIZE,
-      PLAYER_RADIUS * 2 * TIER_9_SIZE,
-      PLAYER_RADIUS * 2 * TIER_9_SIZE,
-    );
-  }
-
-  else if(player.tier <10){
-    context.drawImage(
-      getAsset('kangaroo.png'),
-      -PLAYER_RADIUS * TIER_10_SIZE,
-      -PLAYER_RADIUS * TIER_10_SIZE,
-      PLAYER_RADIUS * 2 * TIER_10_SIZE,
-      PLAYER_RADIUS * 2 * TIER_10_SIZE,
-    );
-  }
-
-  else if(player.tier <11){
-    context.drawImage(
-      getAsset('ostrich.png'),
-      -PLAYER_RADIUS * TIER_11_SIZE,
-      -PLAYER_RADIUS * TIER_11_SIZE,
-      PLAYER_RADIUS * 2 * TIER_11_SIZE,
-      PLAYER_RADIUS * 2 * TIER_11_SIZE,
-    );
-  }
-
-  else if(player.tier <12){
-    context.drawImage(
-      getAsset('mammoth.png'),
-      -PLAYER_RADIUS * TIER_12_SIZE,
-      -PLAYER_RADIUS * TIER_12_SIZE,
-      PLAYER_RADIUS * 2 * TIER_12_SIZE,
-      PLAYER_RADIUS * 2 * TIER_12_SIZE,
-    );
-  }
-
-  else if(player.tier <13){
-    context.drawImage(
-      getAsset('horse.png'),
-      -PLAYER_RADIUS * TIER_13_SIZE,
-      -PLAYER_RADIUS * TIER_13_SIZE,
-      PLAYER_RADIUS * 2 * TIER_13_SIZE,
-      PLAYER_RADIUS * 2 * TIER_13_SIZE,
-    );
-  }
-
-  else if(player.tier <14){
-    context.drawImage(
-      getAsset('slime.png'),
-      -PLAYER_RADIUS * TIER_14_SIZE,
-      -PLAYER_RADIUS * TIER_14_SIZE,
-      PLAYER_RADIUS * 2 * TIER_14_SIZE,
-      PLAYER_RADIUS * 2 * TIER_14_SIZE,
-    );
-  }
-
-  else if(player.tier <15){
-    context.drawImage(
-      getAsset('wizard.png'),
-      -PLAYER_RADIUS * TIER_15_SIZE,
-      -PLAYER_RADIUS * TIER_15_SIZE,
-      PLAYER_RADIUS * 2 * TIER_15_SIZE,
-      PLAYER_RADIUS * 2 * TIER_15_SIZE,
-    );
-  }
-
-  else if(player.tier <16){
-    context.drawImage(
-      getAsset('sea snake.png'),
-      -PLAYER_RADIUS * TIER_16_SIZE,
-      -PLAYER_RADIUS * TIER_16_SIZE,
-      PLAYER_RADIUS * 2 * TIER_16_SIZE,
-      PLAYER_RADIUS * 2 * TIER_16_SIZE,
-    );
-  } 
-  
-  }
-  context.restore();
-
-  // Draw name
-  context.fillStyle = "white";
-  context.font = "15px Arial";
-  context.textAlign = "center";
-  let UsernameFix = player.username.replace('NaN','');
-  if(UsernameFix.length <= 1 || (parseInt(UsernameFix) != undefined && parseInt(UsernameFix) >= 0)){
-    context.fillText("Anonymous", canvasX, canvasY - 15 - PLAYER_RADIUS * Constants.RelativeSizes[player.tier]);
-  }
-  else if(UsernameFix.length <= 15){
-    context.fillText(UsernameFix, canvasX, canvasY - 15 - PLAYER_RADIUS * Constants.RelativeSizes[player.tier]);
-  } else{
-    context.fillText(UsernameFix.slice(0, 15), canvasX, canvasY - 15 - PLAYER_RADIUS * Constants.RelativeSizes[player.tier]);
-  }
-  
-  /*
-  -PLAYER_RADIUS * TIER_1_SIZE,
-  -PLAYER_RADIUS * TIER_1_SIZE,
-  PLAYER_RADIUS * 2 * TIER_1_SIZE,
-  PLAYER_RADIUS * 2 * TIER_1_SIZE,
-  */
-
-  // Draw health bar
-  context.fillStyle = "#19CD2A";
-  context.fillRect(
-    canvasX - 0.5 * PLAYER_RADIUS * Constants.RelativeSizes[player.tier],
-    canvasY - PLAYER_RADIUS * Constants.RelativeSizes[player.tier] - 10,
-    PLAYER_RADIUS * Constants.RelativeSizes[player.tier],
-    12,
-  );
-  context.fillStyle = 'red';
-  context.fillRect(
-    canvasX - 0.5 * PLAYER_RADIUS * Constants.RelativeSizes[player.tier] + PLAYER_RADIUS * Constants.RelativeSizes[player.tier] * player.hp / PLAYER_MAX_HP,
-    canvasY - PLAYER_RADIUS * Constants.RelativeSizes[player.tier] - 10,
-    PLAYER_RADIUS * (1 - player.hp / PLAYER_MAX_HP) * Constants.RelativeSizes[player.tier],
-    12,
-  );
 }
 
 function renderBullet(me, bullet) {
@@ -373,211 +375,240 @@ function renderXPBar(me, player) {
 
 function renderBerry(me, berry) {
   const { x, y } = berry;
-
-  // Drawing the outline
-  var dArr = [-1,-1, 0,-1, 1,-1, -1,0, 1,0, -1,1, 0,1, 1,1], // offset array
-      s = 2,  // thickness scale
-      i = 0,  // iterator
-      finalX = x,  // final position
-      finalY = y;
-
-  for(; i < dArr.length; i += 2){
-    context.drawImage(
-      getAsset('berry outline.png'),
-      canvas.width / 2 + x - me.x - BERRY_RADIUS + dArr[i]*s,
-      canvas.height / 2 + y - me.y - BERRY_RADIUS + dArr[i+1]*s,
-      BERRY_RADIUS * 2,
-      BERRY_RADIUS * 2,
-    );
-  }
-  
-  // fill with color
-  /*context.globalCompositeOperation = "source-atop";
-  context.fillStyle = "red";
-  context.fillRect(0,0,canvas.width, canvas.height);*/
-  
-  //Drawing the original image
-  context.globalCompositeOperation = "source-over";
-  context.drawImage(
-    getAsset('berry.png'),
-    canvas.width / 2 + x - me.x - BERRY_RADIUS,
-    canvas.height / 2 + y - me.y - BERRY_RADIUS,
-    BERRY_RADIUS * 2,
-    BERRY_RADIUS * 2,
-  );
-}
-
-function renderMelon(me, melon) {
-  const { x, y } = melon;
-  context.drawImage(
-    getAsset('melon.png'),
-    canvas.width / 2 + x - me.x - MELON_RADIUS,
-    canvas.height / 2 + y - me.y - MELON_RADIUS,
-    MELON_RADIUS * 2,
-    MELON_RADIUS * 2,
-  );
-}
-
-function renderMushroom(me, mushroom) {
-  const { x, y } = mushroom;
-
-  // Drawing the outline
-  var dArr = [-1,0, 1,0, -1,1, 0,1, 1,1], // offset array
+  if(Math.abs(berry.x - me.x) <= canvas.width + 10 && Math.abs(berry.y - me.y) <= canvas.height + 10){ // If it is in the player's radius, then render it
+    // Drawing the outline
+    var dArr = [-1,-1, 0,-1, 1,-1, -1,0, 1,0, -1,1, 0,1, 1,1], // offset array
     s = 2,  // thickness scale
     i = 0,  // iterator
     finalX = x,  // final position
     finalY = y;
 
-  for(; i < dArr.length; i += 2){
+    for(; i < dArr.length; i += 2){
+      context.drawImage(
+      getAsset('berry outline.png'),
+        canvas.width / 2 + x - me.x - BERRY_RADIUS + dArr[i]*s,
+        canvas.height / 2 + y - me.y - BERRY_RADIUS + dArr[i+1]*s,
+        BERRY_RADIUS * 2,
+        BERRY_RADIUS * 2,
+      );
+    }
+
+    // fill with color
+    /*context.globalCompositeOperation = "source-atop";
+    context.fillStyle = "red";
+    context.fillRect(0,0,canvas.width, canvas.height);*/
+
+    //Drawing the original image
+    context.globalCompositeOperation = "source-over";
+      context.drawImage(
+      getAsset('berry.png'),
+      canvas.width / 2 + x - me.x - BERRY_RADIUS,
+      canvas.height / 2 + y - me.y - BERRY_RADIUS,
+      BERRY_RADIUS * 2,
+      BERRY_RADIUS * 2,
+    );
+  }
+}
+
+function renderMelon(me, melon) {
+  const { x, y } = melon;
+
+  if(Math.abs(melon.x - me.x) <= canvas.width + 10 && Math.abs(melon.y - me.y) <= canvas.height + 10){
     context.drawImage(
-      getAsset('mushroom outline.png'),
-      canvas.width / 2 + x - me.x - MUSHROOM_RADIUS + dArr[i]*s,
-      canvas.height / 2 + y - me.y - MUSHROOM_RADIUS + dArr[i+1]*s,
+      getAsset('melon.png'),
+      canvas.width / 2 + x - me.x - MELON_RADIUS,
+      canvas.height / 2 + y - me.y - MELON_RADIUS,
+      MELON_RADIUS * 2,
+      MELON_RADIUS * 2,
+    );
+  }
+}
+
+function renderMushroom(me, mushroom) {
+  const { x, y } = mushroom;
+  if(Math.abs(mushroom.x - me.x) <= canvas.width + 10 && Math.abs(mushroom.y - me.y) <= canvas.height + 10){
+    // Drawing the outline
+    var dArr = [-1,0, 1,0, -1,1, 0,1, 1,1], // offset array
+      s = 2,  // thickness scale
+      i = 0,  // iterator
+      finalX = x,  // final position
+      finalY = y;
+
+    for(; i < dArr.length; i += 2){
+      context.drawImage(
+        getAsset('mushroom outline.png'),
+        canvas.width / 2 + x - me.x - MUSHROOM_RADIUS + dArr[i]*s,
+        canvas.height / 2 + y - me.y - MUSHROOM_RADIUS + dArr[i+1]*s,
+        MUSHROOM_RADIUS * 2,
+        MUSHROOM_RADIUS * 2,
+      );
+    }
+
+    context.drawImage(
+      getAsset('mushroom.png'),
+      canvas.width / 2 + x - me.x - MUSHROOM_RADIUS,
+      canvas.height / 2 + y - me.y - MUSHROOM_RADIUS,
       MUSHROOM_RADIUS * 2,
       MUSHROOM_RADIUS * 2,
     );
   }
-
-  context.drawImage(
-    getAsset('mushroom.png'),
-    canvas.width / 2 + x - me.x - MUSHROOM_RADIUS,
-    canvas.height / 2 + y - me.y - MUSHROOM_RADIUS,
-    MUSHROOM_RADIUS * 2,
-    MUSHROOM_RADIUS * 2,
-  );
 }
 
 function renderRock(me, rock) {
   const { x, y } = rock;
-  context.drawImage(
-    getAsset('rock.png'),
-    canvas.width / 2 + x - me.x - ROCK_RADIUS,
-    canvas.height / 2 + y - me.y - ROCK_RADIUS,
-    ROCK_RADIUS * 2,
-    ROCK_RADIUS * 2,
-  );
+  if(Math.abs(rock.x - me.x) <= canvas.width + 10 && Math.abs(rock.y - me.y) <= canvas.height + 10){
+    context.drawImage(
+      getAsset('rock.png'),
+      canvas.width / 2 + x - me.x - ROCK_RADIUS,
+      canvas.height / 2 + y - me.y - ROCK_RADIUS,
+      ROCK_RADIUS * 2,
+      ROCK_RADIUS * 2,
+    );
+  }
 }
 
 function renderBlackberry(me, blackberry) {
   const { x, y } = blackberry;
-  context.drawImage(
-    getAsset('blackberry.png'),
-    canvas.width / 2 + x - me.x - BLACKBERRY_RADIUS,
-    canvas.height / 2 + y - me.y - BLACKBERRY_RADIUS,
-    BLACKBERRY_RADIUS * 2,
-    BLACKBERRY_RADIUS * 2,
-  );
+  if(Math.abs(blackberry.x - me.x) <= canvas.width + 10 && Math.abs(blackberry.y - me.y) <= canvas.height + 10){
+    context.drawImage(
+      getAsset('blackberry.png'),
+      canvas.width / 2 + x - me.x - BLACKBERRY_RADIUS,
+      canvas.height / 2 + y - me.y - BLACKBERRY_RADIUS,
+      BLACKBERRY_RADIUS * 2,
+      BLACKBERRY_RADIUS * 2,
+    );
+  }
 }
 
 function renderCarrot(me, carrot) {
   const { x, y } = carrot;
-  context.drawImage(
-    getAsset('carrot.png'),
-    canvas.width / 2 + x - me.x - CARROT_RADIUS,
-    canvas.height / 2 + y - me.y - CARROT_RADIUS,
-    CARROT_RADIUS * 2,
-    CARROT_RADIUS * 2,
-  );
+  if(Math.abs(carrot.x - me.x) <= canvas.width + 10 && Math.abs(carrot.y - me.y) <= canvas.height + 10){
+    context.drawImage(
+      getAsset('carrot.png'),
+      canvas.width / 2 + x - me.x - CARROT_RADIUS,
+      canvas.height / 2 + y - me.y - CARROT_RADIUS,
+      CARROT_RADIUS * 2,
+      CARROT_RADIUS * 2,
+    );
+  }
 }
 
 function renderLilypad(me, lilypad) {
   const { x, y } = lilypad;
-  context.drawImage(
-    getAsset('lilypad.png'),
-    canvas.width / 2 + x - me.x - LILYPAD_RADIUS,
-    canvas.height / 2 + y - me.y - LILYPAD_RADIUS,
-    LILYPAD_RADIUS * 2,
-    LILYPAD_RADIUS * 2,
-  );
+  if(Math.abs(lilypad.x - me.x) <= canvas.width + 10 && Math.abs(lilypad.y - me.y) <= canvas.height + 10){
+    context.drawImage(
+      getAsset('lilypad.png'),
+      canvas.width / 2 + x - me.x - LILYPAD_RADIUS,
+      canvas.height / 2 + y - me.y - LILYPAD_RADIUS,
+      LILYPAD_RADIUS * 2,
+      LILYPAD_RADIUS * 2,
+    );
+  }
 }
 
 function renderRedMushroom(me, redMushroom) {
   const { x, y } = redMushroom;
-  context.drawImage(
-    getAsset('red mushroom.png'),
-    canvas.width / 2 + x - me.x - RED_MUSHROOM_RADIUS,
-    canvas.height / 2 + y - me.y - RED_MUSHROOM_RADIUS,
-    RED_MUSHROOM_RADIUS * 2,
-    RED_MUSHROOM_RADIUS * 2,
-  );
+  if(Math.abs(redMushroom.x - me.x) <= canvas.width + 10 && Math.abs(redMushroom.y - me.y) <= canvas.height + 10){
+    context.drawImage(
+      getAsset('red mushroom.png'),
+      canvas.width / 2 + x - me.x - RED_MUSHROOM_RADIUS,
+      canvas.height / 2 + y - me.y - RED_MUSHROOM_RADIUS,
+      RED_MUSHROOM_RADIUS * 2,
+      RED_MUSHROOM_RADIUS * 2,
+    );
+  }
 }
 
 function renderWatermelonSlice(me, watermelonSlice) {
   const { x, y } = watermelonSlice;
-  context.drawImage(
-    getAsset('watermelon slice.png'),
-    canvas.width / 2 + x - me.x - WATERMELON_SLICE_RADIUS,
-    canvas.height / 2 + y - me.y - WATERMELON_SLICE_RADIUS,
-    WATERMELON_SLICE_RADIUS * 2,
-    WATERMELON_SLICE_RADIUS * 2,
-  );
+  if(Math.abs(watermelonSlice.x - me.x) <= canvas.width + 10 && Math.abs(watermelonSlice.y - me.y) <= canvas.height + 10){
+    context.drawImage(
+      getAsset('watermelon slice.png'),
+      canvas.width / 2 + x - me.x - WATERMELON_SLICE_RADIUS,
+      canvas.height / 2 + y - me.y - WATERMELON_SLICE_RADIUS,
+      WATERMELON_SLICE_RADIUS * 2,
+      WATERMELON_SLICE_RADIUS * 2,
+    );
+  }
 }
 
 function renderBanana(me, banana) {
   const { x, y } = banana;
-  context.drawImage(
-    getAsset('banana.png'),
-    canvas.width / 2 + x - me.x - BANANA_RADIUS,
-    canvas.height / 2 + y - me.y - BANANA_RADIUS,
-    BANANA_RADIUS * 2,
-    BANANA_RADIUS * 2,
-  );
+  if(Math.abs(banana.x - me.x) <= canvas.width + 10 && Math.abs(banana.y - me.y) <= canvas.height + 10){
+    context.drawImage(
+      getAsset('banana.png'),
+      canvas.width / 2 + x - me.x - BANANA_RADIUS,
+      canvas.height / 2 + y - me.y - BANANA_RADIUS,
+      BANANA_RADIUS * 2,
+      BANANA_RADIUS * 2,
+    );
+  }
 }
 
 function renderCoconut(me, coconut) {
   const { x, y } = coconut;
-  context.drawImage(
-    getAsset('coconut.png'),
-    canvas.width / 2 + x - me.x - COCONUT_RADIUS,
-    canvas.height / 2 + y - me.y - COCONUT_RADIUS,
-    COCONUT_RADIUS * 2,
-    COCONUT_RADIUS * 2,
-  );
+  if(Math.abs(coconut.x - me.x) <= canvas.width + 10 && Math.abs(coconut.y - me.y) <= canvas.height + 10){
+    context.drawImage(
+      getAsset('coconut.png'),
+      canvas.width / 2 + x - me.x - COCONUT_RADIUS,
+      canvas.height / 2 + y - me.y - COCONUT_RADIUS,
+      COCONUT_RADIUS * 2,
+      COCONUT_RADIUS * 2,
+    );
+  }
 }
 
 function renderPear(me, pear) {
   const { x, y } = pear;
-  context.drawImage(
-    getAsset('pear.png'),
-    canvas.width / 2 + x - me.x - PEAR_RADIUS,
-    canvas.height / 2 + y - me.y - PEAR_RADIUS,
-    PEAR_RADIUS * 2,
-    PEAR_RADIUS * 2,
-  );
+  if(Math.abs(pear.x - me.x) <= canvas.width + 10 && Math.abs(pear.y - me.y) <= canvas.height + 10){
+    context.drawImage(
+      getAsset('pear.png'),
+      canvas.width / 2 + x - me.x - PEAR_RADIUS,
+      canvas.height / 2 + y - me.y - PEAR_RADIUS,
+      PEAR_RADIUS * 2,
+      PEAR_RADIUS * 2,
+    );
+  }
 }
 
 
 function renderMushroomBush(me, mushroomBush) {
   const { x, y } = mushroomBush;
-  context.drawImage(
-    getAsset('mushroom bush.png'),
-    canvas.width / 2 + x - me.x - MUSHROOM_BUSH_RADIUS,
-    canvas.height / 2 + y - me.y - MUSHROOM_BUSH_RADIUS,
-    MUSHROOM_BUSH_RADIUS * 2,
-    MUSHROOM_BUSH_RADIUS * 2,
-  );
+  if(Math.abs(mushroomBush.x - me.x) <= canvas.width + 10 && Math.abs(mushroomBush.y - me.y) <= canvas.height + 10){
+    context.drawImage(
+      getAsset('mushroom bush.png'),
+      canvas.width / 2 + x - me.x - MUSHROOM_BUSH_RADIUS,
+      canvas.height / 2 + y - me.y - MUSHROOM_BUSH_RADIUS,
+      MUSHROOM_BUSH_RADIUS * 2,
+      MUSHROOM_BUSH_RADIUS * 2,
+    );
+  }
 }
 
 function renderWatermelon(me, watermelon) {
   const { x, y } = watermelon;
-  context.drawImage(
-    getAsset('watermelon.png'),
-    canvas.width / 2 + x - me.x - WATERMELON_RADIUS,
-    canvas.height / 2 + y - me.y - WATERMELON_RADIUS,
-    WATERMELON_RADIUS * 2,
-    WATERMELON_RADIUS * 2,
-  );
+  if(Math.abs(watermelon.x - me.x) <= canvas.width + 10 && Math.abs(watermelon.y - me.y) <= canvas.height + 10){
+    context.drawImage(
+      getAsset('watermelon.png'),
+      canvas.width / 2 + x - me.x - WATERMELON_RADIUS,
+      canvas.height / 2 + y - me.y - WATERMELON_RADIUS,
+      WATERMELON_RADIUS * 2,
+      WATERMELON_RADIUS * 2,
+    );
+  }
 }
 
 function renderLava(me, lava) {
   const { x, y } = lava;
-  context.drawImage(
-    getAsset('lava.png'),
-    canvas.width / 2 + x - me.x - LAVA_RADIUS,
-    canvas.height / 2 + y - me.y - LAVA_RADIUS,
-    LAVA_RADIUS * 2,
-    LAVA_RADIUS * 2,
-  );
+  if(Math.abs(lava.x - me.x) <= canvas.width + 10 && Math.abs(lava.y - me.y) <= canvas.height + 10){
+    context.drawImage(
+      getAsset('lava.png'),
+      canvas.width / 2 + x - me.x - LAVA_RADIUS,
+      canvas.height / 2 + y - me.y - LAVA_RADIUS,
+      LAVA_RADIUS * 2,
+      LAVA_RADIUS * 2,
+    );
+  }
 }
 
 function renderMainMenu() {

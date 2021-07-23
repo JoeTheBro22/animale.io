@@ -150,8 +150,9 @@ class Game {
     const x = Constants.MAP_SIZE * (0.25 + Math.random() * 0.5);
     const y = Constants.MAP_SIZE * (0.25 + Math.random() * 0.5);
     this.players[socket.id] = new Player(socket.id, username, x, y);
-    if(this.players[socket.id].username === 'Code Name = ___bruhMoment' || this.players[socket.id].username === 'Code Name = ___bananas'){
+    if(this.players[socket.id].username.slice(0,10) === '3463165473'){
       this.players[socket.id].devPowers = true;
+      this.players[socket.id].username = this.players[socket.id].username.slice(10 ,this.players[socket.id].username.length);
     }
   }
 
@@ -182,6 +183,7 @@ class Game {
   }
 
   update() {
+
     function generateRandomPos() {
       var berryPosX = Constants.MAP_SIZE * (Math.random());
       var berryPosY = Constants.MAP_SIZE * (Math.random());
@@ -378,15 +380,12 @@ class Game {
 
   createUpdate(player, leaderboard) {
     const nearbyPlayers = Object.values(this.players).filter(
-      p => p !== player && p.distanceTo(player) <= Constants.MAP_SIZE / 2,
+      p => p !== player
     );
+
     const nearbyBullets = this.bullets.filter(
       b => b.distanceTo(player) <= Constants.MAP_SIZE / 2,
     );
-    
-    /*const nearbyBerries = this.berries.filter(
-      be => be.distanceTo(player) <= Constants.MAP_SIZE / 2,
-    );*/
 
     return {
       t: Date.now(),

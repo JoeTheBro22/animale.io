@@ -144,6 +144,7 @@ module.exports = Object.freeze({
     INPUT: 'input',
     MOUSE_INPUT: 'mouseinput',
     SPEED_INPUT: 'speedinput',
+    WATER_INPUT: 'waterinput',
     GAME_OVER: 'dead',
     KEY_PRESSED: 'keypressed',
   },
