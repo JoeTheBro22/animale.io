@@ -99,7 +99,7 @@ function applyCollisions(players, otherObj, collisionType) {
                 }
               } else if(tailbite == false){
                 // Normal biting (bigger player eats smaller one)
-                otherObject.takeKnockback(player.direction);
+                otherObject.takeKnockback(player.direction - otherObject.direction);
                 otherObject.takeHitDamage();
               
                 if(otherObject.hp <= 0){
@@ -122,7 +122,7 @@ function applyCollisions(players, otherObj, collisionType) {
                 }
               } else if(tailbite == false){
                 // Normal biting (bigger player eats smaller one)
-                player.takeKnockback(otherObject.direction);
+                player.takeKnockback(otherObject.direction - player.direction);
                 player.takeHitDamage();
               
                 if(player.hp <= 0){
@@ -235,7 +235,7 @@ function CheckTailbite(smallerPlayer, biggerPlayer){
       return false;
     }
   } else{
-    return null; // We hit the side
+    return false; // We hit the side
   }
 }
 
