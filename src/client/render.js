@@ -263,14 +263,24 @@ function renderPlayer(me, player) {
       );
     }
 
-    else if(player.tier <14){
-      context.drawImage(
-        getAsset('slime.png'),
-        -PLAYER_RADIUS * TIER_14_SIZE,
-        -PLAYER_RADIUS * TIER_14_SIZE,
-        PLAYER_RADIUS * 2 * TIER_14_SIZE,
-        PLAYER_RADIUS * 2 * TIER_14_SIZE,
-      );
+    else if(player.tier < 14){
+      if(player.slimeType < 1){
+        context.drawImage(
+          getAsset('slime.png'),
+          -PLAYER_RADIUS * TIER_14_SIZE,
+          -PLAYER_RADIUS * TIER_14_SIZE,
+          PLAYER_RADIUS * 2 * TIER_14_SIZE,
+          PLAYER_RADIUS * 2 * TIER_14_SIZE,
+        );
+      } else{
+        context.drawImage(
+          getAsset('slime 2.png'),
+          -PLAYER_RADIUS * TIER_14_SIZE,
+          -PLAYER_RADIUS * TIER_14_SIZE,
+          PLAYER_RADIUS * 2 * TIER_14_SIZE,
+          PLAYER_RADIUS * 2 * TIER_14_SIZE,
+        );
+      }
     }
 
     else if(player.tier <15){
