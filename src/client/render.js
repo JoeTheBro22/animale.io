@@ -203,14 +203,24 @@ function renderPlayer(me, player) {
       );
     }
 
-    else if(player.tier <8){
-      context.drawImage(
-        getAsset('ocelot.png'),
-        -PLAYER_RADIUS * TIER_8_SIZE,
-        -PLAYER_RADIUS * TIER_8_SIZE,
-        PLAYER_RADIUS * 2 * TIER_8_SIZE,
-        PLAYER_RADIUS * 2 * TIER_8_SIZE,
-      );
+    else if(player.tier < 8){
+      if(player.rareNumber < 1.9){
+        context.drawImage(
+          getAsset('ocelot.png'),
+          -PLAYER_RADIUS * TIER_14_SIZE,
+          -PLAYER_RADIUS * TIER_14_SIZE,
+          PLAYER_RADIUS * 2 * TIER_14_SIZE,
+          PLAYER_RADIUS * 2 * TIER_14_SIZE,
+        );
+      } else{
+        context.drawImage(
+          getAsset('realistic cheetah.png'),
+          -PLAYER_RADIUS * TIER_14_SIZE,
+          -PLAYER_RADIUS * TIER_14_SIZE,
+          PLAYER_RADIUS * 2 * TIER_14_SIZE,
+          PLAYER_RADIUS * 2 * TIER_14_SIZE,
+        );
+      }
     }
 
     else if(player.tier <9){
@@ -264,7 +274,16 @@ function renderPlayer(me, player) {
     }
 
     else if(player.tier < 14){
-      if(player.slimeType < 1){
+      if(player.rareNumber < 0.1){
+        context.drawImage(
+          getAsset('realistic dragon.png'),
+          -PLAYER_RADIUS * TIER_14_SIZE,
+          -PLAYER_RADIUS * TIER_14_SIZE,
+          PLAYER_RADIUS * 2 * TIER_14_SIZE,
+          PLAYER_RADIUS * 2 * TIER_14_SIZE,
+        );
+      }
+      else if(player.rareNumber < 1){
         context.drawImage(
           getAsset('slime.png'),
           -PLAYER_RADIUS * TIER_14_SIZE,

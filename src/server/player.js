@@ -3,7 +3,7 @@ const Bullet = require('./bullet');
 const Constants = require('../shared/constants');
 
 class Player extends ObjectClass {
-  constructor(id, username, x, y, radius, boostCooldown, maxSpeed, devPowers, animalType, slimeType) {
+  constructor(id, username, x, y, radius, boostCooldown, maxSpeed, devPowers, animalType, rareNumber, damageCooldown) {
     super(id, x, y, Math.random() * 2 * Math.PI, Constants.PLAYER_SPEED);
     this.username = username;
     this.hp = Constants.PLAYER_MAX_HP;
@@ -14,7 +14,8 @@ class Player extends ObjectClass {
     this.boostCooldown = Constants.BOOST_COOLDOWN;
     this.maxSpeed = Constants.PLAYER_SPEED;
     this.devPowers = false;
-    this.slimeType = Math.random() * 2;
+    this.rareNumber = Math.random() * 2;
+    this.damageCooldown = 0;
     // Animal types (for teleporting to the correct biome)
     // 0 = land, 1 = ocean
     this.animalType = 0;
@@ -24,6 +25,7 @@ class Player extends ObjectClass {
   update(dt) {
     super.update(dt);
     this.checkWaterSpeed();
+    this.damageCooldown -= dt;
 
     // Update score
     this.score += dt * Constants.SCORE_PER_SECOND;
@@ -149,11 +151,17 @@ class Player extends ObjectClass {
     this.hp += Constants.REGEN_AMOUNT;
   }
 
-  takeKnockback(direction) {
+  takeKnockback(direction, x, y) {
     // If it is a tail bite, then use the smaller player's direction
     // Otherwise, use the bigger player's direction
-    this.x += 0.5 * 100 * Math.sin(direction);
-    this.y -= 0.5 * 100 * Math.cos(direction);
+    // Use the negative values to knock back the players.
+    if(x == null || x == undefined){
+      this.x += 50 * Math.sin(direction);
+      this.y -= 50 * Math.cos(direction);
+    } else{
+      this.x += x;
+      this.y += y;
+    }
   }
   
   giveBerryXP() {
@@ -226,7 +234,8 @@ class Player extends ObjectClass {
       score: this.score,
       radius: this.radius,
       boostCooldown: this.boostCooldown,
-      slimeType: this.slimeType,
+      rareNumber: this.rareNumber,
+      damageCooldown: this.damageCooldown,
     };
   }
 }
