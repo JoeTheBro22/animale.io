@@ -2,6 +2,7 @@
 // https://victorzhou.com/blog/build-an-io-game-part-1/#6-client-input-%EF%B8%8F
 import { updateDirection } from './networking';
 import { updateSpeed } from './networking';
+import { updateChat } from './networking';
 import { clickMessage } from './networking';
 import { updateKeyPressed } from './networking';
 
@@ -25,6 +26,7 @@ function onKeyPressed(e){
 function handleInput(x, y) {
   const dir = Math.atan2(x - window.innerWidth / 2, window.innerHeight / 2 - y);
   updateDirection(dir);
+  updateChat();
   updateSpeed(x, y, Math.max(1, 800 / window.innerWidth) * window.innerWidth, Math.max(1, 800 / window.innerWidth) * window.innerHeight); //Math.max(1, 800 / window.innerWidth) * window.innerWidth
 }
 

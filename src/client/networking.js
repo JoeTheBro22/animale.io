@@ -5,7 +5,6 @@ import { throttle } from 'throttle-debounce';
 import { processGameUpdate } from './state';
 
 const Constants = require('../shared/constants');
-
 const socketProtocol = (window.location.protocol.includes('https')) ? 'wss' : 'ws';
 const socket = io(`${socketProtocol}://${window.location.host}`, { reconnection: false });
 const connectedPromise = new Promise(resolve => {
@@ -33,6 +32,11 @@ export const connect = onGameOver => (
 export const play = username => {
   socket.emit(Constants.MSG_TYPES.JOIN_GAME, username);
 };
+
+export const updateChat = throttle(20, message => {
+  const chat = document.getElementById('chat-text').value;
+  socket.emit(Constants.MSG_TYPES.CHAT, chat);
+});
 
 export const updateDirection = throttle(20, dir => {
   socket.emit(Constants.MSG_TYPES.INPUT, dir);

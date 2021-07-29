@@ -1,6 +1,6 @@
 // Learn more about this file at:
 // https://victorzhou.com/blog/build-an-io-game-part-1/#3-client-entrypoints
-import { connect, play } from './networking';
+import { connect, play, updateChat } from './networking';
 import { startRendering, stopRendering } from './render';
 import { startCapturingInput, stopCapturingInput } from './input';
 import { downloadAssets } from './assets';
@@ -15,6 +15,7 @@ import './css/main.css';
 
 const playMenu = document.getElementById('play-menu');
 const playButton = document.getElementById('play-button');
+// Use the same systems for chat as username input
 const usernameInput = document.getElementById('username-input');
 
 Promise.all([

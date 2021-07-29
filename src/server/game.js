@@ -175,6 +175,12 @@ class Game {
       }
     }
   }
+
+  handleChat(socket, message) {
+    if (this.players[socket.id] != undefined) {
+      this.players[socket.id].message = message;
+    }
+  }
   
   handleSpeed(socket, x, y, canvasWidth, canvasHeight) {
     if (this.players[socket.id]) {

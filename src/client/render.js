@@ -338,6 +338,10 @@ function renderPlayer(me, player) {
     } else{
       context.fillText(UsernameFix.slice(0, 15), canvasX, canvasY - 15 - PLAYER_RADIUS * Constants.RelativeSizes[player.tier]);
     }
+
+    // Draw Chat Message
+    let chatFix = player.message.replace('NaN','');
+    context.fillText(chatFix, canvasX, canvasY - 35 - PLAYER_RADIUS * Constants.RelativeSizes[player.tier]);
     
     /*
     -PLAYER_RADIUS * TIER_1_SIZE,

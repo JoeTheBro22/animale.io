@@ -147,5 +147,6 @@ module.exports = Object.freeze({
     WATER_INPUT: 'waterinput',
     GAME_OVER: 'dead',
     KEY_PRESSED: 'keypressed',
+    CHAT: 'chat',
   },
 });

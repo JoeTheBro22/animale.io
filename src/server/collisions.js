@@ -237,6 +237,7 @@ function applyCollisions(players, otherObj, collisionType) {
 }
 
 function CheckTailbite(smallerPlayer, biggerPlayer){
+  let relativeDirection = Math.hypot(biggerPlayer.x - smallerPlayer.x, biggerPlayer.y - smallerPlayer.y);
   // Convert an X and a Y from the relative positions of the players into a vector (see knocbkack)
   /*let relativeXDirection = Math.sqrt(smallerPlayer.x * smallerPlayer.x + biggerPlayer.x * biggerPlayer.x);
   let relativeYDirection = Math.sqrt(smallerPlayer.y * smallerPlayer.y + biggerPlayer.y * biggerPlayer.y);
@@ -249,6 +250,5 @@ function CheckTailbite(smallerPlayer, biggerPlayer){
   }*/
   return false;
 }
-
 
 module.exports = applyCollisions;

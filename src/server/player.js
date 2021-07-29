@@ -3,7 +3,7 @@ const Bullet = require('./bullet');
 const Constants = require('../shared/constants');
 
 class Player extends ObjectClass {
-  constructor(id, username, x, y, radius, boostCooldown, maxSpeed, devPowers, animalType, rareNumber, damageCooldown) {
+  constructor(id, username, x, y, radius, boostCooldown, maxSpeed, devPowers, animalType, rareNumber, damageCooldown, message) {
     super(id, x, y, Math.random() * 2 * Math.PI, Constants.PLAYER_SPEED);
     this.username = username;
     this.hp = Constants.PLAYER_MAX_HP;
@@ -19,6 +19,7 @@ class Player extends ObjectClass {
     // Animal types (for teleporting to the correct biome)
     // 0 = land, 1 = ocean
     this.animalType = 0;
+    this.message = '';
   }
 
   // Returns a newly created bullet, or null.
@@ -156,8 +157,8 @@ class Player extends ObjectClass {
     // Otherwise, use the bigger player's direction
     // Use the negative values to knock back the players.
     if(x == null || x == undefined){
-      this.x += 50 * Math.sin(direction);
-      this.y -= 50 * Math.cos(direction);
+      this.x += Math.sin(direction);
+      this.y -= Math.cos(direction);
     } else{
       this.x += x;
       this.y += y;
@@ -236,6 +237,7 @@ class Player extends ObjectClass {
       boostCooldown: this.boostCooldown,
       rareNumber: this.rareNumber,
       damageCooldown: this.damageCooldown,
+      message: this.message,
     };
   }
 }
