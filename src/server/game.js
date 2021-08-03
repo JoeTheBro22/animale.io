@@ -125,6 +125,13 @@ class Game {
       this.lavas[i] = new Berry(lava[0], lava[1]);
     }
 
+    // Lava in the center of the map
+    for(var i = 0; i < 20; i++){
+      var centralLavaPosX = 0.5 * Constants.MAP_SIZE + Math.random() * 200 - 100;
+      var centralLavaPosY = 0.5 * Constants.MAP_SIZE + Math.random() * 200 - 100;
+      this.lavas.push(new Berry(centralLavaPosX, centralLavaPosY));
+    }
+
     //Rocks
     /*function generateRandomRockPos() {
       var rockPosX = Constants.MAP_SIZE * (Math.random());
@@ -169,8 +176,7 @@ class Game {
 
   handleKeyPressed(socket, e) {
     if (this.players[socket.id]) {
-      //console.log(e);
-      if(/*e.keyCode === 229 && */this.players[socket.id].devPowers == true){
+      if(e === 'q' && this.players[socket.id].devPowers == true){
         this.players[socket.id].score = this.players[socket.id].score * 2 + 1;
       }
     }

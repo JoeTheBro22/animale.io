@@ -340,8 +340,10 @@ function renderPlayer(me, player) {
     }
 
     // Draw Chat Message
+    context.fillStyle = "grey";
     let chatFix = player.message.replace('NaN','');
-    context.fillText(chatFix, canvasX, canvasY - 35 - PLAYER_RADIUS * Constants.RelativeSizes[player.tier]);
+    let chatFix2 = chatFix.replace('0','');
+    context.fillText(chatFix2, canvasX, canvasY - 33 - PLAYER_RADIUS * Constants.RelativeSizes[player.tier]);
     
     /*
     -PLAYER_RADIUS * TIER_1_SIZE,

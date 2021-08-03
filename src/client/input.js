@@ -20,13 +20,15 @@ function onTouchInput(e) {
 }
 
 function onKeyPressed(e){
-  updateKeyPressed(` ${e.code}`);
+  updateKeyPressed(e.key);
+  if(e.key === 'Enter'){
+    updateChat();
+  }
 }
 
 function handleInput(x, y) {
   const dir = Math.atan2(x - window.innerWidth / 2, window.innerHeight / 2 - y);
   updateDirection(dir);
-  updateChat();
   updateSpeed(x, y, Math.max(1, 800 / window.innerWidth) * window.innerWidth, Math.max(1, 800 / window.innerWidth) * window.innerHeight); //Math.max(1, 800 / window.innerWidth) * window.innerWidth
 }
 
