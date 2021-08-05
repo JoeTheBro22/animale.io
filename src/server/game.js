@@ -1,6 +1,7 @@
 const Constants = require('../shared/constants');
 const Player = require('./player');
 const Berry = require('./berry');
+const Projectile = require('./projectile');
 const applyCollisions = require('./collisions');
 const { BERRY_AMOUNT, TIER_1_XP } = require('../shared/constants');
 const { LAVA_AMOUNT } = require('../shared/constants');
@@ -37,6 +38,7 @@ class Game {
     this.mushroomBushes = [];
     this.watermelons = [];
     this.lavas = [];
+    this.mageBalls = [];
     //this.rocks = [];
 
     // Populating several arrays
@@ -175,9 +177,19 @@ class Game {
   }
 
   handleKeyPressed(socket, e) {
-    if (this.players[socket.id]) {
-      if(e === 'q' && this.players[socket.id].devPowers == true){
-        this.players[socket.id].score = this.players[socket.id].score * 2 + 1;
+    let player = this.players[socket.id];
+    if (player) {
+      if(e === 'w' && player.devPowers == true){
+        player.score = player.score * 2 + 1;
+      }
+
+      const abilityCooldown = this.players[socket.id].abilityCooldown;
+      if(e === 'q' && player.tier === 14){
+        // Creates a mage ball at the head of the player
+        if(player.devPowers == true || abilityCooldown <= 0){
+          this.mageBalls.push(new Projectile(player.id, player.x + Constants.PLAYER_RADIUS * Constants.TIER_15_SIZE * Math.sin(player.direction) * 0.9, player.y - Constants.PLAYER_RADIUS * Constants.TIER_15_SIZE * Math.cos(player.direction), player.direction, Constants.MAGEBALL_RADIUS));
+          this.players[socket.id].abilityCooldown = 2;
+        }
       }
     }
   }
@@ -292,6 +304,16 @@ class Game {
     });
     this.bullets = this.bullets.filter(bullet => !bulletsToRemove.includes(bullet));
 
+    // Update Each Projectile
+    const projectilesToRemove = [];
+    this.mageBalls.forEach(mageBall => {
+      if (mageBall.update(dt)) {
+        // Destroy this bullet
+        projectilesToRemove.push(mageBall);
+      }
+    });
+    this.mageBalls = this.mageBalls.filter(m => !projectilesToRemove.includes(m));
+
     // Update the player's tier
 
     // Update each player
@@ -377,6 +399,9 @@ class Game {
     //this.lavas = this.lavas.filter(lava => !destroyedBerries.includes(lava));
 
     const destroyedPlayers = applyCollisions(Object.values(this.players), Object.values(this.players), 3);
+
+    const destroyedMageBalls = applyCollisions(Object.values(this.players), this.mageBalls, 16);
+    this.mageBalls = this.mageBalls.filter(mageBall => !destroyedMageBalls.includes(mageBall));
     
     // Send a game update to each player every other time
     if (this.shouldSendUpdate) {
@@ -427,6 +452,7 @@ class Game {
       watermelons: this.watermelons.map(b => b.serializeForUpdate()),
       mushrooms: this.mushrooms.map(b => b.serializeForUpdate()),
       lavas: this.lavas.map(b => b.serializeForUpdate()),
+      mageBalls: this.mageBalls.map(b => b.serializeForUpdate()),
       leaderboard,
     };
   }

@@ -16,6 +16,7 @@ import { WATERMELON_RADIUS } from '../shared/constants';
 import { MUSHROOM_RADIUS } from '../shared/constants';
 import { LAVA_RADIUS } from '../shared/constants';
 import { ROCK_RADIUS } from '../shared/constants';
+import { MAGEBALL_RADIUS } from '../shared/constants';
 import { TIER_1_SIZE, TIER_2_SIZE, TIER_3_SIZE, TIER_4_SIZE, TIER_5_SIZE, TIER_6_SIZE, TIER_7_SIZE, TIER_8_SIZE, TIER_9_SIZE, TIER_10_SIZE, TIER_11_SIZE, TIER_12_SIZE, TIER_13_SIZE, TIER_14_SIZE, TIER_15_SIZE, TIER_16_SIZE, } from '../shared/constants';
 import { RelativeSizes } from '../shared/constants';
 import { TierXP } from '../shared/constants';
@@ -44,7 +45,7 @@ window.addEventListener('resize', debounce(40, setCanvasDimensions));
 
 function render() 
 {
-  const { me, others, bullets, berries, melons, blackberries, carrots, lilypads, redMushrooms, watermelonSlices, bananas, coconuts, pears, mushroomBushes, watermelons, mushrooms, lavas/*, rocks*/} = getCurrentState();
+  const { me, others, bullets, berries, melons, blackberries, carrots, lilypads, redMushrooms, watermelonSlices, bananas, coconuts, pears, mushroomBushes, watermelons, mushrooms, lavas, mageBalls/*, rocks*/} = getCurrentState();
   if (!me) {
     return;
   }
@@ -86,6 +87,9 @@ function render()
   pears.forEach(renderPear.bind(null, me));
   mushroomBushes.forEach(renderMushroomBush.bind(null, me));
   watermelons.forEach(renderWatermelon.bind(null, me));
+
+  // Draw Mage Balls
+  mageBalls.forEach(renderMageball.bind(null, me));
 
   // Draw all players
   renderPlayer(me, me);
@@ -406,6 +410,19 @@ function renderXPBar(me, player) {
   context.font = "15px Arial";
   context.textAlign = "center";
   context.fillText(Math.floor(player.score) + " xp (Next animal at " + nextTierXP + " xp)", canvas.width / 2, canvas.height - 7.5);
+}
+
+function renderMageball(me, mageBall) {
+  const { x, y } = mageBall;
+  if(Math.abs(mageBall.x - me.x) <= canvas.width + 10 && Math.abs(mageBall.y - me.y) <= canvas.height + 10){
+    context.drawImage(
+      getAsset('mage ball.png'),
+      canvas.width / 2 + x - me.x - MAGEBALL_RADIUS,
+      canvas.height / 2 + y - me.y - MAGEBALL_RADIUS,
+      MAGEBALL_RADIUS * 2,
+      MAGEBALL_RADIUS * 2,
+    );
+  }
 }
 
 function renderBerry(me, berry) {

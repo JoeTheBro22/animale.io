@@ -3,8 +3,8 @@ const ObjectClass = require('./object');
 const Constants = require('../shared/constants');
 
 class Berry extends ObjectClass {
-  constructor(x, y) {
-    super(shortid(), x, y, 0, 0);
+  constructor(x, y, speed, direction) {
+    super(shortid(), x, y, speed, direction);
   }
 }
 

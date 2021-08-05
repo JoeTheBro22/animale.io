@@ -1,5 +1,6 @@
 const e = require('express');
 const { debug } = require('webpack');
+const { MAGEBALL_DAMAGE } = require('../shared/constants');
 const constants = require('../shared/constants');
 const Constants = require('../shared/constants');
 
@@ -23,13 +24,6 @@ const Constants = require('../shared/constants');
     }
   }
   return destroyedBullets;
-}
-
-function regenHP(players){
-  for (let i = 0; i < players.length; i++) {
-    const player = players[i];
-    player.regenHP();
-  }
 }*/
 
 function applyCollisions(players, otherObj, collisionType) {
@@ -76,6 +70,8 @@ function applyCollisions(players, otherObj, collisionType) {
         nonPlayerRadius = Constants.MUSHROOM_BUSH_RADIUS;
       } else if (collisionType == 15){
         nonPlayerRadius = Constants.WATERMELON_RADIUS;
+      } else if (collisionType == 16){
+        nonPlayerRadius = Constants.MAGEBALL_RADIUS;
       }
       if (player.distanceTo(otherObject) <= playerRadius + nonPlayerRadius) {
         if(collisionType == 0){
@@ -224,6 +220,13 @@ function applyCollisions(players, otherObj, collisionType) {
             player.giveWatermelonXP();
           } else{
             destroyObject = false;
+          }
+        } else if (collisionType == 16){
+          if(player.tier < 14){
+            player.takeProjectileDamage(Constants.MAGEBALL_DAMAGE);
+            if(player.hp <= 0){
+              player.getKillXP(otherObject.score * 0.5 + player.score * 0.05);
+            }
           }
         }
         if(destroyObject){

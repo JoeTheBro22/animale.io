@@ -3,7 +3,7 @@ const Bullet = require('./bullet');
 const Constants = require('../shared/constants');
 
 class Player extends ObjectClass {
-  constructor(id, username, x, y, radius, boostCooldown, maxSpeed, devPowers, animalType, rareNumber, damageCooldown, message) {
+  constructor(id, username, x, y, radius, boostCooldown, maxSpeed, devPowers, animalType, rareNumber, damageCooldown, message, abilityCooldown) {
     super(id, x, y, Math.random() * 2 * Math.PI, Constants.PLAYER_SPEED);
     this.username = username;
     this.hp = Constants.PLAYER_MAX_HP;
@@ -16,6 +16,7 @@ class Player extends ObjectClass {
     this.devPowers = false;
     this.rareNumber = Math.random() * 2;
     this.damageCooldown = 0;
+    this.abilityCooldown = Constants.ABILITY_COOLDOWN;
     // Animal types (for teleporting to the correct biome)
     // 0 = land, 1 = ocean
     this.animalType = 0;
@@ -27,6 +28,7 @@ class Player extends ObjectClass {
     super.update(dt);
     this.checkWaterSpeed();
     this.damageCooldown -= dt;
+    this.abilityCooldown -= dt;
 
     // Update score
     this.score += dt * Constants.SCORE_PER_SECOND;
@@ -142,6 +144,10 @@ class Player extends ObjectClass {
 
   takeHitDamage() {
     this.hp -= Constants.HIT_DAMAGE;
+  }
+
+  takeProjectileDamage(amount) {
+    this.hp -= amount;
   }
 
   getKillXP(otherPlayerScore) {
