@@ -45,7 +45,7 @@ window.addEventListener('resize', debounce(40, setCanvasDimensions));
 
 function render() 
 {
-  const { me, others, bullets, berries, melons, blackberries, carrots, lilypads, redMushrooms, watermelonSlices, bananas, coconuts, pears, mushroomBushes, watermelons, mushrooms, lavas, mageBalls/*, rocks*/} = getCurrentState();
+  const { me, others, bullets, berries, melons, blackberries, carrots, lilypads, redMushrooms, watermelonSlices, bananas, coconuts, pears, mushroomBushes, watermelons, mushrooms, lavas, mageBalls, snakeBites, /*, rocks*/} = getCurrentState();
   if (!me) {
     return;
   }
@@ -88,8 +88,9 @@ function render()
   mushroomBushes.forEach(renderMushroomBush.bind(null, me));
   watermelons.forEach(renderWatermelon.bind(null, me));
 
-  // Draw Mage Balls
+  // Draw Ability Projectiles
   mageBalls.forEach(renderMageball.bind(null, me));
+  snakeBites.forEach(renderSnakebite.bind(null, me));
 
   // Draw all players
   renderPlayer(me, me);
@@ -417,6 +418,19 @@ function renderMageball(me, mageBall) {
   if(Math.abs(mageBall.x - me.x) <= canvas.width + 10 && Math.abs(mageBall.y - me.y) <= canvas.height + 10){
     context.drawImage(
       getAsset('mage ball.png'),
+      canvas.width / 2 + x - me.x - MAGEBALL_RADIUS,
+      canvas.height / 2 + y - me.y - MAGEBALL_RADIUS,
+      MAGEBALL_RADIUS * 2,
+      MAGEBALL_RADIUS * 2,
+    );
+  }
+}
+
+function renderSnakebite(me, snakeBite) {
+  const { x, y } = snakeBite;
+  if(Math.abs(snakeBite.x - me.x) <= canvas.width + 10 && Math.abs(snakeBite.y - me.y) <= canvas.height + 10){
+    context.drawImage(
+      getAsset('snake bite fangs.png'),
       canvas.width / 2 + x - me.x - MAGEBALL_RADIUS,
       canvas.height / 2 + y - me.y - MAGEBALL_RADIUS,
       MAGEBALL_RADIUS * 2,

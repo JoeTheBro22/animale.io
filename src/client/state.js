@@ -91,6 +91,7 @@ export function getCurrentState() {
       mushrooms: interpolateObjectArray(baseUpdate.mushrooms, next.mushrooms, ratio),
       lavas: interpolateObjectArray(baseUpdate.lavas, next.lavas, ratio),
       mageBalls: interpolateObjectArray(baseUpdate.mageBalls, next.mageBalls, ratio),
+      snakeBites: interpolateObjectArray(baseUpdate.snakeBites, next.snakeBites, ratio),
       //rocks: interpolateObjectArray(baseUpdate.rocks, next.rocks, ratio),
     };
   }

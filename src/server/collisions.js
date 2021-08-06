@@ -225,8 +225,22 @@ function applyCollisions(players, otherObj, collisionType) {
           if(player.tier < 14){
             player.takeProjectileDamage(Constants.MAGEBALL_DAMAGE);
             if(player.hp <= 0){
-              player.getKillXP(otherObject.score * 0.5 + player.score * 0.05);
+              //otherObject.ParentID.getKillXP(otherObject.score * 0.5 + player.score * 0.05);
+              //Find Some way to give parents xp
             }
+          }
+        } else if (collisionType == 17){
+          console.log(player.tier);
+          if(player.tier < 4){
+            player.takeProjectileDamage(Constants.SNAKEBITE_DAMAGE);
+            if(player.hp <= 0){
+              // player.getKillXP(otherObject.score * 0.5 + player.score * 0.05);
+              //Find Some way to give parents xp
+            }
+          } else if(player.tier > 4){
+            player.takeProjectileDamage(Constants.SNAKEBITE_HIGHER_TIER_DAMAGE);
+          } else{
+            destroyObject = false;
           }
         }
         if(destroyObject){

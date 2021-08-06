@@ -39,6 +39,7 @@ class Game {
     this.watermelons = [];
     this.lavas = [];
     this.mageBalls = [];
+    this.snakeBites = [];
     //this.rocks = [];
 
     // Populating several arrays
@@ -183,14 +184,25 @@ class Game {
         player.score = player.score * 2 + 1;
       }
 
-      const abilityCooldown = this.players[socket.id].abilityCooldown;
-      if(e === 'q' && player.tier === 14){
-        // Creates a mage ball at the head of the player
-        if(player.devPowers == true || abilityCooldown <= 0){
-          this.mageBalls.push(new Projectile(player.id, player.x + Constants.PLAYER_RADIUS * Constants.TIER_15_SIZE * Math.sin(player.direction) * 0.9, player.y - Constants.PLAYER_RADIUS * Constants.TIER_15_SIZE * Math.cos(player.direction), player.direction, Constants.MAGEBALL_RADIUS));
-          this.players[socket.id].abilityCooldown = 2;
+      if(e === 'q'){
+        const abilityCooldown = this.players[socket.id].abilityCooldown;
+        if(player.tier === 14){
+          // Creates a mage ball at the head of the player
+          if(player.devPowers == true || abilityCooldown <= 0){
+            this.mageBalls.push(new Projectile(player.id, player.x + Constants.PLAYER_RADIUS * Constants.TIER_15_SIZE * Math.sin(player.direction) * 0.9, player.y - Constants.PLAYER_RADIUS * Constants.TIER_15_SIZE * Math.cos(player.direction), player.direction, Constants.MAGEBALL_SPEED, Constants.MAGEBALL_LIFESPAN));
+            this.players[socket.id].abilityCooldown = 2;
+          }
+        }
+
+        if(player.tier === 4){
+          // Creates a mage ball at the head of the player
+          if(player.devPowers == true || abilityCooldown <= 0){
+            this.snakeBites.push(new Projectile(player.id, player.x + Constants.PLAYER_RADIUS * Constants.TIER_5_SIZE * Math.sin(player.direction) * 0.9, player.y - Constants.PLAYER_RADIUS * Constants.TIER_5_SIZE * Math.cos(player.direction), player.direction, 0, Constants.SNAKEBITE_LIFESPAN));
+            this.players[socket.id].abilityCooldown = 3;
+          }
         }
       }
+      
     }
   }
 
@@ -314,6 +326,14 @@ class Game {
     });
     this.mageBalls = this.mageBalls.filter(m => !projectilesToRemove.includes(m));
 
+    this.snakeBites.forEach(snakeBite => {
+      if (snakeBite.update(dt)) {
+        // Destroy this bullet
+        projectilesToRemove.push(snakeBite);
+      }
+    });
+    this.snakeBites = this.snakeBites.filter(m => !projectilesToRemove.includes(m));
+
     // Update the player's tier
 
     // Update each player
@@ -402,6 +422,9 @@ class Game {
 
     const destroyedMageBalls = applyCollisions(Object.values(this.players), this.mageBalls, 16);
     this.mageBalls = this.mageBalls.filter(mageBall => !destroyedMageBalls.includes(mageBall));
+
+    const destroyedSnakeBites = applyCollisions(Object.values(this.players), this.snakeBites, 17);
+    this.snakeBites = this.snakeBites.filter(snakeBite => !destroyedSnakeBites.includes(snakeBite));
     
     // Send a game update to each player every other time
     if (this.shouldSendUpdate) {
@@ -453,6 +476,7 @@ class Game {
       mushrooms: this.mushrooms.map(b => b.serializeForUpdate()),
       lavas: this.lavas.map(b => b.serializeForUpdate()),
       mageBalls: this.mageBalls.map(b => b.serializeForUpdate()),
+      snakeBites: this.snakeBites.map(b => b.serializeForUpdate()),
       leaderboard,
     };
   }
