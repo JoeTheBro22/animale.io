@@ -181,13 +181,16 @@ class Game {
     let player = this.players[socket.id];
     if (player) {
       if(e === 'w' && player.devPowers == true){
-        player.score = player.score * 2 + 1;
+        if(player.score == 0){
+          player.score++;
+        } else{
+          player.score = player.score * 2;
+        }
       }
 
       if(e === 'q'){
         const abilityCooldown = this.players[socket.id].abilityCooldown;
         if(player.tier === 2){
-          // Creates a mage ball at the head of the player
           if(player.devPowers == true || abilityCooldown <= 0){
             this.melons.push(new Berry(player.x, player.y + Constants.PLAYER_RADIUS * Constants.TIER_3_SIZE * 2));
             this.melons.push(new Berry(player.x, player.y - Constants.PLAYER_RADIUS * Constants.TIER_3_SIZE * 2));
@@ -205,6 +208,38 @@ class Game {
           }
         }
 
+        if(player.tier === 7){
+          // Knock all players back that are close enough and set player's chat to "Meow!"
+          if(player.devPowers == true || abilityCooldown <= 0){
+            player.message = 'Meow!';
+            Object.keys(this.sockets).forEach(playerID => {
+              const otherPlayer = this.players[playerID];
+              if(player.distanceTo(otherPlayer) <= 250 && player.distanceTo(otherPlayer) != 0){
+                otherPlayer.takeKnockback(null, 50 + otherPlayer.x - player.x, 50 + otherPlayer.y - player.y);
+                if(otherPlayer.tier < 7){
+                  otherPlayer.takeProjectileDamage(Constants.OCELOTROAR_DAMAGE);
+                }
+                
+                console.log(player.rareNumber);
+                if(otherPlayer.tier > 7 && player.rareNumber >= 1.9){
+                  otherPlayer.takeProjectileDamage(Constants.OCELOTROAR_HIGHER_TIER_DAMAGE);
+                }
+              }
+            });
+            this.players[socket.id].abilityCooldown = 10;
+          }
+        }
+
+        /*
+          Object.keys(this.sockets).forEach(playerID => {
+            const player = this.players[playerID];
+            const newBullet = player.update(dt);
+            if (newBullet) {
+              //this.bullets.push(newBullet);
+            }
+          });
+        */
+
         if(player.tier === 14){
           // Creates a mage ball at the head of the player
           if(player.devPowers == true || abilityCooldown <= 0){
@@ -212,10 +247,7 @@ class Game {
             this.players[socket.id].abilityCooldown = 2;
           }
         }
-
-        
       }
-      
     }
   }
 
@@ -423,7 +455,9 @@ class Game {
     this.pears = this.pears.filter(berry => !destroyedPears.includes(berry));
 
     const destroyedMushroomBushes = applyCollisions(Object.values(this.players), this.mushroomBushes, 14);
+    //const destroyedMushroomBushesByMageBall = applyCollisions(this.mageBalls, this.mushroomBushes, 18);
     this.mushroomBushes = this.mushroomBushes.filter(berry => !destroyedMushroomBushes.includes(berry));
+    //this.mushroomBushes = this.mushroomBushes.filter(berry => !destroyedMushroomBushesByMageBall.includes(berry));
     
     const destroyedWatermelons = applyCollisions(Object.values(this.players), this.watermelons, 15);
     this.watermelons = this.watermelons.filter(berry => !destroyedWatermelons.includes(berry));

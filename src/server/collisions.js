@@ -72,6 +72,11 @@ function applyCollisions(players, otherObj, collisionType) {
         nonPlayerRadius = Constants.WATERMELON_RADIUS;
       } else if (collisionType == 16){
         nonPlayerRadius = Constants.MAGEBALL_RADIUS;
+      } else if (collisionType == 17){
+        nonPlayerRadius = Constants.SNAKEBITE_RADIUS;
+      } else if (collisionType == 18){
+        nonPlayerRadius = Constants.MUSHROOM_BUSH_RADIUS;
+        playerRadius = Constants.MAGEBALL_RADIUS;
       }
       if (player.distanceTo(otherObject) <= playerRadius + nonPlayerRadius) {
         if(collisionType == 0){
@@ -266,7 +271,14 @@ function applyCollisions(players, otherObj, collisionType) {
           } else{
             destroyObject = false;
           }
-        }
+        } /*else if (collisionType == 18){
+          for(let a = 0; a < players.length; a++){
+            console.log(players[a].id + ' ' + otherObject.parentID);
+            if(players[a].id === player.parentID){
+              players[a].getKillXP(otherObject.score * 0.5 + player.score * 0.05);
+            }
+          }
+        }*/
         if(destroyObject){
           destroyedObj.push(otherObject);
         }
@@ -285,7 +297,6 @@ function CheckTailbite(smallerPlayer, biggerPlayer){
   let testPlayerY = smallerPlayer.y + -5 * Math.cos(smallerPlayer.direction);
   let distance = Math.sqrt((testPlayerX - biggerPlayer.x) * (testPlayerX - biggerPlayer.x) + (testPlayerY - biggerPlayer.y) * (testPlayerY - biggerPlayer.y));
   let combinedRadius = Constants.RelativeSizes[smallerPlayer.tier] * Constants.PLAYER_RADIUS + Constants.RelativeSizes[biggerPlayer.tier] * Constants.PLAYER_RADIUS;
-  console.log(Math.abs(directionBetween - smallerPlayer.direction) * 180/ Math.PI);
   if(relativeDirection <= 10 || relativeDirection >= 350){
     if(distance <= combinedRadius && (Math.abs(directionBetween - smallerPlayer.direction) * 180/Math.PI <= 20 || Math.abs(directionBetween - smallerPlayer.direction) * 180/Math.PI >= 340)){
       return true;

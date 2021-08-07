@@ -22,6 +22,12 @@ class Projectle extends ObjectClass {
     this.y -= dt * this.speed * Math.cos(this.direction);
     return this.x < 0 || this.x > Constants.MAP_SIZE || this.y < 0 || this.y > Constants.MAP_SIZE;
   }
+
+  distanceTo(object) {
+    const dx = this.x - object.x;
+    const dy = this.y - object.y;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
 }
 
 module.exports = Projectle;
