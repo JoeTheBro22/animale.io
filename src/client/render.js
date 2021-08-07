@@ -62,10 +62,16 @@ function render()
   context.strokeRect(canvas.width / 2 - me.x, canvas.height / 2 - me.y, MAP_SIZE, MAP_SIZE);
 
   // Draw all bullets
-  bullets.forEach(renderBullet.bind(null, me));
+  //bullets.forEach(renderBullet.bind(null, me));
 
   // Draw all lava
   lavas.forEach(renderLava.bind(null, me));
+
+  // Draw all players that can hide under foods
+  if(me.tier < 2){
+    renderPlayer(me, me);
+    others.forEach(renderPlayer.bind(null, me));
+  }
 
   // Draw all berries
   berries.forEach(renderBerry.bind(null, me));
@@ -92,9 +98,11 @@ function render()
   mageBalls.forEach(renderMageball.bind(null, me));
   snakeBites.forEach(renderSnakebite.bind(null, me));
 
-  // Draw all players
-  renderPlayer(me, me);
-  others.forEach(renderPlayer.bind(null, me));
+  // Draw all players that can't hide under foods
+  if(me.tier >= 2){
+    renderPlayer(me, me);
+    others.forEach(renderPlayer.bind(null, me));
+  }
 
   // Draw all rocks
   //rocks.forEach(renderRock.bind(null, me));
@@ -412,6 +420,33 @@ function renderXPBar(me, player) {
   context.textAlign = "center";
   context.fillText(Math.floor(player.score) + " xp (Next animal at " + nextTierXP + " xp)", canvas.width / 2, canvas.height - 7.5);
 }
+
+/*function renderAbilityBar(me, player, abilityCooldown) {
+  const { x, y } = player;
+  console.log(abilityCooldown);
+  // Draw the actual bar
+  context.fillStyle = 'white';
+  context.fillRect(
+    canvas.width / 2 - me.x + x + 15 - canvas.width / 2,
+    canvas.height / 2 - me.y + y + canvas.height / 2 - 60,
+    canvas.width - 30,
+    30,
+  );
+  
+  context.fillStyle = "#2045c9";
+  context.fillRect(
+    canvas.width / 2 - me.x + x + 15 - canvas.width / 2,
+    canvas.height / 2 - me.y + y + canvas.height / 2 - 60,
+    abilityCooldown/10 * canvas.width - 15,
+    30,
+  );
+
+  // Draw the text to render
+  context.fillStyle = 'white';
+  context.font = "15px Arial";
+  context.textAlign = "center";
+  context.fillText(Math.floor(player.score) + " xp (Ability Cooldown: " + Math.floor(player.abilityCooldown) + " seconds)", canvas.width / 2, canvas.height - 37.5);
+}*/
 
 function renderMageball(me, mageBall) {
   const { x, y } = mageBall;

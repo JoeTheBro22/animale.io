@@ -186,6 +186,25 @@ class Game {
 
       if(e === 'q'){
         const abilityCooldown = this.players[socket.id].abilityCooldown;
+        if(player.tier === 2){
+          // Creates a mage ball at the head of the player
+          if(player.devPowers == true || abilityCooldown <= 0){
+            this.melons.push(new Berry(player.x, player.y + Constants.PLAYER_RADIUS * Constants.TIER_3_SIZE * 2));
+            this.melons.push(new Berry(player.x, player.y - Constants.PLAYER_RADIUS * Constants.TIER_3_SIZE * 2));
+            this.melons.push(new Berry(player.x - Constants.PLAYER_RADIUS * Constants.TIER_3_SIZE * 2, player.y));
+            this.melons.push(new Berry(player.x + Constants.PLAYER_RADIUS * Constants.TIER_3_SIZE * 2, player.y));
+            this.players[socket.id].abilityCooldown = 5;
+          }
+        }
+
+        if(player.tier === 4){
+          // Creates a bite at the head of the player
+          if(player.devPowers == true || abilityCooldown <= 0){
+            this.snakeBites.push(new Projectile(player.id, player.x + Constants.PLAYER_RADIUS * Constants.TIER_5_SIZE * Math.sin(player.direction) * 1.2, player.y - Constants.PLAYER_RADIUS * Constants.TIER_5_SIZE * Math.cos(player.direction) * 1.2, player.direction, 0, Constants.SNAKEBITE_LIFESPAN));
+            this.players[socket.id].abilityCooldown = 3;
+          }
+        }
+
         if(player.tier === 14){
           // Creates a mage ball at the head of the player
           if(player.devPowers == true || abilityCooldown <= 0){
@@ -194,13 +213,7 @@ class Game {
           }
         }
 
-        if(player.tier === 4){
-          // Creates a mage ball at the head of the player
-          if(player.devPowers == true || abilityCooldown <= 0){
-            this.snakeBites.push(new Projectile(player.id, player.x + Constants.PLAYER_RADIUS * Constants.TIER_5_SIZE * Math.sin(player.direction) * 1.2, player.y - Constants.PLAYER_RADIUS * Constants.TIER_5_SIZE * Math.cos(player.direction) * 1.2, player.direction, 0, Constants.SNAKEBITE_LIFESPAN));
-            this.players[socket.id].abilityCooldown = 3;
-          }
-        }
+        
       }
       
     }

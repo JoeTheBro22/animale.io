@@ -278,6 +278,7 @@ function applyCollisions(players, otherObj, collisionType) {
 }
 
 function CheckTailbite(smallerPlayer, biggerPlayer){
+  // false = no tailbite, true = tailbite
   let relativeDirection = Math.abs(180/Math.PI * (smallerPlayer.direction - biggerPlayer.direction));
   let directionBetween = Math.atan2(biggerPlayer.y - smallerPlayer.y, biggerPlayer.x - smallerPlayer.x) + 1/2 * Math.PI; // calculates a direction based on the radian measure between the smaller player and bigger player 
   let testPlayerX = smallerPlayer.x + 5 * Math.sin(smallerPlayer.direction);
@@ -296,11 +297,6 @@ function CheckTailbite(smallerPlayer, biggerPlayer){
   else{
     return false;
   }
-  /*
-  Constants.RelativeSizes[smallerPlayer.tier] * Constants.PLAYER_RADIUS
-  */
- 
-   // false = no tailbite, true = tailbite
 }
 
 module.exports = applyCollisions;
