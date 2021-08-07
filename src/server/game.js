@@ -189,7 +189,7 @@ class Game {
         if(player.tier === 14){
           // Creates a mage ball at the head of the player
           if(player.devPowers == true || abilityCooldown <= 0){
-            this.mageBalls.push(new Projectile(player.id, player.x + Constants.PLAYER_RADIUS * Constants.TIER_15_SIZE * Math.sin(player.direction) * 0.9, player.y - Constants.PLAYER_RADIUS * Constants.TIER_15_SIZE * Math.cos(player.direction), player.direction, Constants.MAGEBALL_SPEED, Constants.MAGEBALL_LIFESPAN));
+            this.mageBalls.push(new Projectile(player.id, player.x + Constants.PLAYER_RADIUS * Constants.TIER_15_SIZE * Math.sin(player.direction) * 0.9, player.y - Constants.PLAYER_RADIUS * Constants.TIER_15_SIZE * Math.cos(player.direction) * 0.9, player.direction, Constants.MAGEBALL_SPEED, Constants.MAGEBALL_LIFESPAN));
             this.players[socket.id].abilityCooldown = 2;
           }
         }
@@ -197,7 +197,7 @@ class Game {
         if(player.tier === 4){
           // Creates a mage ball at the head of the player
           if(player.devPowers == true || abilityCooldown <= 0){
-            this.snakeBites.push(new Projectile(player.id, player.x + Constants.PLAYER_RADIUS * Constants.TIER_5_SIZE * Math.sin(player.direction) * 0.9, player.y - Constants.PLAYER_RADIUS * Constants.TIER_5_SIZE * Math.cos(player.direction), player.direction, 0, Constants.SNAKEBITE_LIFESPAN));
+            this.snakeBites.push(new Projectile(player.id, player.x + Constants.PLAYER_RADIUS * Constants.TIER_5_SIZE * Math.sin(player.direction) * 1.2, player.y - Constants.PLAYER_RADIUS * Constants.TIER_5_SIZE * Math.cos(player.direction) * 1.2, player.direction, 0, Constants.SNAKEBITE_LIFESPAN));
             this.players[socket.id].abilityCooldown = 3;
           }
         }

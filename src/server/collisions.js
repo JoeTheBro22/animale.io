@@ -118,15 +118,14 @@ function applyCollisions(players, otherObj, collisionType) {
                 otherObject.getKillXP(player.score * 0.5 + otherObject.score * 0.05);
                 break;
               }
-            } else {
             }
           }
           
-          else{
+          /*else{
             if(player.tier == 15 && otherObject.tier == 15){  // If players are sea snakes, then let them 1v1
               var P1tailbite;
               
-              P1tailbite = CheckTailbite(otherObject, player);
+              P1tailbite = CheckTailbite(otherObject, player, nonPlayerRadius, playerRadius);
               if(P1tailbite == true){
                 player.takeHitDamage();
                 if(player.hp <= 0){
@@ -137,7 +136,7 @@ function applyCollisions(players, otherObj, collisionType) {
 
               var P2tailbite;
               
-              P2tailbite = CheckTailbite(player, otherObject);
+              P2tailbite = CheckTailbite(player, otherObject, nonPlayerRadius, playerRadius);
               if(P2tailbite == true){
                 otherObject.takeHitDamage();
                 if(otherObject.hp <= 0){
@@ -146,7 +145,7 @@ function applyCollisions(players, otherObj, collisionType) {
                 }
               }
             }
-          }
+          }*/
 
           player.takeKnockback(null, player.x - otherObject.x, player.y - otherObject.y);
           otherObject.takeKnockback(null, otherObject.x - player.x, otherObject.y - player.y);
@@ -224,21 +223,46 @@ function applyCollisions(players, otherObj, collisionType) {
         } else if (collisionType == 16){
           if(player.tier < 14){
             player.takeProjectileDamage(Constants.MAGEBALL_DAMAGE);
+            player.takeKnockback(null, player.x - otherObject.x, player.y - otherObject.y);
             if(player.hp <= 0){
-              //otherObject.ParentID.getKillXP(otherObject.score * 0.5 + player.score * 0.05);
-              //Find Some way to give parents xp
+              for(let a = 0; a < players.length; a++){
+                if(players[a].id === otherObject.parentID){
+                  players[a].getKillXP(player.score * 0.5 + player.score * 0.05);
+                }
+              }
             }
+          } else if(player.tier > 14){
+            player.takeProjectileDamage(Constants.MAGEBALL_HIGHER_TIER_DAMAGE);
+            player.takeKnockback(null, 0.5*player.x - 0.5*otherObject.x, 0.5*player.y - 0.5*otherObject.y);
+            /*if(player.hp <= 0){
+              for(let a = 0; a < players.length; a++){
+                if(players[a].id === otherObject.parentID){
+                  players[a].getKillXP(player.score * 0.5 + player.score * 0.05);
+                }
+              }
+            }*/
           }
         } else if (collisionType == 17){
-          console.log(player.tier);
           if(player.tier < 4){
             player.takeProjectileDamage(Constants.SNAKEBITE_DAMAGE);
+            player.takeKnockback(null, player.x - otherObject.x, player.y - otherObject.y);
             if(player.hp <= 0){
-              // player.getKillXP(otherObject.score * 0.5 + player.score * 0.05);
-              //Find Some way to give parents xp
+              for(let b = 0; b < players.length; b++){
+                if(players[b].id === otherObject.parentID){
+                  players[b].getKillXP(player.score * 0.5 + player.score * 0.05);
+                }
+              }
             }
           } else if(player.tier > 4){
             player.takeProjectileDamage(Constants.SNAKEBITE_HIGHER_TIER_DAMAGE);
+            player.takeKnockback(null, 0.5*player.x - 0.5*otherObject.x, 0.5*player.y - 0.5*otherObject.y);
+            if(player.hp <= 0){
+              for(let b = 0; b < players.length; b++){
+                if(players[b].id === otherObject.parentID){
+                  players[b].getKillXP(player.score * 0.5 + player.score * 0.05);
+                }
+              }
+            }
           } else{
             destroyObject = false;
           }
@@ -254,18 +278,29 @@ function applyCollisions(players, otherObj, collisionType) {
 }
 
 function CheckTailbite(smallerPlayer, biggerPlayer){
-  let relativeDirection = Math.hypot(biggerPlayer.x - smallerPlayer.x, biggerPlayer.y - smallerPlayer.y);
-  // Convert an X and a Y from the relative positions of the players into a vector (see knocbkack)
-  /*let relativeXDirection = Math.sqrt(smallerPlayer.x * smallerPlayer.x + biggerPlayer.x * biggerPlayer.x);
-  let relativeYDirection = Math.sqrt(smallerPlayer.y * smallerPlayer.y + biggerPlayer.y * biggerPlayer.y);
-  let relativeDirection = Math.atan2(relativeXDirection, relativeYDirection);
-  // Compare that vector with the direction of the bigger player (and somewhat smaller player)
-  if(((smallerPlayer.direction - relativeDirection) * 180/Math.PI <= 20 || (smallerPlayer.direction - relativeDirection) * 180/Math.PI >= 340) && ((biggerPlayer.direction - relativeDirection) * 180/Math.PI <= 20 || (biggerPlayer.direction - relativeDirection) * 180/Math.PI >= 340)){
-    return true;
-  } else{
+  let relativeDirection = Math.abs(180/Math.PI * (smallerPlayer.direction - biggerPlayer.direction));
+  let directionBetween = Math.atan2(biggerPlayer.y - smallerPlayer.y, biggerPlayer.x - smallerPlayer.x) + 1/2 * Math.PI; // calculates a direction based on the radian measure between the smaller player and bigger player 
+  let testPlayerX = smallerPlayer.x + 5 * Math.sin(smallerPlayer.direction);
+  let testPlayerY = smallerPlayer.y + -5 * Math.cos(smallerPlayer.direction);
+  let distance = Math.sqrt((testPlayerX - biggerPlayer.x) * (testPlayerX - biggerPlayer.x) + (testPlayerY - biggerPlayer.y) * (testPlayerY - biggerPlayer.y));
+  let combinedRadius = Constants.RelativeSizes[smallerPlayer.tier] * Constants.PLAYER_RADIUS + Constants.RelativeSizes[biggerPlayer.tier] * Constants.PLAYER_RADIUS;
+  console.log(Math.abs(directionBetween - smallerPlayer.direction) * 180/ Math.PI);
+  if(relativeDirection <= 10 || relativeDirection >= 350){
+    if(distance <= combinedRadius && (Math.abs(directionBetween - smallerPlayer.direction) * 180/Math.PI <= 20 || Math.abs(directionBetween - smallerPlayer.direction) * 180/Math.PI >= 340)){
+      return true;
+    } else{
+      return false;
+    }
+  } 
+  
+  else{
     return false;
-  }*/
-  return false;
+  }
+  /*
+  Constants.RelativeSizes[smallerPlayer.tier] * Constants.PLAYER_RADIUS
+  */
+ 
+   // false = no tailbite, true = tailbite
 }
 
 module.exports = applyCollisions;
