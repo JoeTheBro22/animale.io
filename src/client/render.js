@@ -147,31 +147,34 @@ function renderMinimap(me, lavas, others) {
   );
 
   for(var l = 0; l < lavas.length; l++){
-    context.drawImage(
-      getAsset('lava.png'),
-      15 + lavas[l].x/Constants.MAP_SIZE * 200 - 10/2,
-      15 + lavas[l].y/Constants.MAP_SIZE * 200 - 10/2, // lowercase L
-      10,
-      10,
-    );
+    if(lavas[l].x !== null && lavas[l].y !== null){
+      context.drawImage(
+        getAsset('lava.png'),
+        15 + lavas[l].x/Constants.MAP_SIZE * 200 - 10/2,
+        15 + lavas[l].y/Constants.MAP_SIZE * 200 - 10/2, // lowercase L
+        10,
+        10,
+      );
+    }
   }
 
   context.fillStyle = "grey";
   for(var o = 0; o < others.length; o++){
-    if(me.tier > others[o].tier){
-      context.beginPath();
-      context.arc(15 + others[o].x/Constants.MAP_SIZE * 200, 15 + others[o].y/Constants.MAP_SIZE * 200, 3, 0, 2 * Math.PI);
-      context.fill();
-    } else if(me.tier == others[o].tier){
-      context.beginPath();
-      context.arc(15 + others[o].x/Constants.MAP_SIZE * 200, 15 + others[o].y/Constants.MAP_SIZE * 200, 5, 0, 2 * Math.PI);
-      context.fill();
-    } else{
-      context.beginPath();
-      context.arc(15 + others[o].x/Constants.MAP_SIZE * 200, 15 + others[o].y/Constants.MAP_SIZE * 200, 7, 0, 2 * Math.PI);
-      context.fill();
+    if(others[o].tier !== null && others[o].x !== null && others[o].y !== null){
+      if(me.tier > others[o].tier){
+        context.beginPath();
+        context.arc(15 + others[o].x/Constants.MAP_SIZE * 200, 15 + others[o].y/Constants.MAP_SIZE * 200, 3, 0, 2 * Math.PI);
+        context.fill();
+      } else if(me.tier == others[o].tier){
+        context.beginPath();
+        context.arc(15 + others[o].x/Constants.MAP_SIZE * 200, 15 + others[o].y/Constants.MAP_SIZE * 200, 5, 0, 2 * Math.PI);
+        context.fill();
+      } else{
+        context.beginPath();
+        context.arc(15 + others[o].x/Constants.MAP_SIZE * 200, 15 + others[o].y/Constants.MAP_SIZE * 200, 7, 0, 2 * Math.PI);
+        context.fill();
+      }
     }
-    
   }
 
   context.fillStyle = "white";
@@ -470,7 +473,7 @@ function renderXPBar(me, player) {
     canvas.width - 30,
     30,
   );
-  
+
   context.fillStyle = "#e8c852";
   context.fillRect(
     canvas.width / 2 - me.x + x + 15 - canvas.width / 2,
