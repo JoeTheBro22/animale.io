@@ -84,6 +84,12 @@ function applyCollisions(players, otherObj, collisionType) {
         } else if (collisionType == 1){
           if(player.tier <= 12){
             player.takeLavaDamage();
+            destroyObject = false;
+          } else if(player.tier == 15){
+            player.getKillXP(Constants.LAVA_XP);
+            destroyObject = true;
+          } else{
+            destroyObject = false;
           }
         } else if (collisionType == 2){
           // push player away from rock

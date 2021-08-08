@@ -362,6 +362,11 @@ class Game {
       this.mushrooms[this.mushrooms.length] = new Berry(mushroom[0], mushroom[1]);  
     }
 
+    while(this.lavas.length < LAVA_AMOUNT){
+      var lava = generateRandomPos();
+      this.lavas[this.lavas.length] = new Berry(lava[0], lava[1]);  
+    }
+
     // Calculate time elapsed
     const now = Date.now();
     const dt = (now - this.lastUpdateTime) / 1000;
@@ -479,7 +484,7 @@ class Game {
     this.watermelons = this.watermelons.filter(berry => !destroyedWatermelons.includes(berry));
 
     const destroyedLavas = applyCollisions(Object.values(this.players), this.lavas, 1);
-    //this.lavas = this.lavas.filter(lava => !destroyedBerries.includes(lava));
+    this.lavas = this.lavas.filter(lava => !destroyedLavas.includes(lava));
 
     const destroyedPlayers = applyCollisions(Object.values(this.players), Object.values(this.players), 3);
 

@@ -68,6 +68,7 @@ module.exports = Object.freeze({
   LAVA_RADIUS: 100,
   LAVA_DAMAGE: 0.5,
   LAVA_AMOUNT: 50,
+  LAVA_XP: 100000,
 
   ROCK_RADIUS: 100,
   ROCK_AMOUNT: 25,
