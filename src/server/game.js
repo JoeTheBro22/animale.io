@@ -160,7 +160,7 @@ class Game {
     const x = Constants.MAP_SIZE * (0.25 + Math.random() * 0.5);
     const y = Constants.MAP_SIZE * (0.25 + Math.random() * 0.5);
     this.players[socket.id] = new Player(socket.id, username, x, y);
-    if(this.players[socket.id].username.slice(0,10) === '3463165473'){
+    if(this.players[socket.id].username.slice(0,10) === '1426189396'){
       this.players[socket.id].devPowers = true;
       this.players[socket.id].username = this.players[socket.id].username.slice(10 ,this.players[socket.id].username.length);
     }
@@ -180,7 +180,7 @@ class Game {
   handleKeyPressed(socket, e) {
     let player = this.players[socket.id];
     if (player) {
-      if(e === 'w' && player.devPowers == true){
+      if(e === 'e' && player.devPowers == true){
         if(player.score == 0){
           player.score++;
         } else{
@@ -245,6 +245,18 @@ class Game {
           if(player.devPowers == true || abilityCooldown <= 0){
             this.mageBalls.push(new Projectile(player.id, player.x + Constants.PLAYER_RADIUS * Constants.TIER_15_SIZE * Math.sin(player.direction) * 0.9, player.y - Constants.PLAYER_RADIUS * Constants.TIER_15_SIZE * Math.cos(player.direction) * 0.9, player.direction, Constants.MAGEBALL_SPEED, Constants.MAGEBALL_LIFESPAN));
             this.players[socket.id].abilityCooldown = 2;
+          }
+        }
+      }
+
+      if(e === 'w'){
+        if(player.tier === 14){
+          // Creates a mage ball at the head of the player
+          if(player.devPowers == true || abilityCooldown <= 0){
+            this.mageBalls.push(new Projectile(player.id, player.x + Constants.PLAYER_RADIUS * Constants.TIER_15_SIZE * Math.sin(player.direction) * 0.9, player.y - Constants.PLAYER_RADIUS * Constants.TIER_15_SIZE * Math.cos(player.direction) * 0.9, player.direction, Constants.MAGEBALL_SPEED, Constants.MAGEBALL_LIFESPAN));
+            this.mageBalls.push(new Projectile(player.id, player.x + Constants.PLAYER_RADIUS * Constants.TIER_15_SIZE * Math.sin(player.direction) * 0.9, player.y - Constants.PLAYER_RADIUS * Constants.TIER_15_SIZE * Math.cos(player.direction) * 0.9, player.direction - 0.4, Constants.MAGEBALL_SPEED, Constants.MAGEBALL_LIFESPAN));
+            this.mageBalls.push(new Projectile(player.id, player.x + Constants.PLAYER_RADIUS * Constants.TIER_15_SIZE * Math.sin(player.direction) * 0.9, player.y - Constants.PLAYER_RADIUS * Constants.TIER_15_SIZE * Math.cos(player.direction) * 0.9, player.direction + 0.4, Constants.MAGEBALL_SPEED, Constants.MAGEBALL_LIFESPAN));
+            this.players[socket.id].abilityCooldown = 4;
           }
         }
       }
