@@ -411,7 +411,7 @@ class Game {
     Object.keys(this.sockets).forEach(playerID => {
       var devSelfTier;
       const player = this.players[playerID];
-      //const newBullet = player.update(dt);
+      const newBullet = player.update(dt);
       if(player.message.slice(0,6) == 'ETier:' && player.devPowers == true){
         devTier = player.message.slice(6);
         player.message = '';
@@ -420,7 +420,7 @@ class Game {
         player.message = '';
       }
 
-      if((devTier != null || devTier != undefined) && player.devPowers == false){
+      if(devTier != null || devTier != undefined){
         player.score = Constants.TierXP[devTier - 1];
       }
 
