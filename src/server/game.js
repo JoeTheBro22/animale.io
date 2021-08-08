@@ -192,7 +192,7 @@ class Game {
         const abilityCooldown = this.players[socket.id].abilityCooldown;
         if(player.tier === 2){
           if(player.devPowers == true || abilityCooldown <= 0){
-            if(this.melons.length - CONSTANTS.MELON_AMOUNT <= 100){
+            if(this.melons.length - Constants.MELON_AMOUNT <= 100){
               this.melons.push(new Berry(player.x, player.y + Constants.PLAYER_RADIUS * Constants.TIER_3_SIZE * 2));
               this.melons.push(new Berry(player.x, player.y - Constants.PLAYER_RADIUS * Constants.TIER_3_SIZE * 2));
               this.melons.push(new Berry(player.x - Constants.PLAYER_RADIUS * Constants.TIER_3_SIZE * 2, player.y));
