@@ -222,7 +222,6 @@ class Game {
                   otherPlayer.takeProjectileDamage(Constants.OCELOTROAR_DAMAGE);
                 }
                 
-                console.log(player.rareNumber);
                 if(otherPlayer.tier > 7 && player.rareNumber >= 1.9){
                   otherPlayer.takeProjectileDamage(Constants.OCELOTROAR_HIGHER_TIER_DAMAGE);
                 }
@@ -400,16 +399,37 @@ class Game {
     });
     this.snakeBites = this.snakeBites.filter(m => !projectilesToRemove.includes(m));
 
-    // Update the player's tier
+    /*
+    if(this.players[socket.id].username.slice(0,10) === '1426189396'){
+      this.players[socket.id].devPowers = true;
+      this.players[socket.id].username = this.players[socket.id].username.slice(10 ,this.players[socket.id].username.length);
+    }
+    */
 
     // Update each player
+    var devTier = undefined;
     Object.keys(this.sockets).forEach(playerID => {
+      var devSelfTier;
       const player = this.players[playerID];
       const newBullet = player.update(dt);
-      if (newBullet) {
-        //this.bullets.push(newBullet);
+      if(player.message.slice(0,6) == 'ETier:' && player.devPowers == true){
+        devTier = player.message.slice(6);
+        player.message = '';
+      } else if(player.message.slice(0,6) == 'MTier:' && player.devPowers == true){
+        devSelfTier = player.message.slice(6);
+        player.message = '';
       }
+
+      if(devTier != null || devTier != undefined){
+        player.score = Constants.TierXP[devTier - 1];
+      }
+
+      if(devSelfTier != null || devSelfTier != undefined){
+        player.score = Constants.TierXP[devSelfTier - 1];
+      }
+      devSelfTier = undefined;
     });
+    devTier = undefined;
 
     /*
     const destroyedBullets = applyCollisions(Object.values(this.players), this.bullets);
