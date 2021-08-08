@@ -93,6 +93,10 @@ function applyCollisions(players, otherObj, collisionType) {
             tailbite = CheckTailbite(otherObject, player);
             if(tailbite == true){
               player.takeHitDamage();
+              // Giving tailbite XP
+              player.getKillXP(-player.score*1/20);
+              otherObject.getKillXP(player.score*1/25);
+
               if(player.hp <= 0){
                 otherObject.getKillXP(player.score * 0.5 + otherObject.score * 0.05);
                 break;
@@ -100,6 +104,8 @@ function applyCollisions(players, otherObj, collisionType) {
             } else if(tailbite == false){
               // Normal biting (bigger player eats smaller one)
               otherObject.takeHitDamage();
+              otherObject.getKillXP(-otherObject.score*1/20);
+              player.getKillXP(otherObject.score*1/25);
               if(otherObject.hp <= 0){
                 player.getKillXP(otherObject.score * 0.5 + player.score * 0.05);
                 break;
@@ -111,6 +117,8 @@ function applyCollisions(players, otherObj, collisionType) {
             tailbite = CheckTailbite(player, otherObject);
             if(tailbite == true){
               otherObject.takeHitDamage();
+              otherObject.getKillXP(-otherObject.score*1/20);
+              player.getKillXP(otherObject.score*1/25);
               if(otherObject.hp <= 0){
                 player.getKillXP(otherObject.score * 0.5 + player.score * 0.05);
                 break;
@@ -118,7 +126,9 @@ function applyCollisions(players, otherObj, collisionType) {
             } else if(tailbite == false){
               // Normal biting (bigger player eats smaller one)
               player.takeHitDamage();
-            
+              player.getKillXP(-player.score*1/20);
+              otherObject.getKillXP(player.score*1/25);
+
               if(player.hp <= 0){
                 otherObject.getKillXP(player.score * 0.5 + otherObject.score * 0.05);
                 break;
@@ -152,8 +162,8 @@ function applyCollisions(players, otherObj, collisionType) {
             }
           }*/
 
-          player.takeKnockback(null, player.x - otherObject.x, player.y - otherObject.y);
-          otherObject.takeKnockback(null, otherObject.x - player.x, otherObject.y - player.y);
+          player.takeKnockback(null, (player.x - otherObject.x)/2, (player.y - otherObject.y)/2);
+          otherObject.takeKnockback(null, (otherObject.x - player.x)/2, (otherObject.y - player.y)/2);
         }
 
           else if (collisionType == 4){
@@ -297,7 +307,7 @@ function CheckTailbite(smallerPlayer, biggerPlayer){
   let testPlayerY = smallerPlayer.y + -5 * Math.cos(smallerPlayer.direction);
   let distance = Math.sqrt((testPlayerX - biggerPlayer.x) * (testPlayerX - biggerPlayer.x) + (testPlayerY - biggerPlayer.y) * (testPlayerY - biggerPlayer.y));
   let combinedRadius = Constants.RelativeSizes[smallerPlayer.tier] * Constants.PLAYER_RADIUS + Constants.RelativeSizes[biggerPlayer.tier] * Constants.PLAYER_RADIUS;
-  if(relativeDirection <= 10 || relativeDirection >= 350){
+  if(relativeDirection <= 40 || relativeDirection >= 320){
     if(distance <= combinedRadius && (Math.abs(directionBetween - smallerPlayer.direction) * 180/Math.PI <= 20 || Math.abs(directionBetween - smallerPlayer.direction) * 180/Math.PI >= 340)){
       return true;
     } else{

@@ -3,7 +3,7 @@ const Bullet = require('./bullet');
 const Constants = require('../shared/constants');
 
 class Player extends ObjectClass {
-  constructor(id, username, x, y, radius, boostCooldown, maxSpeed, devPowers, animalType, rareNumber, damageCooldown, message, abilityCooldown) {
+  constructor(id, username, x, y, radius, boostCooldown, maxSpeed, devPowers, animalType, rareNumber, damageCooldown, message, abilityCooldown, canvasWidth, canvasHeight) {
     super(id, x, y, Math.random() * 2 * Math.PI, Constants.PLAYER_SPEED);
     this.username = username;
     this.hp = Constants.PLAYER_MAX_HP;
@@ -17,6 +17,8 @@ class Player extends ObjectClass {
     this.rareNumber = Math.random() * 2;
     this.damageCooldown = 0;
     this.abilityCooldown = Constants.ABILITY_COOLDOWN;
+    this.canvasWidth = 5000;
+    this.canvasHeight = 5000;
     // Animal types (for teleporting to the correct biome)
     // 0 = land, 1 = ocean
     this.animalType = 0;

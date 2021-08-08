@@ -114,6 +114,7 @@ function interpolateObject(object1, object2, ratio) {
 }
 
 function interpolateObjectArray(objects1, objects2, ratio) {
+  // Find Some way to only return nearby objects
   return objects1.map(o => interpolateObject(o, objects2.find(o2 => o.id === o2.id), ratio));
 }
 

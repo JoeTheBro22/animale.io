@@ -192,11 +192,13 @@ class Game {
         const abilityCooldown = this.players[socket.id].abilityCooldown;
         if(player.tier === 2){
           if(player.devPowers == true || abilityCooldown <= 0){
-            this.melons.push(new Berry(player.x, player.y + Constants.PLAYER_RADIUS * Constants.TIER_3_SIZE * 2));
-            this.melons.push(new Berry(player.x, player.y - Constants.PLAYER_RADIUS * Constants.TIER_3_SIZE * 2));
-            this.melons.push(new Berry(player.x - Constants.PLAYER_RADIUS * Constants.TIER_3_SIZE * 2, player.y));
-            this.melons.push(new Berry(player.x + Constants.PLAYER_RADIUS * Constants.TIER_3_SIZE * 2, player.y));
-            this.players[socket.id].abilityCooldown = 5;
+            if(this.melons.length - CONSTANTS.MELON_AMOUNT <= 100){
+              this.melons.push(new Berry(player.x, player.y + Constants.PLAYER_RADIUS * Constants.TIER_3_SIZE * 2));
+              this.melons.push(new Berry(player.x, player.y - Constants.PLAYER_RADIUS * Constants.TIER_3_SIZE * 2));
+              this.melons.push(new Berry(player.x - Constants.PLAYER_RADIUS * Constants.TIER_3_SIZE * 2, player.y));
+              this.melons.push(new Berry(player.x + Constants.PLAYER_RADIUS * Constants.TIER_3_SIZE * 2, player.y));
+              this.players[socket.id].abilityCooldown = 5;
+            }
           }
         }
 
@@ -270,6 +272,8 @@ class Game {
   }
   
   handleSpeed(socket, x, y, canvasWidth, canvasHeight) {
+    this.players[socket.id].canvasWidth = canvasWidth;
+    this.players[socket.id].canvasHeight = canvasHeight;
     if (this.players[socket.id]) {
       this.players[socket.id].setSpeed(x, y, canvasWidth, canvasHeight);
     }
@@ -507,12 +511,79 @@ class Game {
   }
 
   createUpdate(player, leaderboard) {
+
+    //b => b.distanceTo(player) <= Math.sqrt(player.canvasWidth/2 * player.canvasWidth/2 + player.canvasHeight/2 * player.canvasHeight/2),
+
     const nearbyPlayers = Object.values(this.players).filter(
       p => p !== player
     );
 
     const nearbyBullets = this.bullets.filter(
-      b => b.distanceTo(player) <= Constants.MAP_SIZE / 2,
+      b => b.distanceTo(player) <= player.canvasWidth * player.canvasWidth + player.canvasHeight * player.canvasHeight,
+    );
+
+    const nearbyBerries = this.berries.filter(
+      b => (Math.abs(player.x - b.x) <= player.canvasWidth/2 + Constants.BERRY_RADIUS + 10 && Math.abs(player.y - b.y) <= player.canvasHeight/2 + Constants.BERRY_RADIUS + 10)
+    );
+
+    const nearbyMelons = this.melons.filter(
+      b => (Math.abs(player.x - b.x) <= player.canvasWidth/2 + Constants.MELON_RADIUS + 10 && Math.abs(player.y - b.y) <= player.canvasHeight/2 + Constants.MELON_RADIUS + 10)
+    );
+
+    const nearbyBlackberries = this.blackberries.filter(
+      b => (Math.abs(player.x - b.x) <= player.canvasWidth/2 + Constants.BLACKBERRY_RADIUS + 10 && Math.abs(player.y - b.y) <= player.canvasHeight/2 + Constants.BLACKBERRY_RADIUS + 10)
+    );
+
+    const nearbyCarrots = this.carrots.filter(
+      b => (Math.abs(player.x - b.x) <= player.canvasWidth/2 + Constants.CARROT_RADIUS + 10 && Math.abs(player.y - b.y) <= player.canvasHeight/2 + Constants.CARROT_RADIUS + 10)
+    );
+
+    const nearbyLilypads = this.lilypads.filter(
+      b => (Math.abs(player.x - b.x) <= player.canvasWidth/2 + Constants.LILYPAD_RADIUS + 10 && Math.abs(player.y - b.y) <= player.canvasHeight/2 + Constants.LILYPAD_RADIUS + 10)
+    );
+
+    const nearbyRedMushrooms = this.redMushrooms.filter(
+      b => (Math.abs(player.x - b.x) <= player.canvasWidth/2 + Constants.RED_MUSHROOM_RADIUS + 10 && Math.abs(player.y - b.y) <= player.canvasHeight/2 + Constants.RED_MUSHROOM_RADIUS + 10)
+    );
+
+    const nearbyWatermelonSlices = this.watermelonSlices.filter(
+      b => (Math.abs(player.x - b.x) <= player.canvasWidth/2 + Constants.WATERMELON_SLICE_RADIUS + 10 && Math.abs(player.y - b.y) <= player.canvasHeight/2 + Constants.WATERMELON_SLICE_RADIUS + 10)
+    );
+
+    const nearbyBananas = this.bananas.filter(
+      b => (Math.abs(player.x - b.x) <= player.canvasWidth/2 + Constants.BANANA_RADIUS + 10 && Math.abs(player.y - b.y) <= player.canvasHeight/2 + Constants.BANANA_RADIUS + 10)
+    );
+
+    const nearbyCoconuts = this.coconuts.filter(
+      b => (Math.abs(player.x - b.x) <= player.canvasWidth/2 + Constants.COCONUT_RADIUS + 10 && Math.abs(player.y - b.y) <= player.canvasHeight/2 + Constants.COCONUT_RADIUS + 10)
+    );
+
+    const nearbyPears = this.pears.filter(
+      b => (Math.abs(player.x - b.x) <= player.canvasWidth/2 + Constants.PEAR_RADIUS + 10 && Math.abs(player.y - b.y) <= player.canvasHeight/2 + Constants.PEAR_RADIUS + 10)
+    );
+
+    const nearbyMushroomBushes = this.mushroomBushes.filter(
+      b => (Math.abs(player.x - b.x) <= player.canvasWidth/2 + Constants.MUSHROOM_BUSH_RADIUS + 10 && Math.abs(player.y - b.y) <= player.canvasHeight/2 + Constants.MUSHROOM_BUSH_RADIUS + 10)
+    );
+
+    const nearbyWatermelons = this.watermelons.filter(
+      b => (Math.abs(player.x - b.x) <= player.canvasWidth/2 + Constants.WATERMELON_RADIUS + 10 && Math.abs(player.y - b.y) <= player.canvasHeight/2 + Constants.WATERMELON_RADIUS + 10)
+    );
+
+    const nearbyMushrooms = this.mushrooms.filter(
+      b => (Math.abs(player.x - b.x) <= player.canvasWidth/2 + Constants.MUSHROOM_RADIUS + 10 && Math.abs(player.y - b.y) <= player.canvasHeight/2 + Constants.MUSHROOM_RADIUS + 10)
+    );
+
+    const nearbyLavas = this.lavas.filter(
+      b => (Math.abs(player.x - b.x) <= player.canvasWidth/2 + Constants.LAVA_RADIUS + 10 && Math.abs(player.y - b.y) <= player.canvasHeight/2 + Constants.LAVA_RADIUS + 10)
+    );
+
+    const nearbyMageBalls = this.mageBalls.filter(
+      b => (Math.abs(player.x - b.x) <= player.canvasWidth/2 + Constants.MAGEBALL_RADIUS + 10 && Math.abs(player.y - b.y) <= player.canvasHeight/2 + Constants.MAGEBALL_RADIUS + 10)
+    );
+
+    const nearbySnakeBites = this.snakeBites.filter(
+      b => (Math.abs(player.x - b.x) <= player.canvasWidth/2 + Constants.SNAKEBITE_RADIUS + 10 && Math.abs(player.y - b.y) <= player.canvasHeight/2 + Constants.SNAKEBITE_RADIUS + 10)
     );
 
     return {
@@ -520,22 +591,22 @@ class Game {
       me: player.serializeForUpdate(),
       others: nearbyPlayers.map(p => p.serializeForUpdate()),
       bullets: nearbyBullets.map(b => b.serializeForUpdate()),
-      berries: this.berries.map(b => b.serializeForUpdate()),
-      melons: this.melons.map(b => b.serializeForUpdate()),
-      blackberries: this.blackberries.map(b => b.serializeForUpdate()),
-      carrots: this.carrots.map(b => b.serializeForUpdate()),
-      lilypads: this.lilypads.map(b => b.serializeForUpdate()),
-      redMushrooms: this.redMushrooms.map(b => b.serializeForUpdate()),
-      watermelonSlices: this.watermelonSlices.map(b => b.serializeForUpdate()),
-      bananas: this.bananas.map(b => b.serializeForUpdate()),
-      coconuts: this.coconuts.map(b => b.serializeForUpdate()),
-      pears: this.pears.map(b => b.serializeForUpdate()),
-      mushroomBushes: this.mushroomBushes.map(b => b.serializeForUpdate()),
-      watermelons: this.watermelons.map(b => b.serializeForUpdate()),
-      mushrooms: this.mushrooms.map(b => b.serializeForUpdate()),
-      lavas: this.lavas.map(b => b.serializeForUpdate()),
-      mageBalls: this.mageBalls.map(b => b.serializeForUpdate()),
-      snakeBites: this.snakeBites.map(b => b.serializeForUpdate()),
+      berries: nearbyBerries.map(b => b.serializeForUpdate()),
+      melons: nearbyMelons.map(b => b.serializeForUpdate()),
+      blackberries: nearbyBlackberries.map(b => b.serializeForUpdate()),
+      carrots: nearbyCarrots.map(b => b.serializeForUpdate()),
+      lilypads: nearbyLilypads.map(b => b.serializeForUpdate()),
+      redMushrooms: nearbyRedMushrooms.map(b => b.serializeForUpdate()),
+      watermelonSlices: nearbyWatermelonSlices.map(b => b.serializeForUpdate()),
+      bananas: nearbyBananas.map(b => b.serializeForUpdate()),
+      coconuts: nearbyCoconuts.map(b => b.serializeForUpdate()),
+      pears: nearbyPears.map(b => b.serializeForUpdate()),
+      mushroomBushes: nearbyMushroomBushes.map(b => b.serializeForUpdate()),
+      watermelons: nearbyWatermelons.map(b => b.serializeForUpdate()),
+      mushrooms: nearbyMushrooms.map(b => b.serializeForUpdate()),
+      lavas: nearbyLavas.map(b => b.serializeForUpdate()),
+      mageBalls: nearbyMageBalls.map(b => b.serializeForUpdate()),
+      snakeBites: nearbySnakeBites.map(b => b.serializeForUpdate()),
       leaderboard,
     };
   }
