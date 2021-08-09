@@ -179,8 +179,8 @@ class Game {
 
   handleKeyPressed(socket, e) {
     let player = this.players[socket.id];
-    if (player && player.abilityCooldown !== null && player.devPowers !== null && player.tier !== null) {
-      if(e === '3' && player.devPowers == true){
+    if (player && player.tier !== null) {
+      if(e === 'e' && player.devPowers == true){
         if(player.score == 0){
           player.score++;
         } else{
@@ -188,7 +188,7 @@ class Game {
         }
       }
 
-      if(e === '1'){
+      if(e === 'q'){
         const abilityCooldown = this.players[socket.id].abilityCooldown;
         if(player.tier === 2){
           if(player.devPowers == true || abilityCooldown <= 0){
@@ -250,7 +250,7 @@ class Game {
         }
       }
 
-      if(e === '2'){
+      if(e === 'w'){
         if(player.tier === 14){
           // Creates a mage ball at the head of the player
           if(player.devPowers == true || abilityCooldown <= 0){
@@ -265,7 +265,7 @@ class Game {
   }
 
   handleChat(socket, message) {
-    if (this.players[socket.id] != undefined) {
+    if (this.players[socket.id]) {
       this.players[socket.id].message = message;
     }
   }
