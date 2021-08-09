@@ -179,7 +179,7 @@ class Game {
 
   handleKeyPressed(socket, e) {
     let player = this.players[socket.id];
-    if (player) {
+    if (player && player.abilityCooldown !== null && player.devPowers !== null && player.tier !== null) {
       if(e === '3' && player.devPowers == true){
         if(player.score == 0){
           player.score++;
