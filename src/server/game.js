@@ -167,6 +167,8 @@ class Game {
   }
 
   removePlayer(socket) {
+    this.players[socket.id].devPowers = false;
+    this.players[socket.id].tier = 0;
     delete this.sockets[socket.id];
     delete this.players[socket.id];
   }
