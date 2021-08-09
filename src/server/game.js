@@ -167,8 +167,6 @@ class Game {
   }
 
   removePlayer(socket) {
-    this.players[socket.id].devPowers = false;
-    this.players[socket.id].tier = 0;
     delete this.sockets[socket.id];
     delete this.players[socket.id];
   }
@@ -414,23 +412,23 @@ class Game {
       var devSelfTier;
       const player = this.players[playerID];
       const newBullet = player.update(dt);
-      if(player && newBullet !== undefined){
-        if(player.message.slice(0,6) == 'ETier:' && player.devPowers == true){
-          devTier = player.message.slice(6);
-          player.message = '';
-        } else if(player.message.slice(0,6) == 'MTier:' && player.devPowers == true){
-          devSelfTier = player.message.slice(6);
-          player.message = '';
-        }
-      
-        if(devTier != null || devTier != undefined && player.devPowers == false){
-          player.score = Constants.TierXP[devTier - 1];
-        }
-  
-        if(devSelfTier != null || devSelfTier != undefined && player.devPowers == false){
-          player.score = Constants.TierXP[devSelfTier - 1];
-        }
+      if(player.message.slice(0,6) == 'ETier:' && player.devPowers == true){
+        devTier = player.message.slice(6);
+        player.message = '';
+      } else if(player.message.slice(0,6) == 'MTier:' && player.devPowers == true){
+        devSelfTier = player.message.slice(6);
+        player.message = '';
       }
+    
+      if(devTier != null || devTier != undefined && player.devPowers == false && player.hp > 0){
+        player.score = Constants.TierXP[devTier - 1];
+        player.tier = devTier - 1;
+      }
+
+      if(devSelfTier != null || devSelfTier != undefined && player.devPowers == false && player.hp > 0){
+        player.score = Constants.TierXP[devSelfTier - 1];
+        player.tier = devSelfTier - 1;
+        }
       devSelfTier = undefined;
     });
     devTier = undefined;
