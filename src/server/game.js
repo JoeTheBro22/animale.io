@@ -412,14 +412,15 @@ class Game {
       var devSelfTier;
       const player = this.players[playerID];
       const newBullet = player.update(dt);
-      if(player.message.slice(0,6) == 'ETier:' && player.devPowers == true){
-        devTier = player.message.slice(6);
-        player.message = '';
-      } else if(player.message.slice(0,6) == 'MTier:' && player.devPowers == true){
-        devSelfTier = player.message.slice(6);
-        player.message = '';
-      }
-      if(player){
+      if(player && newBullet !== undefined){
+        if(player.message.slice(0,6) == 'ETier:' && player.devPowers == true){
+          devTier = player.message.slice(6);
+          player.message = '';
+        } else if(player.message.slice(0,6) == 'MTier:' && player.devPowers == true){
+          devSelfTier = player.message.slice(6);
+          player.message = '';
+        }
+      
         if(devTier != null || devTier != undefined){
           player.score = Constants.TierXP[devTier - 1];
         }
