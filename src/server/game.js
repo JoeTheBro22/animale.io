@@ -419,13 +419,14 @@ class Game {
         devSelfTier = player.message.slice(6);
         player.message = '';
       }
-
-      if(devTier != null || devTier != undefined){
-        player.score = Constants.TierXP[devTier - 1];
-      }
-
-      if(devSelfTier != null || devSelfTier != undefined){
-        player.score = Constants.TierXP[devSelfTier - 1];
+      if(player){
+        if(devTier != null || devTier != undefined){
+          player.score = Constants.TierXP[devTier - 1];
+        }
+  
+        if(devSelfTier != null || devSelfTier != undefined){
+          player.score = Constants.TierXP[devSelfTier - 1];
+        }
       }
       devSelfTier = undefined;
     });
