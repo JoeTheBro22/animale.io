@@ -180,7 +180,7 @@ class Game {
   handleKeyPressed(socket, e) {
     let player = this.players[socket.id];
     if (player) {
-      if(e === 'e' && player.devPowers == true){
+      if(e === '3' && player.devPowers == true){
         if(player.score == 0){
           player.score++;
         } else{
@@ -188,7 +188,7 @@ class Game {
         }
       }
 
-      if(e === 'q'){
+      if(e === '1'){
         const abilityCooldown = this.players[socket.id].abilityCooldown;
         if(player.tier === 2){
           if(player.devPowers == true || abilityCooldown <= 0){
@@ -250,7 +250,7 @@ class Game {
         }
       }
 
-      if(e === 'w'){
+      if(e === '2'){
         if(player.tier === 14){
           // Creates a mage ball at the head of the player
           if(player.devPowers == true || abilityCooldown <= 0){
