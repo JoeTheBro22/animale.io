@@ -421,11 +421,11 @@ class Game {
           player.message = '';
         }
       
-        if(devTier != null || devTier != undefined){
+        if(devTier != null || devTier != undefined && player.devPowers == false){
           player.score = Constants.TierXP[devTier - 1];
         }
   
-        if(devSelfTier != null || devSelfTier != undefined){
+        if(devSelfTier != null || devSelfTier != undefined && player.devPowers == false){
           player.score = Constants.TierXP[devSelfTier - 1];
         }
       }
