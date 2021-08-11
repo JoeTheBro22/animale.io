@@ -653,7 +653,7 @@ class Game {
       mushroomBushes: nearbyMushroomBushes.map(b => b.serializeForUpdate()),
       watermelons: nearbyWatermelons.map(b => b.serializeForUpdate()),
       mushrooms: nearbyMushrooms.map(b => b.serializeForUpdate()),
-      lavas: this.lavas.map(b => b.serializeForUpdate()),
+      lavas: nearbyLavas.map(b => b.serializeForUpdate()),
       mageBalls: nearbyMageBalls.map(b => b.serializeForUpdate()),
       snakeBites: nearbySnakeBites.map(b => b.serializeForUpdate()),
       portals: this.portals.map(p => p.serializeForUpdate()),
