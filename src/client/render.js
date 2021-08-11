@@ -593,6 +593,7 @@ function renderSnakebite(me, snakeBite) {
 
 function renderPortal(me, portal) {
   const { x, y } = portal;
+  context.globalAlpha = 0.5;
   if(Math.abs(portal.x - me.x) <= canvas.width + 10 && Math.abs(portal.y - me.y) <= canvas.height + 10){
     context.drawImage(
       getAsset('portal.png'),
@@ -602,6 +603,7 @@ function renderPortal(me, portal) {
       PORTAL_RADIUS * 2,
     );
   }
+  context.globalAlpha = 1;
 }
 
 function renderBerry(me, berry) {
