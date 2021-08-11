@@ -95,6 +95,7 @@ function applyCollisions(players, otherObj, collisionType) {
           // push player away from rock
         } else if (collisionType == 3){
           var tailbite;
+          var shouldTakeKnockback = true;
           if(player.tier > otherObject.tier){
             tailbite = CheckTailbite(otherObject, player);
             if(tailbite == true){
@@ -142,34 +143,42 @@ function applyCollisions(players, otherObj, collisionType) {
             }
           }
           
-          /*else{
-            if(player.tier == 15 && otherObject.tier == 15){  // If players are sea snakes, then let them 1v1
-              var P1tailbite;
-              
-              P1tailbite = CheckTailbite(otherObject, player, nonPlayerRadius, playerRadius);
-              if(P1tailbite == true){
-                player.takeHitDamage();
-                if(player.hp <= 0){
-                  otherObject.getKillXP(player.score * 0.5 + otherObject.score * 0.05);
-                  break;
-                }
-              }
+          else{
+            shouldTakeKnockback = false;
+            if(player.tier >= 15 && otherObject.tier >= 15 && otherObject.id !== player.id){  // If players are sea snakes, then let them 1v1
+              tailbite = CheckTailbite(player, otherObject);
 
-              var P2tailbite;
-              
-              P2tailbite = CheckTailbite(player, otherObject, nonPlayerRadius, playerRadius);
-              if(P2tailbite == true){
+              if(tailbite == true){
+                player.takeKnockback(null, (player.x - otherObject.x), (player.y - otherObject.y));
+                otherObject.takeKnockback(null, (otherObject.x - player.x)/4, (otherObject.y - player.y)/4);
                 otherObject.takeHitDamage();
+                otherObject.getKillXP(-otherObject.score*1/20);
+                player.getKillXP(otherObject.score*1/25);
                 if(otherObject.hp <= 0){
                   player.getKillXP(otherObject.score * 0.5 + player.score * 0.05);
                   break;
                 }
               }
+              // checking tailbite of other player
+              tailbite = CheckTailbite(otherObject, player);
+              if(tailbite == true){
+                otherObject.takeKnockback(null, (otherObject.x - player.x), (otherObject.y - player.y));
+                otherObject.takeKnockback(null, (player.x - otherObject.x)/4, (player.y - otherObject.y)/4);
+                player.takeHitDamage();
+                player.getKillXP(-otherObject.score*1/20);
+                otherObject.getKillXP(otherObject.score*1/25);
+                if(player.hp <= 0){
+                  otherObject.getKillXP(player.score * 0.5 + otherObject.score * 0.05);
+                  break;
+                }
+              }
             }
-          }*/
+          }
 
-          player.takeKnockback(null, (player.x - otherObject.x)/2, (player.y - otherObject.y)/2);
-          otherObject.takeKnockback(null, (otherObject.x - player.x)/2, (otherObject.y - player.y)/2);
+          if(shouldTakeKnockback){
+            player.takeKnockback(null, (player.x - otherObject.x)/2, (player.y - otherObject.y)/2);
+            otherObject.takeKnockback(null, (otherObject.x - player.x)/2, (otherObject.y - player.y)/2);
+          }
         }
 
           else if (collisionType == 4){
@@ -312,7 +321,7 @@ function CheckTailbite(smallerPlayer, biggerPlayer){
   let testPlayerX = smallerPlayer.x + 5 * Math.sin(smallerPlayer.direction);
   let testPlayerY = smallerPlayer.y + -5 * Math.cos(smallerPlayer.direction);
   let distance = Math.sqrt((testPlayerX - biggerPlayer.x) * (testPlayerX - biggerPlayer.x) + (testPlayerY - biggerPlayer.y) * (testPlayerY - biggerPlayer.y));
-  let combinedRadius = Constants.RelativeSizes[smallerPlayer.tier] * Constants.PLAYER_RADIUS + Constants.RelativeSizes[biggerPlayer.tier] * Constants.PLAYER_RADIUS;
+  let combinedRadius = Constants.RelativeSizes[smallerPlayer.tier] * Constants.PLAYER_RADIUS + Constants.RelativeSizes[biggerPlayer.tier] * Constants.PLAYER_RADIUS; 
   if(relativeDirection <= 40 || relativeDirection >= 320){
     if(distance <= combinedRadius && (Math.abs(directionBetween - smallerPlayer.direction) * 180/Math.PI <= 20 || Math.abs(directionBetween - smallerPlayer.direction) * 180/Math.PI >= 340)){
       return true;

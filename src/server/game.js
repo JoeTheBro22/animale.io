@@ -180,7 +180,7 @@ class Game {
   handleKeyPressed(socket, e) {
     let player = this.players[socket.id];
     if (player && player.tier !== null) {
-      if(e === 'e' && player.devPowers == true){
+      if(e === 'r' && player.devPowers == true){
         if(player.score == 0){
           player.score++;
         } else{
@@ -261,6 +261,10 @@ class Game {
           }
         }
       }
+
+      if(e === 'e'){
+        player.autoBoost = !player.autoBoost;
+      }
     }
   }
 
@@ -271,16 +275,16 @@ class Game {
   }
   
   handleSpeed(socket, x, y, canvasWidth, canvasHeight) {
-    this.players[socket.id].canvasWidth = canvasWidth;
-    this.players[socket.id].canvasHeight = canvasHeight;
     if (this.players[socket.id]) {
+      this.players[socket.id].canvasWidth = canvasWidth;
+      this.players[socket.id].canvasHeight = canvasHeight;
       this.players[socket.id].setSpeed(x, y, canvasWidth, canvasHeight);
     }
   }
 
   handleClick(socket) {
     if(this.players[socket.id]){
-      const boosted = this.players[socket.id].boost(this.players[socket.id].boostCooldown);
+      const boosted = this.players[socket.id].boost(this.players[socket.id].boostCooldown, this.players[socket.id].autoBoost);
       if(boosted){
         this.players[socket.id].boostCooldown = Constants.BOOST_COOLDOWN;
       }

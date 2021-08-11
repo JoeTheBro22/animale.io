@@ -3,7 +3,7 @@ const Bullet = require('./bullet');
 const Constants = require('../shared/constants');
 
 class Player extends ObjectClass {
-  constructor(id, username, x, y, radius, boostCooldown, maxSpeed, devPowers, animalType, rareNumber, damageCooldown, message, abilityCooldown, canvasWidth, canvasHeight, callDev) {
+  constructor(id, username, x, y) {
     super(id, x, y, Math.random() * 2 * Math.PI, Constants.PLAYER_SPEED);
     this.username = username;
     this.hp = Constants.PLAYER_MAX_HP;
@@ -15,7 +15,7 @@ class Player extends ObjectClass {
     this.maxSpeed = Constants.PLAYER_SPEED;
     this.devPowers = false;
     this.rareNumber = Math.random() * 2;
-    this.damageCooldown = 0;
+    this.damageCooldown = 2;
     this.abilityCooldown = Constants.ABILITY_COOLDOWN;
     this.canvasWidth = 5000;
     this.canvasHeight = 5000;
@@ -24,6 +24,7 @@ class Player extends ObjectClass {
     this.animalType = 0;
     this.message = '';
     this.callDev = false;
+    this.autoBoost = false;
   }
 
   // Returns a newly created bullet, or null.
@@ -78,9 +79,15 @@ class Player extends ObjectClass {
 
     this.radius = Constants.RelativeSizes[this.tier] * Constants.PLAYER_RADIUS;
     this.boostCooldown -= dt;
-    
-    // Make sure the player stays in bounds (and in water if they're a fish)
 
+    // Auto Boost if needed
+    if(this.boostCooldown <= 0 && this.autoBoost){
+      this.x += 35 * Math.sin(this.direction);
+      this.y -= 35 * Math.cos(this.direction);
+      this.boostCooldown = Constants.BOOST_COOLDOWN;
+    }
+    
+    // Make sure the player stays in bounds
     this.x = Math.max(this.radius, Math.min(Constants.MAP_SIZE - this.radius, this.x));
     this.y = Math.max(this.radius, Math.min(Constants.MAP_SIZE - this.radius, this.y));
 
@@ -146,11 +153,17 @@ class Player extends ObjectClass {
   }
 
   takeHitDamage() {
-    this.hp -= Constants.HIT_DAMAGE;
+    if(this.damageCooldown <= 0){
+      this.hp -= Constants.HIT_DAMAGE;
+      this.damageCooldown = Constants.PLAYER_DAMAGE_COOLDOWN;
+    }
   }
 
   takeProjectileDamage(amount) {
-    this.hp -= amount;
+    if(this.damageCooldown <= 0){
+      this.hp -= amount;
+      this.damageCooldown = Constants.PLAYER_DAMAGE_COOLDOWN;
+    }
   }
 
   getKillXP(otherPlayerScore) {
