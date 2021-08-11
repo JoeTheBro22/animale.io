@@ -117,7 +117,7 @@ function render()
 
   renderMinimap(me, lavas, others, portals);
 
-  //renderLocalMessage(me);
+  renderLocalMessage(me);
 }
 
 function renderBackground() {
@@ -534,8 +534,21 @@ function renderLocalMessage(me) {
   context.font = "30px Arial";
   context.textAlign = "center";
   let localMessageFix = me.localMessage.replace('NaN','');
-  let localMessageFix2 = localMessageFix.replace('0','');
-  context.fillText(localMessageFix2, canvas.width / 2, canvas.height / 4);
+  if(localMessageFix != 0){
+    context.fillText(localMessageFix, canvas.width / 2, canvas.height / 4);
+  }
+
+  // Rendering Ability Cooldown
+  context.font = "10px Arial";
+  context.textAlign = "left";
+  context.fillStyle = 'grey';
+  console.log(me.abilityCooldown);
+  var abilityCooldownFix = Math.ceil(me.abilityCooldown);
+  if(abilityCooldownFix >= 0){
+    context.fillText("Ability Cooldown: " + abilityCooldownFix, 15, 240);
+  } else{
+    context.fillText("Ability Cooldown: 0", 15, 240);
+  }
 }
 
 /*function renderAbilityBar(me, player, abilityCooldown) {

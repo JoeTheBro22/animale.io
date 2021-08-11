@@ -186,11 +186,9 @@ class Game {
 
   handleKeyPressed(socket, e) {
     let player = this.players[socket.id];
+    player.keyPressed = e;
     const abilityCooldown = this.players[socket.id].abilityCooldown;
     if (player && player.tier !== null) {
-      if(e === 'q' || e === 'w' && abilityCooldown > 0 && player.devPowers == false){
-        player.localMessage = "You can't use that! Please wait " + Math.abs(Math.ceil(abilityCooldown)) + " seconds before using an ability!";
-      }
       if(e === 'r' && player.devPowers == true){
         if(player.score == 0){
           player.score++;
@@ -207,16 +205,16 @@ class Game {
               this.melons.push(new Berry(player.x, player.y - Constants.PLAYER_RADIUS * Constants.TIER_3_SIZE * 2));
               this.melons.push(new Berry(player.x - Constants.PLAYER_RADIUS * Constants.TIER_3_SIZE * 2, player.y));
               this.melons.push(new Berry(player.x + Constants.PLAYER_RADIUS * Constants.TIER_3_SIZE * 2, player.y));
-              this.players[socket.id].abilityCooldown = 5;
+              player.abilityCooldown = 5;
             }
           }
         }
 
         if(player.tier === 3){
           if(player.devPowers == true || abilityCooldown <= 0){
-            this.players[socket.id].frenzyActive = true;
-            this.players[socket.id].frenzyTimer = 5;
-            this.players[socket.id].abilityCooldown = 12;
+            player.frenzyActive = true;
+            player.frenzyTimer = 5;
+            player.abilityCooldown = 12;
           }
         }
 
@@ -224,7 +222,7 @@ class Game {
           // Creates a bite at the head of the player
           if(player.devPowers == true || abilityCooldown <= 0){
             this.snakeBites.push(new Projectile(player.id, player.x + Constants.PLAYER_RADIUS * Constants.TIER_5_SIZE * Math.sin(player.direction) * 1.2, player.y - Constants.PLAYER_RADIUS * Constants.TIER_5_SIZE * Math.cos(player.direction) * 1.2, player.direction, 0, Constants.SNAKEBITE_LIFESPAN));
-            this.players[socket.id].abilityCooldown = 3;
+            player.abilityCooldown = 3;
           }
         }
 
@@ -245,7 +243,7 @@ class Game {
                 }
               }
             });
-            this.players[socket.id].abilityCooldown = 10;
+            player.abilityCooldown = 10;
           }
         }
 
@@ -263,7 +261,7 @@ class Game {
           // Creates a mage ball at the head of the player
           if(player.devPowers == true || abilityCooldown <= 0){
             this.mageBalls.push(new Projectile(player.id, player.x + Constants.PLAYER_RADIUS * Constants.TIER_15_SIZE * Math.sin(player.direction) * 0.9, player.y - Constants.PLAYER_RADIUS * Constants.TIER_15_SIZE * Math.cos(player.direction) * 0.9, player.direction, Constants.MAGEBALL_SPEED, Constants.MAGEBALL_LIFESPAN));
-            this.players[socket.id].abilityCooldown = 2;
+            player.abilityCooldown = 2;
           }
         }
       }
@@ -275,7 +273,7 @@ class Game {
             this.mageBalls.push(new Projectile(player.id, player.x + Constants.PLAYER_RADIUS * Constants.TIER_15_SIZE * Math.sin(player.direction) * 0.9, player.y - Constants.PLAYER_RADIUS * Constants.TIER_15_SIZE * Math.cos(player.direction) * 0.9, player.direction, Constants.MAGEBALL_SPEED, Constants.MAGEBALL_LIFESPAN));
             this.mageBalls.push(new Projectile(player.id, player.x + Constants.PLAYER_RADIUS * Constants.TIER_15_SIZE * Math.sin(player.direction) * 0.9, player.y - Constants.PLAYER_RADIUS * Constants.TIER_15_SIZE * Math.cos(player.direction) * 0.9, player.direction - 0.4, Constants.MAGEBALL_SPEED, Constants.MAGEBALL_LIFESPAN));
             this.mageBalls.push(new Projectile(player.id, player.x + Constants.PLAYER_RADIUS * Constants.TIER_15_SIZE * Math.sin(player.direction) * 0.9, player.y - Constants.PLAYER_RADIUS * Constants.TIER_15_SIZE * Math.cos(player.direction) * 0.9, player.direction + 0.4, Constants.MAGEBALL_SPEED, Constants.MAGEBALL_LIFESPAN));
-            this.players[socket.id].abilityCooldown = 4;
+            player.abilityCooldown = 4;
           }
         }
       }

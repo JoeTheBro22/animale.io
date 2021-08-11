@@ -16,7 +16,7 @@ class Player extends ObjectClass {
     this.devPowers = false;
     this.rareNumber = Math.random() * 2;
     this.damageCooldown = 2;
-    this.abilityCooldown = Constants.ABILITY_COOLDOWN;
+    this.abilityCooldown = 3;
     this.canvasWidth = 5000;
     this.canvasHeight = 5000;
     // Animal types (for teleporting to the correct biome)
@@ -27,7 +27,8 @@ class Player extends ObjectClass {
     this.autoBoost = false;
     this.frenzyActive = false;
     this.frenzyTimer = 0;
-    this.localMessage = undefined;
+    this.localMessage = '';
+    this.keyPressed = '';
   }
 
   // Returns a newly created bullet, or null.
@@ -45,7 +46,9 @@ class Player extends ObjectClass {
         this.localMessage = '';
       }
     } else{
-      this.localMessage = "Frenzy active! " + Math.ceil(this.frenzyTimer) + " second(s) left!"
+      if(this.frenzyTimer >= 0){
+        this.localMessage = "Frenzy active! " + Math.ceil(this.frenzyTimer) + " second(s) left!";
+      }
     }
 
     // Update score
@@ -303,6 +306,8 @@ class Player extends ObjectClass {
       localMessage: this.localMessage,
       newMessageDT: this.newMessageDT,
       newMessageStart: this.newMessageStart,
+      keyPressed: this.keyPressed,
+      abilityCooldown: this.abilityCooldown,
     };
   }
 }
