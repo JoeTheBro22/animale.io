@@ -539,16 +539,17 @@ function renderLocalMessage(me) {
   }
 
   // Rendering Ability Cooldown
-  /*context.font = "10px Arial";
-  context.textAlign = "left";
-  context.fillStyle = 'grey';
-  console.log(me.abilityCooldown);
-  var abilityCooldownFix = Math.ceil(me.abilityCooldown);
-  if(abilityCooldownFix >= 0){
-    context.fillText("Ability Cooldown: " + abilityCooldownFix, 15, 240);
-  } else{
-    context.fillText("Ability Cooldown: 0", 15, 240);
-  }*/
+  if(me.abilityCooldown !== null && me.abilityCooldown !== undefined){
+    context.font = "10px Arial";
+    context.textAlign = "left";
+    context.fillStyle = 'grey';
+    var abilityCooldownFix = Math.ceil(me.abilityCooldown);
+    if(abilityCooldownFix >= 0){
+      context.fillText("Ability Cooldown: " + abilityCooldownFix, 15, 240);
+    } else{
+      context.fillText("Ability Cooldown: 0", 15, 240);
+    }
+  }
 }
 
 /*function renderAbilityBar(me, player, abilityCooldown) {
