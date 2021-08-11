@@ -539,7 +539,7 @@ function renderLocalMessage(me) {
   }
 
   // Rendering Ability Cooldown
-  context.font = "10px Arial";
+  /*context.font = "10px Arial";
   context.textAlign = "left";
   context.fillStyle = 'grey';
   console.log(me.abilityCooldown);
@@ -548,7 +548,7 @@ function renderLocalMessage(me) {
     context.fillText("Ability Cooldown: " + abilityCooldownFix, 15, 240);
   } else{
     context.fillText("Ability Cooldown: 0", 15, 240);
-  }
+  }*/
 }
 
 /*function renderAbilityBar(me, player, abilityCooldown) {
