@@ -40,6 +40,7 @@ class Game {
     this.lavas = [];
     this.mageBalls = [];
     this.snakeBites = [];
+    this.portals = [];
     //this.rocks = [];
 
     // Populating several arrays
@@ -135,6 +136,12 @@ class Game {
       this.lavas.push(new Berry(centralLavaPosX, centralLavaPosY));
     }
 
+    // Portals
+    this.portals.push(new Berry(Constants.PORTAL_RADIUS, Constants.PORTAL_RADIUS));
+    this.portals.push(new Berry(Constants.MAP_SIZE - Constants.PORTAL_RADIUS, Constants.PORTAL_RADIUS));
+    this.portals.push(new Berry(Constants.PORTAL_RADIUS, Constants.MAP_SIZE - Constants.PORTAL_RADIUS));
+    this.portals.push(new Berry(Constants.MAP_SIZE - Constants.PORTAL_RADIUS, Constants.MAP_SIZE - Constants.PORTAL_RADIUS));
+
     //Rocks
     /*function generateRandomRockPos() {
       var rockPosX = Constants.MAP_SIZE * (Math.random());
@@ -179,7 +186,11 @@ class Game {
 
   handleKeyPressed(socket, e) {
     let player = this.players[socket.id];
+    const abilityCooldown = this.players[socket.id].abilityCooldown;
     if (player && player.tier !== null) {
+      if(e === 'q' || e === 'w' && abilityCooldown > 0 && player.devPowers == false){
+        player.localMessage = "You can't use that! Please wait " + Math.abs(Math.ceil(abilityCooldown)) + " seconds before using an ability!";
+      }
       if(e === 'r' && player.devPowers == true){
         if(player.score == 0){
           player.score++;
@@ -189,7 +200,6 @@ class Game {
       }
 
       if(e === 'q'){
-        const abilityCooldown = this.players[socket.id].abilityCooldown;
         if(player.tier === 2){
           if(player.devPowers == true || abilityCooldown <= 0){
             if(this.melons.length - Constants.MELON_AMOUNT <= 100){
@@ -199,6 +209,14 @@ class Game {
               this.melons.push(new Berry(player.x + Constants.PLAYER_RADIUS * Constants.TIER_3_SIZE * 2, player.y));
               this.players[socket.id].abilityCooldown = 5;
             }
+          }
+        }
+
+        if(player.tier === 3){
+          if(player.devPowers == true || abilityCooldown <= 0){
+            this.players[socket.id].frenzyActive = true;
+            this.players[socket.id].frenzyTimer = 5;
+            this.players[socket.id].abilityCooldown = 12;
           }
         }
 
@@ -415,7 +433,7 @@ class Game {
     Object.keys(this.sockets).forEach(playerID => {
       var devSelfTier;
       const player = this.players[playerID];
-      const newBullet = player.update(dt);
+      player.update(dt);
       if(player.message.slice(0,6) == 'ETier:' && player.devPowers == true){
         devTier = player.message.slice(6);
         player.message = '';
@@ -512,13 +530,15 @@ class Game {
     const destroyedLavas = applyCollisions(Object.values(this.players), this.lavas, 1);
     this.lavas = this.lavas.filter(lava => !destroyedLavas.includes(lava));
 
-    const destroyedPlayers = applyCollisions(Object.values(this.players), Object.values(this.players), 3);
+    applyCollisions(Object.values(this.players), Object.values(this.players), 3);
 
     const destroyedMageBalls = applyCollisions(Object.values(this.players), this.mageBalls, 16);
     this.mageBalls = this.mageBalls.filter(mageBall => !destroyedMageBalls.includes(mageBall));
 
     const destroyedSnakeBites = applyCollisions(Object.values(this.players), this.snakeBites, 17);
     this.snakeBites = this.snakeBites.filter(snakeBite => !destroyedSnakeBites.includes(snakeBite));
+
+    applyCollisions(Object.values(this.players), this.portals, 19);
     
     // Send a game update to each player every other time
     if (this.shouldSendUpdate) {
@@ -635,9 +655,10 @@ class Game {
       mushroomBushes: nearbyMushroomBushes.map(b => b.serializeForUpdate()),
       watermelons: nearbyWatermelons.map(b => b.serializeForUpdate()),
       mushrooms: nearbyMushrooms.map(b => b.serializeForUpdate()),
-      lavas: nearbyLavas.map(b => b.serializeForUpdate()),
+      lavas: this.lavas.map(b => b.serializeForUpdate()),
       mageBalls: nearbyMageBalls.map(b => b.serializeForUpdate()),
       snakeBites: nearbySnakeBites.map(b => b.serializeForUpdate()),
+      portals: this.portals.map(p => p.serializeForUpdate()),
       leaderboard,
     };
   }

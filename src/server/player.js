@@ -25,6 +25,9 @@ class Player extends ObjectClass {
     this.message = '';
     this.callDev = false;
     this.autoBoost = false;
+    this.frenzyActive = false;
+    this.frenzyTimer = 0;
+    this.localMessage = undefined;
   }
 
   // Returns a newly created bullet, or null.
@@ -33,6 +36,17 @@ class Player extends ObjectClass {
     this.checkWaterSpeed();
     this.damageCooldown -= dt;
     this.abilityCooldown -= dt;
+    this.frenzyTimer -= dt;
+
+    if(this.frenzyTimer < 0 || this.tier != 3){
+      var changeFrenzyDetector = this.frenzyActive;
+      this.frenzyActive = false;
+      if(changeFrenzyDetector != this.frenzyActive){
+        this.localMessage = '';
+      }
+    } else{
+      this.localMessage = "Frenzy active! " + Math.ceil(this.frenzyTimer) + " second(s) left!"
+    }
 
     // Update score
     this.score += dt * Constants.SCORE_PER_SECOND;
@@ -167,7 +181,11 @@ class Player extends ObjectClass {
   }
 
   getKillXP(otherPlayerScore) {
-    this.score += Math.floor(otherPlayerScore); 
+    if(this.frenzyActive){
+      this.score += 2 * Math.floor(otherPlayerScore);
+    } else{
+      this.score += Math.floor(otherPlayerScore);
+    }
   }
 
   regenHP() {
@@ -188,11 +206,21 @@ class Player extends ObjectClass {
   }
   
   giveBerryXP() {
-    this.score += Constants.BERRY_XP;
+    if(this.frenzyActive){
+      this.frenzyTimer++;
+      this.score += 2 * Constants.BERRY_XP;
+    } else{
+      this.score += Constants.BERRY_XP;
+    }
   }
 
   giveMelonXP() {
-    this.score += Constants.MELON_XP;
+    if(this.frenzyActive){
+      this.frenzyTimer++;
+      this.score += 2 * Constants.MELON_XP;
+    } else{
+      this.score += Constants.MELON_XP;
+    }
   }
 
   giveBlackberryXP() {
@@ -200,7 +228,12 @@ class Player extends ObjectClass {
   }
 
   giveCarrotXP() {
-    this.score += Constants.CARROT_XP;
+    if(this.frenzyActive){
+      this.frenzyTimer++;
+      this.score += 2 * Constants.CARROT_XP;
+    } else{
+      this.score += Constants.CARROT_XP;
+    }
   }
   
   giveLilypadXP() {
@@ -236,7 +269,12 @@ class Player extends ObjectClass {
   }
 
   giveMushroomXP() {
-    this.score += Constants.MUSHROOM_XP;
+    if(this.frenzyActive){
+      this.frenzyTimer++;
+      this.score += 2 * Constants.MUSHROOM_XP;
+    } else{
+      this.score += Constants.MUSHROOM_XP;
+    }
   }
 
   onDealtDamage() {
@@ -260,6 +298,11 @@ class Player extends ObjectClass {
       rareNumber: this.rareNumber,
       damageCooldown: this.damageCooldown,
       message: this.message,
+      frenzyTimer: this.frenzyTimer,
+      frenzyActive: this.frenzyActive,
+      localMessage: this.localMessage,
+      newMessageDT: this.newMessageDT,
+      newMessageStart: this.newMessageStart,
     };
   }
 }

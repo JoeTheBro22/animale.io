@@ -77,6 +77,8 @@ function applyCollisions(players, otherObj, collisionType) {
       } else if (collisionType == 18){
         nonPlayerRadius = Constants.MUSHROOM_BUSH_RADIUS;
         playerRadius = Constants.MAGEBALL_RADIUS;
+      } else if (collisionType == 19){
+        nonPlayerRadius = Constants.PORTAL_RADIUS;
       }
       if (player.distanceTo(otherObject) <= playerRadius + nonPlayerRadius) {
         if(collisionType == 0){
@@ -145,7 +147,7 @@ function applyCollisions(players, otherObj, collisionType) {
           
           else{
             shouldTakeKnockback = false;
-            if(player.tier >= 15 && otherObject.tier >= 15 && otherObject.id !== player.id){  // If players are sea snakes, then let them 1v1
+            if(player.tier >= 14 && otherObject.tier >= 14 && otherObject.id !== player.id){  // If players are sea snakes, then let them 1v1
               tailbite = CheckTailbite(player, otherObject);
 
               if(tailbite == true){
@@ -303,7 +305,37 @@ function applyCollisions(players, otherObj, collisionType) {
               players[a].getKillXP(otherObject.score * 0.5 + player.score * 0.05);
             }
           }
-        }*/
+        }*/ 
+        else if (collisionType == 19){
+          var portalNumber = player.tier % 3;
+          var portalArray;
+          if(player.tier <= 14){
+            if(player.x < Constants.MAP_SIZE/2 && player.y < Constants.MAP_SIZE/2){
+              portalArray = [2,3,4];
+            } else if (player.x > Constants.MAP_SIZE/2 && player.y < Constants.MAP_SIZE/2){
+              portalArray = [1,3,4];
+            } else if (player.x < Constants.MAP_SIZE/2 && player.y > Constants.MAP_SIZE/2){
+              portalArray = [1,2,4];
+            } else if (player.x > Constants.MAP_SIZE/2 && player.y > Constants.MAP_SIZE/2){
+              portalArray = [1,2,3];
+            }
+            var portal = portalArray[portalNumber];
+
+            if(portal == 1){
+              player.x = Constants.PORTAL_RADIUS * 3;
+              player.y = Constants.PORTAL_RADIUS * 3;
+            } else if(portal == 2){
+              player.x = Constants.MAP_SIZE - Constants.PORTAL_RADIUS * 3;
+              player.y = Constants.PORTAL_RADIUS * 3;
+            } else if(portal == 3){
+              player.x = Constants.PORTAL_RADIUS * 3;
+              player.y = Constants.MAP_SIZE - Constants.PORTAL_RADIUS * 3;
+            } else if(portal == 4){
+              player.x = Constants.MAP_SIZE - Constants.PORTAL_RADIUS * 3;
+              player.y = Constants.MAP_SIZE - Constants.PORTAL_RADIUS * 3;
+            }
+          }
+        }
         if(destroyObject){
           destroyedObj.push(otherObject);
         }

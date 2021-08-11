@@ -17,6 +17,8 @@ import { MUSHROOM_RADIUS } from '../shared/constants';
 import { LAVA_RADIUS } from '../shared/constants';
 import { ROCK_RADIUS } from '../shared/constants';
 import { MAGEBALL_RADIUS } from '../shared/constants';
+import { SNAKEBITE_RADIUS } from '../shared/constants';
+import { PORTAL_RADIUS } from '../shared/constants';
 import { TIER_1_SIZE, TIER_2_SIZE, TIER_3_SIZE, TIER_4_SIZE, TIER_5_SIZE, TIER_6_SIZE, TIER_7_SIZE, TIER_8_SIZE, TIER_9_SIZE, TIER_10_SIZE, TIER_11_SIZE, TIER_12_SIZE, TIER_13_SIZE, TIER_14_SIZE, TIER_15_SIZE, TIER_16_SIZE, } from '../shared/constants';
 import { RelativeSizes } from '../shared/constants';
 import { TierXP } from '../shared/constants';
@@ -45,7 +47,7 @@ window.addEventListener('resize', debounce(40, setCanvasDimensions));
 
 function render() 
 {
-  const { me, others, bullets, berries, melons, blackberries, carrots, lilypads, redMushrooms, watermelonSlices, bananas, coconuts, pears, mushroomBushes, watermelons, mushrooms, lavas, mageBalls, snakeBites, /*, rocks*/} = getCurrentState();
+  const { me, others, bullets, berries, melons, blackberries, carrots, lilypads, redMushrooms, watermelonSlices, bananas, coconuts, pears, mushroomBushes, watermelons, mushrooms, lavas, mageBalls, snakeBites, portals /*, rocks*/} = getCurrentState();
   if (!me) {
     return;
   }
@@ -104,13 +106,18 @@ function render()
 
   others.forEach(renderPlayer.bind(null, me));
 
+  // Draw all portals
+  portals.forEach(renderPortal.bind(null, me));
+
   // Draw all rocks
   //rocks.forEach(renderRock.bind(null, me));
 
   //Draw xp bar
   renderXPBar(me, me);
 
-  renderMinimap(me, lavas, others);
+  renderMinimap(me, lavas, others, portals);
+
+  //renderLocalMessage(me);
 }
 
 function renderBackground() {
@@ -118,7 +125,7 @@ function renderBackground() {
   context.fillRect(0,0,canvas.width,canvas.height);
 }
 
-function renderMinimap(me, lavas, others) {
+function renderMinimap(me, lavas, others, portals) {
 
   context.strokeStyle = 'black';
   context.lineWidth = 1;
@@ -157,6 +164,38 @@ function renderMinimap(me, lavas, others) {
       );
     }
   }
+
+  context.drawImage(
+    getAsset('portal.png'),
+    15,
+    15, // lowercase L
+    20,
+    20,
+  );
+
+  context.drawImage(
+    getAsset('portal.png'),
+    210,
+    210, // lowercase L
+    20,
+    20,
+  );
+
+  context.drawImage(
+    getAsset('portal.png'),
+    15,
+    210, // lowercase L
+    20,
+    20,
+  );
+
+  context.drawImage(
+    getAsset('portal.png'),
+    210,
+    15, // lowercase L
+    20,
+    20,
+  );
 
   context.fillStyle = "grey";
   for(var o = 0; o < others.length; o++){
@@ -490,6 +529,15 @@ function renderXPBar(me, player) {
   context.fillText(Math.floor(player.score) + " xp (Next animal at " + nextTierXP + " xp)", canvas.width / 2, canvas.height - 7.5);
 }
 
+function renderLocalMessage(me) {
+  context.fillStyle = 'white';
+  context.font = "30px Arial";
+  context.textAlign = "center";
+  let localMessageFix = me.localMessage.replace('NaN','');
+  let localMessageFix2 = localMessageFix.replace('0','');
+  context.fillText(localMessageFix2, canvas.width / 2, canvas.height / 4);
+}
+
 /*function renderAbilityBar(me, player, abilityCooldown) {
   const { x, y } = player;
   console.log(abilityCooldown);
@@ -535,10 +583,23 @@ function renderSnakebite(me, snakeBite) {
   if(Math.abs(snakeBite.x - me.x) <= canvas.width + 10 && Math.abs(snakeBite.y - me.y) <= canvas.height + 10){
     context.drawImage(
       getAsset('snake bite fangs.png'),
-      canvas.width / 2 + x - me.x - MAGEBALL_RADIUS,
-      canvas.height / 2 + y - me.y - MAGEBALL_RADIUS,
-      MAGEBALL_RADIUS * 2,
-      MAGEBALL_RADIUS * 2,
+      canvas.width / 2 + x - me.x - SNAKEBITE_RADIUS,
+      canvas.height / 2 + y - me.y - SNAKEBITE_RADIUS,
+      SNAKEBITE_RADIUS * 2,
+      SNAKEBITE_RADIUS * 2,
+    );
+  }
+}
+
+function renderPortal(me, portal) {
+  const { x, y } = portal;
+  if(Math.abs(portal.x - me.x) <= canvas.width + 10 && Math.abs(portal.y - me.y) <= canvas.height + 10){
+    context.drawImage(
+      getAsset('portal.png'),
+      canvas.width / 2 + x - me.x - PORTAL_RADIUS,
+      canvas.height / 2 + y - me.y - PORTAL_RADIUS,
+      PORTAL_RADIUS * 2,
+      PORTAL_RADIUS * 2,
     );
   }
 }

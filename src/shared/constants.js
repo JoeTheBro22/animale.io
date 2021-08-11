@@ -74,6 +74,8 @@ module.exports = Object.freeze({
   ROCK_RADIUS: 100,
   ROCK_AMOUNT: 25,
 
+  PORTAL_RADIUS: 75,
+
   // HP and player
   REGEN_AMOUNT: 0.03,
   HIT_DAMAGE: 30,
