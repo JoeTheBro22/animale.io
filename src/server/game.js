@@ -186,9 +186,9 @@ class Game {
 
   handleKeyPressed(socket, e) {
     let player = this.players[socket.id];
-    player.keyPressed = e;
-    const abilityCooldown = this.players[socket.id].abilityCooldown;
     if (player && player.tier !== null) {
+      player.keyPressed = e;
+      const abilityCooldown = this.players[socket.id].abilityCooldown;
       if(e === 'r' && player.devPowers == true){
         if(player.score == 0){
           player.score++;
@@ -431,25 +431,27 @@ class Game {
     Object.keys(this.sockets).forEach(playerID => {
       var devSelfTier;
       const player = this.players[playerID];
-      player.update(dt);
-      if(player.message.slice(0,6) == 'ETier:' && player.devPowers == true){
-        devTier = player.message.slice(6);
-        player.message = '';
-      } else if(player.message.slice(0,6) == 'MTier:' && player.devPowers == true){
-        devSelfTier = player.message.slice(6);
-        player.message = '';
-      }
-    
-      if(devTier != null || devTier != undefined && player.devPowers == false && player.hp > 0){
-        player.score = Constants.TierXP[devTier - 1];
-        player.tier = devTier - 1;
-      }
-
-      if(devSelfTier != null || devSelfTier != undefined && player.devPowers == false && player.hp > 0){
-        player.score = Constants.TierXP[devSelfTier - 1];
-        player.tier = devSelfTier - 1;
+      if(player){
+        player.update(dt);
+        if(player.message.slice(0,6) == 'ETier:' && player.devPowers == true){
+          devTier = player.message.slice(6);
+          player.message = '';
+        } else if(player.message.slice(0,6) == 'MTier:' && player.devPowers == true){
+          devSelfTier = player.message.slice(6);
+          player.message = '';
         }
-      devSelfTier = undefined;
+      
+        if(devTier != null || devTier != undefined && player.devPowers == false && player.hp > 0){
+          player.score = Constants.TierXP[devTier - 1];
+          player.tier = devTier - 1;
+        }
+
+        if(devSelfTier != null || devSelfTier != undefined && player.devPowers == false && player.hp > 0){
+          player.score = Constants.TierXP[devSelfTier - 1];
+          player.tier = devSelfTier - 1;
+          }
+        devSelfTier = undefined;
+      }
     });
     devTier = undefined;
 
@@ -473,14 +475,16 @@ class Game {
     Object.keys(this.sockets).forEach(playerID => {
       const socket = this.sockets[playerID];
       const player = this.players[playerID];
-      if (player.hp <= 0) {
+      if (player && player.hp <= 0) {
         socket.emit(Constants.MSG_TYPES.GAME_OVER);
         this.removePlayer(socket);
       }
     });
 
     Object.keys(this.sockets).forEach(playerID => {
-      getTier(this.players[playerID].tier);
+      if(this.players[playerID]){
+        getTier(this.players[playerID].tier);
+      }
     });
 
     // Apply collisions
@@ -544,7 +548,9 @@ class Game {
       Object.keys(this.sockets).forEach(playerID => {
         const socket = this.sockets[playerID];
         const player = this.players[playerID];
-        socket.emit(Constants.MSG_TYPES.GAME_UPDATE, this.createUpdate(player, leaderboard));
+        if(player){
+          socket.emit(Constants.MSG_TYPES.GAME_UPDATE, this.createUpdate(player, leaderboard));
+        }
       });
       this.shouldSendUpdate = false;
     } else {
