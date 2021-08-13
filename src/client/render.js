@@ -451,7 +451,7 @@ function renderPlayer(me, player) {
     context.font = "15px Arial";
     context.textAlign = "center";
     let UsernameFix = player.username.replace('NaN','');
-    if(UsernameFix.length <= 1 || (parseInt(UsernameFix) != undefined && parseInt(UsernameFix) >= 0)){
+    if(`${UsernameFix}` === '0'){
       context.fillText("Anonymous", canvasX, canvasY - 15 - PLAYER_RADIUS * Constants.RelativeSizes[player.tier]);
     }
     else if(UsernameFix.length <= 15){
@@ -463,8 +463,9 @@ function renderPlayer(me, player) {
     // Draw Chat Message
     context.fillStyle = "grey";
     let chatFix = player.message.replace('NaN','');
-    let chatFix2 = chatFix.replace('0','');
-    context.fillText(chatFix2, canvasX, canvasY - 33 - PLAYER_RADIUS * Constants.RelativeSizes[player.tier]);
+    if(!(`${chatFix}` === '0')){
+      context.fillText(chatFix, canvasX, canvasY - 33 - PLAYER_RADIUS * Constants.RelativeSizes[player.tier]);
+    }
     
     /*
     -PLAYER_RADIUS * TIER_1_SIZE,
