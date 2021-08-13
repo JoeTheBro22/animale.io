@@ -98,6 +98,8 @@ module.exports = Object.freeze({
 
   OCELOTROAR_DAMAGE: 20,
   OCELOTROAR_HIGHER_TIER_DAMAGE: 20,
+
+  GRAZING_XP: 1000,
   
   // Tiers
   //ORIGINAL VALUES:

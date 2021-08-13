@@ -174,6 +174,8 @@ class Game {
   }
 
   removePlayer(socket) {
+    this.sockets[socket.id].score = 0;
+    this.sockets[socket.id].tier = 0;
     delete this.sockets[socket.id];
     delete this.players[socket.id];
   }
@@ -245,6 +247,12 @@ class Game {
             });
             player.abilityCooldown = 10;
           }
+        }
+
+        if(player.tier === 8){
+          player.grazing = !player.grazing;
+        } else{
+          player.grazing = false;
         }
 
         /*

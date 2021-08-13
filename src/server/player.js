@@ -1,6 +1,7 @@
 const ObjectClass = require('./object');
 const Bullet = require('./bullet');
 const Constants = require('../shared/constants');
+const constants = require('../shared/constants');
 
 class Player extends ObjectClass {
   constructor(id, username, x, y) {
@@ -29,6 +30,7 @@ class Player extends ObjectClass {
     this.frenzyTimer = 0;
     this.localMessage = '';
     this.keyPressed = '';
+    this.grazing = false;
   }
 
   // Returns a newly created bullet, or null.
@@ -51,8 +53,23 @@ class Player extends ObjectClass {
       }
     }
 
+    if(this.hp != Constants.PLAYER_MAX_HP || this.tier != 8){
+      this.grazing = false;
+    }
+
+    if(this.grazing){
+      var changeGrazingDetector = false;
+      this.score += dt * Constants.GRAZING_XP * this.speed/this.maxSpeed;
+      this.localMessage = "Grazing Active! Move around to get XP!";
+    } else{
+      if(!changeGrazingDetector){
+        changeGrazingDetector = true;
+        this.localMessage = '';
+      }
+    }
+
     // Update score
-    this.score += dt * Constants.SCORE_PER_SECOND;
+    //this.score += dt * Constants.SCORE_PER_SECOND;
 
     // Update tier based on XP
     if(this.score < Constants.TIER_2_XP){
@@ -149,10 +166,18 @@ class Player extends ObjectClass {
   }
 
   setSpeed(x, y, canvasWidth, canvasHeight) {
-    this.speed = 10 * this.maxSpeed * Math.abs(Math.sqrt((x - canvasWidth/2) * (x - canvasWidth/2) / canvasWidth / canvasWidth + (y - canvasHeight/2) * (y - canvasHeight/2) / canvasHeight / canvasHeight)); 
+    if(!this.grazing){
+      this.speed = 10 * this.maxSpeed * Math.abs(Math.sqrt((x - canvasWidth/2) * (x - canvasWidth/2) / canvasWidth / canvasWidth + (y - canvasHeight/2) * (y - canvasHeight/2) / canvasHeight / canvasHeight)); 
 
-    if(this.speed > this.maxSpeed){
-      this.speed = this.maxSpeed;
+      if(this.speed > this.maxSpeed){
+        this.speed = this.maxSpeed;
+      }
+    } else{
+      this.speed = 2 * this.maxSpeed * Math.abs(Math.sqrt((x - canvasWidth/2) * (x - canvasWidth/2) / canvasWidth / canvasWidth + (y - canvasHeight/2) * (y - canvasHeight/2) / canvasHeight / canvasHeight));
+
+      if(this.speed * 5 > this.maxSpeed){
+        this.speed = this.maxSpeed/5;
+      }
     }
   }
 
@@ -308,6 +333,7 @@ class Player extends ObjectClass {
       newMessageStart: this.newMessageStart,
       keyPressed: this.keyPressed,
       abilityCooldown: this.abilityCooldown,
+      grazing: this.grazing,
     };
   }
 }
