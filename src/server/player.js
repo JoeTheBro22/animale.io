@@ -34,6 +34,8 @@ class Player extends ObjectClass {
     this.jumpCounter = 0;
     this.invincible = false;
     this.flightSizeOffset = 1;
+    this.slimeBallSlow = false;
+    this.slimeBallSlowCounter = 0;
   }
 
   // Returns a newly created bullet, or null.
@@ -47,6 +49,12 @@ class Player extends ObjectClass {
     if(this.jump && this.jumpCounter < 30){
       this.preparingJump = false;
       this.Jump();
+    }
+
+    if(this.slimeBallSlow){
+      if(this.CheckSlimeBallSlow()){
+        this.slimeBallSlow = false;
+      }
     }
 
     if(this.jumpCounter >= 30){
@@ -188,6 +196,12 @@ class Player extends ObjectClass {
 
       if(this.speed * 5 > this.maxSpeed){
         this.speed = this.maxSpeed/5;
+      }
+    } else if(this.slimeBallSlow){
+      this.speed = 5 * this.maxSpeed * Math.abs(Math.sqrt((x - canvasWidth/2) * (x - canvasWidth/2) / canvasWidth / canvasWidth + (y - canvasHeight/2) * (y - canvasHeight/2) / canvasHeight / canvasHeight));
+
+      if(this.speed * 2 > this.maxSpeed){
+        this.speed = this.maxSpeed/2;
       }
     } else{
       this.speed = 10 * this.maxSpeed * Math.abs(Math.sqrt((x - canvasWidth/2) * (x - canvasWidth/2) / canvasWidth / canvasWidth + (y - canvasHeight/2) * (y - canvasHeight/2) / canvasHeight / canvasHeight)); 
@@ -342,6 +356,16 @@ class Player extends ObjectClass {
     this.y -= 6 * Math.cos(this.direction);
     this.flightSizeOffset = (Math.abs(15 - Math.abs(this.jumpCounter - 15)))/100 + 1;
     this.jumpCounter++;
+  }
+
+  CheckSlimeBallSlow(){
+    if(this.slimeBallSlowCounter < 180){
+      this.slimeBallSlowCounter++;
+      return false;
+    } else{
+      this.slimeBallSlowCounter = 0;
+      return true;
+    }
   }
 
   serializeForUpdate() {

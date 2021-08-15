@@ -3,7 +3,7 @@ const ObjectClass = require('./object');
 const Constants = require('../shared/constants');
 
 class Projectle extends ObjectClass {
-  constructor(parentID, x, y, dir, speed, lifeSpan, bounceX, bounceY) {
+  constructor(parentID, x, y, dir, speed, lifeSpan) {
     super(shortid(), x, y, dir, speed, lifeSpan);
     this.parentID = parentID;
     this.startTime = Date.now();

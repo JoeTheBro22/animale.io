@@ -1,6 +1,5 @@
 const e = require('express');
 const { debug } = require('webpack');
-const { MAGEBALL_DAMAGE } = require('../shared/constants');
 const constants = require('../shared/constants');
 const Constants = require('../shared/constants');
 
@@ -78,6 +77,8 @@ function applyCollisions(players, otherObj, collisionType) {
         playerRadius = Constants.MAGEBALL_RADIUS;
       } else if (collisionType == 19){
         nonPlayerRadius = Constants.PORTAL_RADIUS;
+      } else if (collisionType == 20){
+        nonPlayerRadius = Constants.SLIMEBALL_RADIUS;
       }
       if (player.distanceTo(otherObject) <= playerRadius + nonPlayerRadius && player.invincible != true && otherObject.invincible != true) {
         if(collisionType == 0){
@@ -333,6 +334,12 @@ function applyCollisions(players, otherObj, collisionType) {
               player.x = Constants.MAP_SIZE - Constants.PORTAL_RADIUS * 3;
               player.y = Constants.MAP_SIZE - Constants.PORTAL_RADIUS * 3;
             }
+          }
+        } else if (collisionType == 20){
+          if(player.tier < 13){
+            player.slimeBallSlow = true;
+          } else{
+            destroyObject = false;
           }
         }
         if(destroyObject){
