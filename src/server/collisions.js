@@ -31,7 +31,6 @@ function applyCollisions(players, otherObj, collisionType) {
 
   for (let i = 0; i < otherObj.length; i++) {
     for (let j = 0; j < players.length; j++) {
-
       const otherObject = otherObj[i];
       const player = players[j];
       let nonPlayerRadius = constants.PLAYER_RADIUS;
@@ -80,7 +79,7 @@ function applyCollisions(players, otherObj, collisionType) {
       } else if (collisionType == 19){
         nonPlayerRadius = Constants.PORTAL_RADIUS;
       }
-      if (player.distanceTo(otherObject) <= playerRadius + nonPlayerRadius) {
+      if (player.distanceTo(otherObject) <= playerRadius + nonPlayerRadius && player.invincible != true && otherObject.invincible != true) {
         if(collisionType == 0){
           player.giveBerryXP();
         } else if (collisionType == 1){

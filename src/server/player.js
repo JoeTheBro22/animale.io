@@ -20,8 +20,7 @@ class Player extends ObjectClass {
     this.abilityCooldown = 3;
     this.canvasWidth = 5000;
     this.canvasHeight = 5000;
-    // Animal types (for teleporting to the correct biome)
-    // 0 = land, 1 = ocean
+    this.preparingJump = false;
     this.animalType = 0;
     this.message = '';
     this.callDev = false;
@@ -31,6 +30,10 @@ class Player extends ObjectClass {
     this.localMessage = '';
     this.keyPressed = '';
     this.grazing = false;
+    this.jump = false;
+    this.jumpCounter = 0;
+    this.invincible = false;
+    this.flightSizeOffset = 1;
   }
 
   // Returns a newly created bullet, or null.
@@ -40,6 +43,16 @@ class Player extends ObjectClass {
     this.damageCooldown -= dt;
     this.abilityCooldown -= dt;
     this.frenzyTimer -= dt;
+
+    if(this.jump && this.jumpCounter < 30){
+      this.preparingJump = false;
+      this.Jump();
+    }
+
+    if(this.jumpCounter >= 30){
+      this.jump = false;
+      this.invincible = false;
+    }
 
     if(this.frenzyTimer < 0 || this.tier != 3){
       var changeFrenzyDetector = this.frenzyActive;
@@ -66,6 +79,10 @@ class Player extends ObjectClass {
         changeGrazingDetector = true;
         this.localMessage = '';
       }
+    }
+
+    if(this.preparingJump && this.tier == 9){
+      this.localMessage = "Preparing Jump! Press the Q key again to jump in your mouse's direction!";
     }
 
     // Update score
@@ -166,17 +183,17 @@ class Player extends ObjectClass {
   }
 
   setSpeed(x, y, canvasWidth, canvasHeight) {
-    if(!this.grazing){
-      this.speed = 10 * this.maxSpeed * Math.abs(Math.sqrt((x - canvasWidth/2) * (x - canvasWidth/2) / canvasWidth / canvasWidth + (y - canvasHeight/2) * (y - canvasHeight/2) / canvasHeight / canvasHeight)); 
-
-      if(this.speed > this.maxSpeed){
-        this.speed = this.maxSpeed;
-      }
-    } else{
+    if(this.grazing || (this.preparingJump && this.tier == 9)){
       this.speed = 2 * this.maxSpeed * Math.abs(Math.sqrt((x - canvasWidth/2) * (x - canvasWidth/2) / canvasWidth / canvasWidth + (y - canvasHeight/2) * (y - canvasHeight/2) / canvasHeight / canvasHeight));
 
       if(this.speed * 5 > this.maxSpeed){
         this.speed = this.maxSpeed/5;
+      }
+    } else{
+      this.speed = 10 * this.maxSpeed * Math.abs(Math.sqrt((x - canvasWidth/2) * (x - canvasWidth/2) / canvasWidth / canvasWidth + (y - canvasHeight/2) * (y - canvasHeight/2) / canvasHeight / canvasHeight)); 
+
+      if(this.speed > this.maxSpeed){
+        this.speed = this.maxSpeed;
       }
     }
   }
@@ -313,6 +330,20 @@ class Player extends ObjectClass {
     return this.tier;
   }
 
+  prepareJump(){
+    this.jumpCounter = 0;
+    this.jump = true;
+    this.preparingJump = false;
+  }
+
+  Jump(){
+    this.invincible = true;
+    this.x += 6 * Math.sin(this.direction); // Remember, these will be multiplied by 30 as they are called 30 times
+    this.y -= 6 * Math.cos(this.direction);
+    this.flightSizeOffset = (Math.abs(15 - Math.abs(this.jumpCounter - 15)))/100 + 1;
+    this.jumpCounter++;
+  }
+
   serializeForUpdate() {
     return {
       ...(super.serializeForUpdate()),
@@ -334,6 +365,9 @@ class Player extends ObjectClass {
       keyPressed: this.keyPressed,
       abilityCooldown: this.abilityCooldown,
       grazing: this.grazing,
+      preparingJump: this.preparingJump,
+      invincible: this.invincible,
+      flightSizeOffset: this.flightSizeOffset,
     };
   }
 }

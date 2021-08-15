@@ -255,6 +255,18 @@ class Game {
           player.grazing = false;
         }
 
+        if(player.tier == 9){
+          if(player.devPowers == true || abilityCooldown <= 0){
+            if(player.preparingJump){
+              player.prepareJump();
+            }
+            player.preparingJump = true;
+            player.abilityCooldown = 10;
+          }
+        } else{
+          this.preparingJump = false;
+        }
+
         /*
           Object.keys(this.sockets).forEach(playerID => {
             const player = this.players[playerID];

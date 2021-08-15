@@ -31,8 +31,7 @@ class Object {
     }
 
     this.direction = (this.recentDirectionArray[0] + dir)/2;*/
-    //this.direction = dir;
-
+    
     this.direction = dir;
   }
 

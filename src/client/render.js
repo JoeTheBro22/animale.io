@@ -257,6 +257,10 @@ function renderPlayer(me, player) {
     context.save();
     context.translate(canvasX, canvasY);
     context.rotate(direction);
+
+    if(player.invincible){
+      context.globalAlpha = 0.8;
+    }
     //tiers
     {
     if(player.tier < 1){
@@ -357,10 +361,10 @@ function renderPlayer(me, player) {
     else if(player.tier <10){
       context.drawImage(
         getAsset('kangaroo.png'),
-        -PLAYER_RADIUS * TIER_10_SIZE,
-        -PLAYER_RADIUS * TIER_10_SIZE,
-        PLAYER_RADIUS * 2 * TIER_10_SIZE,
-        PLAYER_RADIUS * 2 * TIER_10_SIZE,
+        -PLAYER_RADIUS * TIER_10_SIZE * player.flightSizeOffset,
+        -PLAYER_RADIUS * TIER_10_SIZE * player.flightSizeOffset,
+        PLAYER_RADIUS * 2 * TIER_10_SIZE * player.flightSizeOffset,
+        PLAYER_RADIUS * 2 * TIER_10_SIZE * player.flightSizeOffset,
       );
     }
 
@@ -445,6 +449,7 @@ function renderPlayer(me, player) {
     
     }
     context.restore();
+    context.globalAlpha = 1;
 
     // Draw name
     context.fillStyle = "white";

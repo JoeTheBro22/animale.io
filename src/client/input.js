@@ -6,9 +6,17 @@ import { updateChat } from './networking';
 import { clickMessage } from './networking';
 import { updateKeyPressed } from './networking';
 
+var mouseX;
+var mouseY;
 function onMouseInput(e) {
   handleInput(e.clientX, e.clientY);
+  mouseX = e.clientX;
+  mouseY = e.clientY;
 }
+
+setInterval(function(){ 
+  updateSpeed(mouseX, mouseY, Math.max(1, 800 / window.innerWidth) * window.innerWidth, Math.max(1, 800 / window.innerWidth) * window.innerHeight);
+}, 100);
 
 function onMouseClick() {
   clickMessage();

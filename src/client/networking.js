@@ -49,12 +49,10 @@ export const updateSpeed = throttle(20, (x, y, canvasWidth, canvasHeight) => {
 export const updateKeyPressed = throttle(20, (KeyPressed) => {
   var chat = document.getElementById('chat-text');
   if(chat === document.activeElement){
-      //myElement Has Focus
+      // chat Is being selected
   } else{
     socket.emit(Constants.MSG_TYPES.KEY_PRESSED, KeyPressed);
   }
-  //`${chat.length}`
-  
 });
 
 export const clickMessage = click => {
