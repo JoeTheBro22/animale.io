@@ -57,16 +57,20 @@ button:focus {
 
 #changelog {
   position: absolute;
-  width: min(10%, 400px);
+  width: min(20%, 400px);
   top: 10px;
   left: 10px;
   padding: 10px 30px;
+  height: 95%;
   background-color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
   border-radius: 5px;
   text-align: center;
+  overflow: auto;
+  outline-style: solid;
+  outline-color: rgba(0, 0, 0, 0.2);
 }
 
 #changelog p {

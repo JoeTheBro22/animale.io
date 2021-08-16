@@ -175,9 +175,7 @@ class Game {
   }
 
   removePlayer(socket) {
-    if(this.players[socket.id]){
-      this.sockets[socket.id].score = 0;
-      this.sockets[socket.id].tier = 0;
+    if(this.players[socket.id] && this.players[socket.id] !== undefined){
       delete this.sockets[socket.id];
       delete this.players[socket.id];
     }
