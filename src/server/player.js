@@ -36,6 +36,8 @@ class Player extends ObjectClass {
     this.flightSizeOffset = 1;
     this.slimeBallSlow = false;
     this.slimeBallSlowCounter = 0;
+    this.fliying = false;
+    this.flyingTimer = 0;
   }
 
   // Returns a newly created bullet, or null.
@@ -91,6 +93,37 @@ class Player extends ObjectClass {
 
     if(this.preparingJump && this.tier == 9){
       this.localMessage = "Preparing Jump! Press the Q key again to jump in your mouse's direction!";
+    }
+
+    var changeFlyingDetector = true;
+    if(this.tier == 6){
+      if(this.flying /*&& this.tier == 6*/){
+        this.flightSizeOffset = 1.5;
+        this.invincible = true;
+        this.localMessage = "Flying Active! Move your cursor to fly around!";
+        changeFlyingDetector = false;
+        if(changeFlyingDetector){
+          this.flyingTimer = 0;
+        } else{
+          this.flyingTimer++;
+        }
+
+        if(this.flyingTimer >= 900){
+          this.flying = false;
+          this.flyingTimer = 0;
+        }
+      } else{
+        if(!changeFlyingDetector){
+          this.flyingTimer = 0;
+          this.flightSizeOffset = 1;
+          changeFlyingDetector = true;
+          this.localMessage = '';
+        }
+  
+        if(this.tier == 6){
+          this.invincible = false;
+        }
+      }
     }
 
     // Update score
@@ -169,19 +202,21 @@ class Player extends ObjectClass {
 
   checkWaterSpeed(){
     // Check if the player is in water
-    if(this.x <= Constants.MAP_SIZE / 2 && this.y <= Constants.MAP_SIZE / 2){ // If we are in the water
-      if(this.tier != 15){
-        this.maxSpeed = 20;
-      } else {
-        this.maxSpeed = 100;
-      }
-      
-    } else{
-      if(this.tier != 15){ // this is for when i allow the fish to go on land
-        this.maxSpeed = 100;
-      } else {
-        this.takeLavaDamage();
-        this.maxSpeed = 20;
+    if(!this.flying){
+      if(this.x <= Constants.MAP_SIZE / 2 && this.y <= Constants.MAP_SIZE / 2){ // If we are in the water
+        if(this.tier != 15){
+          this.maxSpeed = 20;
+        } else {
+          this.maxSpeed = 100;
+        }
+        
+      } else{
+        if(this.tier != 15){ // this is for when i allow the fish to go on land
+          this.maxSpeed = 100;
+        } else {
+          this.takeLavaDamage();
+          this.maxSpeed = 20;
+        }
       }
     }
   }
@@ -202,6 +237,12 @@ class Player extends ObjectClass {
 
       if(this.speed * 2 > this.maxSpeed){
         this.speed = this.maxSpeed/2;
+      }
+    } else if(this.flying){
+      this.speed = 25 * this.maxSpeed * Math.abs(Math.sqrt((x - canvasWidth/2) * (x - canvasWidth/2) / canvasWidth / canvasWidth + (y - canvasHeight/2) * (y - canvasHeight/2) / canvasHeight / canvasHeight)); 
+
+      if(this.speed > this.maxSpeed * 2.5){
+        this.speed = this.maxSpeed * 2.5;
       }
     } else{
       this.speed = 10 * this.maxSpeed * Math.abs(Math.sqrt((x - canvasWidth/2) * (x - canvasWidth/2) / canvasWidth / canvasWidth + (y - canvasHeight/2) * (y - canvasHeight/2) / canvasHeight / canvasHeight)); 
@@ -392,6 +433,7 @@ class Player extends ObjectClass {
       preparingJump: this.preparingJump,
       invincible: this.invincible,
       flightSizeOffset: this.flightSizeOffset,
+      flying: this.flying,
     };
   }
 }

@@ -229,6 +229,13 @@ class Game {
           }
         }
 
+        if(player.tier === 6){
+          if(player.devPowers == true || abilityCooldown <= 0){
+            player.flying = !player.flying;
+            player.abilityCooldown = 3;
+          }
+        }
+
         if(player.tier === 7){
           // Knock all players back that are close enough and set player's chat to "Meow!"
           if(player.devPowers == true || abilityCooldown <= 0){

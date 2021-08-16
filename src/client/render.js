@@ -304,13 +304,23 @@ function renderPlayer(me, player) {
     }
 
     else if(player.tier <7){
-      context.drawImage(
-        getAsset('barn owl.png'),
-        -PLAYER_RADIUS * TIER_7_SIZE,
-        -PLAYER_RADIUS * TIER_7_SIZE,
-        PLAYER_RADIUS * 2 * TIER_7_SIZE,
-        PLAYER_RADIUS * 2 * TIER_7_SIZE,
-      );
+      if(player.flying){
+        context.drawImage(
+          getAsset('barn owl flying.png'),
+          -PLAYER_RADIUS * TIER_7_SIZE * player.flightSizeOffset,
+          -PLAYER_RADIUS * TIER_7_SIZE * player.flightSizeOffset,
+          PLAYER_RADIUS * 2 * TIER_7_SIZE * player.flightSizeOffset,
+          PLAYER_RADIUS * 2 * TIER_7_SIZE * player.flightSizeOffset,
+        );
+      } else{
+        context.drawImage(
+          getAsset('barn owl.png'),
+          -PLAYER_RADIUS * TIER_7_SIZE,
+          -PLAYER_RADIUS * TIER_7_SIZE,
+          PLAYER_RADIUS * 2 * TIER_7_SIZE,
+          PLAYER_RADIUS * 2 * TIER_7_SIZE,
+        );
+      }
     }
 
     else if(player.tier < 8){
