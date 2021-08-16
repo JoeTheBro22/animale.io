@@ -175,10 +175,12 @@ class Game {
   }
 
   removePlayer(socket) {
-    this.sockets[socket.id].score = 0;
-    this.sockets[socket.id].tier = 0;
-    delete this.sockets[socket.id];
-    delete this.players[socket.id];
+    if(this.players[socket.id]){
+      this.sockets[socket.id].score = 0;
+      this.sockets[socket.id].tier = 0;
+      delete this.sockets[socket.id];
+      delete this.players[socket.id];
+    }
   }
 
   handleInput(socket, dir) {

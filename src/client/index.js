@@ -14,6 +14,7 @@ import './css/bootstrap-reboot.css';
 import './css/main.css';
 
 const playMenu = document.getElementById('play-menu');
+const changelog = document.getElementById('changelog');
 const playButton = document.getElementById('play-button');
 // Use the same systems for chat as username input
 const usernameInput = document.getElementById('username-input');
@@ -23,11 +24,13 @@ Promise.all([
   downloadAssets(),
 ]).then(() => {
   playMenu.classList.remove('hidden');
+  changelog.classList.remove('hidden');
   usernameInput.focus();
   playButton.onclick = () => {
     // Play!
     play(usernameInput.value);
     playMenu.classList.add('hidden');
+    changelog.classList.add('hidden');
     initState();
     startCapturingInput();
     startRendering();
@@ -39,5 +42,6 @@ function onGameOver() {
   stopCapturingInput();
   stopRendering();
   playMenu.classList.remove('hidden');
+  changelog.classList.remove('hidden');
   setLeaderboardHidden(true);
 }
