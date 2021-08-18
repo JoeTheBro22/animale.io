@@ -36,8 +36,10 @@ class Player extends ObjectClass {
     this.flightSizeOffset = 1;
     this.slimeBallSlow = false;
     this.slimeBallSlowCounter = 0;
-    this.fliying = false;
+    this.flying = false;
     this.flyingTimer = 0;
+    this.stomped = false;
+    this.stompedCounter = 0;
   }
 
   // Returns a newly created bullet, or null.
@@ -56,6 +58,13 @@ class Player extends ObjectClass {
     if(this.slimeBallSlow){
       if(this.CheckSlimeBallSlow()){
         this.slimeBallSlow = false;
+      }
+    }
+
+    if(this.stomped){
+      this.maxSpeed = 20;
+      if(this.CheckStomped()){
+        this.stomped = false;
       }
     }
 
@@ -130,6 +139,8 @@ class Player extends ObjectClass {
     //this.score += dt * Constants.SCORE_PER_SECOND;
 
     // Update tier based on XP
+    var changeTierDetector = this.tier;
+
     if(this.score < Constants.TIER_2_XP){
       this.tier = 0;
     }    else if (this.score < Constants.TIER_3_XP){
@@ -167,6 +178,20 @@ class Player extends ObjectClass {
         this.y = 100;
         this.animalType = 1;
       }
+    }
+
+    if(this.tier != changeTierDetector){
+      // We have detected a change in tier
+      this.preparingJump = false;
+      this.frenzyActive = false;
+      this.grazing = false;
+      this.jump = false;
+      this.jumpCounter = 0;
+      this.invincible = false;
+      this.flightSizeOffset = 1;
+      this.slimeBallSlow = false;
+      this.flying = false;
+      this.stomped = false;
     }
 
     this.radius = Constants.RelativeSizes[this.tier] * Constants.PLAYER_RADIUS;
@@ -223,6 +248,7 @@ class Player extends ObjectClass {
 
   takeBulletDamage() {
     this.hp -= Constants.BULLET_DAMAGE;
+    this.stomped = false;
   }
 
   setSpeed(x, y, canvasWidth, canvasHeight) {
@@ -269,6 +295,7 @@ class Player extends ObjectClass {
   takeHitDamage() {
     if(this.damageCooldown <= 0){
       this.hp -= Constants.HIT_DAMAGE;
+      this.stomped = false;
       this.damageCooldown = Constants.PLAYER_DAMAGE_COOLDOWN;
     }
   }
@@ -276,6 +303,7 @@ class Player extends ObjectClass {
   takeProjectileDamage(amount) {
     if(this.damageCooldown <= 0){
       this.hp -= amount;
+      this.stomped = false;
       this.damageCooldown = Constants.PLAYER_DAMAGE_COOLDOWN;
     }
   }
@@ -409,6 +437,16 @@ class Player extends ObjectClass {
     }
   }
 
+  CheckStomped(){
+    if(this.stompedCounter < 180){
+      this.stompedCounter++;
+      return false;
+    } else{
+      this.stompedCounter = 0;
+      return true;
+    }
+  }
+
   serializeForUpdate() {
     return {
       ...(super.serializeForUpdate()),
@@ -434,6 +472,8 @@ class Player extends ObjectClass {
       invincible: this.invincible,
       flightSizeOffset: this.flightSizeOffset,
       flying: this.flying,
+      flyingTimer: this.flyingTimer,
+      stomped: this.stomped,
     };
   }
 }

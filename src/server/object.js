@@ -53,6 +53,7 @@ class Object {
       id: this.id,
       x: this.x,
       y: this.y,
+      direction: this.direction,
     };
   }
 }

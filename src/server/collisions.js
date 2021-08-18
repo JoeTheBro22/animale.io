@@ -1,5 +1,6 @@
 const e = require('express');
 const { debug } = require('webpack');
+const { HORSEKICK_DAMAGE } = require('../shared/constants');
 const constants = require('../shared/constants');
 const Constants = require('../shared/constants');
 
@@ -79,6 +80,8 @@ function applyCollisions(players, otherObj, collisionType) {
         nonPlayerRadius = Constants.PORTAL_RADIUS;
       } else if (collisionType == 20){
         nonPlayerRadius = Constants.SLIMEBALL_RADIUS;
+      } else if (collisionType == 21){
+        nonPlayerRadius = Constants.HORSEKICK_RADIUS;
       }
       if (player.distanceTo(otherObject) <= playerRadius + nonPlayerRadius && player.invincible != true && otherObject.invincible != true) {
         if(collisionType == 0){
@@ -338,6 +341,20 @@ function applyCollisions(players, otherObj, collisionType) {
         } else if (collisionType == 20){
           if(player.tier < 13){
             player.slimeBallSlow = true;
+          } else{
+            destroyObject = false;
+          }
+        } else if (collisionType == 21){
+          if(player.tier != 12){
+            player.takeProjectileDamage(HORSEKICK_DAMAGE);
+            player.takeKnockback(null, 5*player.x - 5*otherObject.x, 5*player.y - 5*otherObject.y);
+            if(player.hp <= 0){
+              for(let b = 0; b < players.length; b++){
+                if(players[b].id === otherObject.parentID){
+                  players[b].getKillXP(player.score * 0.5 + player.score * 0.05);
+                }
+              }
+            }
           } else{
             destroyObject = false;
           }

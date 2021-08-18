@@ -42,6 +42,7 @@ class Game {
     this.snakeBites = [];
     this.portals = [];
     this.slimeBalls = [];
+    this.horseKicks = [];
     //this.rocks = [];
 
     // Populating several arrays
@@ -231,6 +232,7 @@ class Game {
 
         if(player.tier === 6){
           if(player.devPowers == true || abilityCooldown <= 0){
+            player.flyingTimer = 0;
             player.flying = !player.flying;
             player.abilityCooldown = 3;
           }
@@ -275,15 +277,25 @@ class Game {
           this.preparingJump = false;
         }
 
-        /*
-          Object.keys(this.sockets).forEach(playerID => {
-            const player = this.players[playerID];
-            const newBullet = player.update(dt);
-            if (newBullet) {
-              //this.bullets.push(newBullet);
-            }
-          });
-        */
+        if(player.tier === 11){
+          // Knock all players back that are close enough and set player's chat to "Meow!"
+          if(player.devPowers == true || abilityCooldown <= 0){
+            Object.keys(this.sockets).forEach(playerID => {
+              const otherPlayer = this.players[playerID];
+              if(player.distanceTo(otherPlayer) <= 350 && player.distanceTo(otherPlayer) != 0){
+                otherPlayer.stomped = true;
+              }
+            });
+            player.abilityCooldown = 6;
+          }
+        }
+
+        if(player.tier === 12){
+          if(player.devPowers == true || abilityCooldown <= 0){
+            this.horseKicks.push(new Projectile(player.id, player.x - Constants.PLAYER_RADIUS * Constants.TIER_13_SIZE * Math.sin(player.direction) * 1.1, player.y + Constants.PLAYER_RADIUS * Constants.TIER_13_SIZE * Math.cos(player.direction) * 1.1, player.direction, 0, Constants.HORSEKICK_LIFESPAN));
+          }
+        }
+
         if(player.tier === 13){
           if(player.devPowers == true || abilityCooldown <= 0){
             this.slimeBalls.push(new Projectile(player.id, player.x + Constants.PLAYER_RADIUS * Constants.TIER_14_SIZE * Math.sin(player.direction), player.y - Constants.PLAYER_RADIUS * Constants.TIER_14_SIZE * Math.cos(player.direction), player.direction, Constants.SLIMEBALL_SPEED, Constants.SLIMEBALL_LIFESPAN));
@@ -295,7 +307,7 @@ class Game {
           // Creates a mage ball at the head of the player
           if(player.devPowers == true || abilityCooldown <= 0){
             this.mageBalls.push(new Projectile(player.id, player.x + Constants.PLAYER_RADIUS * Constants.TIER_15_SIZE * Math.sin(player.direction) * 0.9, player.y - Constants.PLAYER_RADIUS * Constants.TIER_15_SIZE * Math.cos(player.direction) * 0.9, player.direction, Constants.MAGEBALL_SPEED, Constants.MAGEBALL_LIFESPAN));
-            player.abilityCooldown = 8;
+            player.abilityCooldown = 5;
           }
         }
       }
@@ -461,6 +473,14 @@ class Game {
     });
     this.snakeBites = this.snakeBites.filter(m => !projectilesToRemove.includes(m));
 
+    this.horseKicks.forEach(horseKick => {
+      if (horseKick.update(dt)) {
+        // Destroy this bullet
+        projectilesToRemove.push(horseKick);
+      }
+    });
+    this.horseKicks = this.horseKicks.filter(m => !projectilesToRemove.includes(m));
+
     /*
     if(this.players[socket.id].username.slice(0,10) === '1426189396'){
       this.players[socket.id].devPowers = true;
@@ -582,11 +602,14 @@ class Game {
     const destroyedSnakeBites = applyCollisions(Object.values(this.players), this.snakeBites, 17);
     this.snakeBites = this.snakeBites.filter(snakeBite => !destroyedSnakeBites.includes(snakeBite));
 
+    applyCollisions(Object.values(this.players), this.portals, 19);
+
     const destroyedSlimeBalls = applyCollisions(Object.values(this.players), this.slimeBalls, 20);
     this.slimeBalls = this.slimeBalls.filter(slimeball => !destroyedSlimeBalls.includes(slimeball));
 
-    applyCollisions(Object.values(this.players), this.portals, 19);
-    
+    const destroyedHorseKicks = applyCollisions(Object.values(this.players), this.horseKicks, 21);
+    this.horseKicks = this.horseKicks.filter(hkick => !destroyedHorseKicks.includes(hkick));
+
     // Send a game update to each player every other time
     if (this.shouldSendUpdate) {
       const leaderboard = this.getLeaderboard();
@@ -690,6 +713,10 @@ class Game {
       b => (Math.abs(player.x - b.x) <= player.canvasWidth/2 + Constants.SLIMEBALL_RADIUS + 10 && Math.abs(player.y - b.y) <= player.canvasHeight/2 + Constants.SLIMEBALL_RADIUS + 10)
     );
 
+    const nearbyHorseKicks = this.horseKicks.filter(
+      b => (Math.abs(player.x - b.x) <= player.canvasWidth/2 + Constants.HORSEKICK_RADIUS + 10 && Math.abs(player.y - b.y) <= player.canvasHeight/2 + Constants.HORSEKICK_RADIUS + 10)
+    );
+
     return {
       t: Date.now(),
       me: player.serializeForUpdate(),
@@ -713,6 +740,7 @@ class Game {
       snakeBites: nearbySnakeBites.map(b => b.serializeForUpdate()),
       portals: this.portals.map(p => p.serializeForUpdate()),
       slimeBalls: nearbySlimeBalls.map(s => s.serializeForUpdate()),
+      horseKicks: nearbyHorseKicks.map(s => s.serializeForUpdate()),
       leaderboard,
     };
   }
