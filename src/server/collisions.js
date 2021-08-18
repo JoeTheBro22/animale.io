@@ -347,7 +347,7 @@ function applyCollisions(players, otherObj, collisionType) {
         } else if (collisionType == 21){
           if(player.tier != 12){
             player.takeProjectileDamage(HORSEKICK_DAMAGE);
-            player.takeKnockback(null, 5*player.x - 5*otherObject.x, 5*player.y - 5*otherObject.y);
+            player.takeKnockback(null, player.x - otherObject.x, player.y - otherObject.y);
             if(player.hp <= 0){
               for(let b = 0; b < players.length; b++){
                 if(players[b].id === otherObject.parentID){
@@ -377,8 +377,8 @@ function CheckTailbite(smallerPlayer, biggerPlayer){
   let testPlayerY = smallerPlayer.y + -5 * Math.cos(smallerPlayer.direction);
   let distance = Math.sqrt((testPlayerX - biggerPlayer.x) * (testPlayerX - biggerPlayer.x) + (testPlayerY - biggerPlayer.y) * (testPlayerY - biggerPlayer.y));
   let combinedRadius = Constants.RelativeSizes[smallerPlayer.tier] * Constants.PLAYER_RADIUS + Constants.RelativeSizes[biggerPlayer.tier] * Constants.PLAYER_RADIUS; 
-  if(relativeDirection <= 40 || relativeDirection >= 320){
-    if(distance <= combinedRadius && (Math.abs(directionBetween - smallerPlayer.direction) * 180/Math.PI <= 20 || Math.abs(directionBetween - smallerPlayer.direction) * 180/Math.PI >= 340)){
+  if(relativeDirection <= 45 || relativeDirection >= 315){
+    if(distance <= combinedRadius && (Math.abs(directionBetween - smallerPlayer.direction) * 180/Math.PI <= 45 || Math.abs(directionBetween - smallerPlayer.direction) * 180/Math.PI >= 315)){
       return true;
     } else{
       return false;
