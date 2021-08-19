@@ -76,6 +76,9 @@ module.exports = Object.freeze({
 
   PORTAL_RADIUS: 75,
 
+  BOOSTPAD_RADIUS: 100,
+  BOOSTPAD_AMOUNT: 20,
+
   // HP and player
   REGEN_AMOUNT: 0.03,
   HIT_DAMAGE: 30,

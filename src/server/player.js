@@ -201,7 +201,11 @@ class Player extends ObjectClass {
     if(this.boostCooldown <= 0 && this.autoBoost){
       this.x += 35 * Math.sin(this.direction);
       this.y -= 35 * Math.cos(this.direction);
-      this.boostCooldown = Constants.BOOST_COOLDOWN;
+      if(this.tier != 10){
+        this.boostCooldown = Constants.BOOST_COOLDOWN;
+      } else{
+        this.boostCooldown = Constants.BOOST_COOLDOWN/2;
+      }
     }
     
     // Make sure the player stays in bounds
@@ -236,7 +240,7 @@ class Player extends ObjectClass {
         }
         
       } else{
-        if(this.tier != 15){ // this is for when i allow the fish to go on land
+        if(this.tier != 15){
           this.maxSpeed = 100;
         } else {
           this.takeLavaDamage();

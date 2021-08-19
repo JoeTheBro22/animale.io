@@ -43,12 +43,25 @@ class Game {
     this.portals = [];
     this.slimeBalls = [];
     this.horseKicks = [];
+    this.boostPads = [];
     //this.rocks = [];
 
     // Populating several arrays
     function generateRandomPos() {
-      var berryPosX = Constants.MAP_SIZE * (Math.random());
-      var berryPosY = Constants.MAP_SIZE * (Math.random());
+      var berryPosX = Constants.MAP_SIZE * Math.random();
+      var berryPosY = Constants.MAP_SIZE * Math.random();
+      return [berryPosX, berryPosY];
+    }
+
+    function generateRandomNotWaterPos() {
+      if(Math.random() < 2/3){
+        var berryPosX = Constants.MAP_SIZE/2 * Math.random() + Constants.MAP_SIZE/2;
+        var berryPosY = Constants.MAP_SIZE * Math.random();
+      } else {
+        var berryPosX = Constants.MAP_SIZE/2 * Math.random();
+        var berryPosY = Constants.MAP_SIZE/2 * Math.random() + Constants.MAP_SIZE/2;
+      }
+
       return [berryPosX, berryPosY];
     }
 
@@ -119,23 +132,14 @@ class Game {
       this.mushrooms[k] = new Berry(posGenerator[0], posGenerator[1]);
     }
 
-    // Add code to populate the lavas array
-    function generateRandomLavaPos() {
-      var lavaPosX = Constants.MAP_SIZE * (Math.random());
-      var lavaPosY = Constants.MAP_SIZE * (Math.random());
-      return [lavaPosX, lavaPosY];
+    for(var n = 0; n < Constants.BOOSTPAD_AMOUNT; n++){
+      posGenerator = generateRandomNotWaterPos();
+      this.boostPads[n] = new Berry(posGenerator[0], posGenerator[1], Math.random() * 2 * Math.PI - Math.PI);
     }
 
     for(var i = 0; i < LAVA_AMOUNT; i++){
-      var lava = generateRandomLavaPos();
+      var lava = generateRandomNotWaterPos();
       this.lavas[i] = new Berry(lava[0], lava[1]);
-    }
-
-    // Lava in the center of the map
-    for(var i = 0; i < 20; i++){
-      var centralLavaPosX = 0.5 * Constants.MAP_SIZE + Math.random() * 200 - 100;
-      var centralLavaPosY = 0.5 * Constants.MAP_SIZE + Math.random() * 200 - 100;
-      this.lavas.push(new Berry(centralLavaPosX, centralLavaPosY));
     }
 
     // Portals
@@ -348,7 +352,11 @@ class Game {
     if(this.players[socket.id]){
       const boosted = this.players[socket.id].boost(this.players[socket.id].boostCooldown, this.players[socket.id].autoBoost);
       if(boosted){
-        this.players[socket.id].boostCooldown = Constants.BOOST_COOLDOWN;
+        if(this.players[socket.id].tier != 10){
+          this.players[socket.id].boostCooldown = Constants.BOOST_COOLDOWN;
+        } else{
+          this.players[socket.id].boostCooldown = Constants.BOOST_COOLDOWN/2;
+        }
       }
     }
   }
@@ -358,6 +366,18 @@ class Game {
     function generateRandomPos() {
       var berryPosX = Constants.MAP_SIZE * (Math.random());
       var berryPosY = Constants.MAP_SIZE * (Math.random());
+      return [berryPosX, berryPosY];
+    }
+
+    function generateRandomNotWaterPos() {
+      if(Math.random() < 2/3){
+        var berryPosX = Constants.MAP_SIZE/2 * Math.random() + Constants.MAP_SIZE/2;
+        var berryPosY = Constants.MAP_SIZE * Math.random();
+      } else {
+        var berryPosX = Constants.MAP_SIZE/2 * Math.random();
+        var berryPosY = Constants.MAP_SIZE/2 * Math.random() + Constants.MAP_SIZE/2;
+      }
+
       return [berryPosX, berryPosY];
     }
 
@@ -428,7 +448,7 @@ class Game {
     }
 
     while(this.lavas.length < LAVA_AMOUNT){
-      var lava = generateRandomPos();
+      var lava = generateRandomNotWaterPos();
       this.lavas[this.lavas.length] = new Berry(lava[0], lava[1]);  
     }
 
@@ -610,6 +630,8 @@ class Game {
     const destroyedHorseKicks = applyCollisions(Object.values(this.players), this.horseKicks, 21);
     this.horseKicks = this.horseKicks.filter(hkick => !destroyedHorseKicks.includes(hkick));
 
+    applyCollisions(Object.values(this.players), this.boostPads, 22);
+
     // Send a game update to each player every other time
     if (this.shouldSendUpdate) {
       const leaderboard = this.getLeaderboard();
@@ -720,7 +742,7 @@ class Game {
     return {
       t: Date.now(),
       me: player.serializeForUpdate(),
-      others: nearbyPlayers.map(p => p.serializeForUpdate()),
+      others: nearbyPlayers.map(b => b.serializeForUpdate()),
       bullets: nearbyBullets.map(b => b.serializeForUpdate()),
       berries: nearbyBerries.map(b => b.serializeForUpdate()),
       melons: nearbyMelons.map(b => b.serializeForUpdate()),
@@ -738,9 +760,10 @@ class Game {
       lavas: this.lavas.map(b => b.serializeForUpdate()),
       mageBalls: nearbyMageBalls.map(b => b.serializeForUpdate()),
       snakeBites: nearbySnakeBites.map(b => b.serializeForUpdate()),
-      portals: this.portals.map(p => p.serializeForUpdate()),
-      slimeBalls: nearbySlimeBalls.map(s => s.serializeForUpdate()),
-      horseKicks: nearbyHorseKicks.map(s => s.serializeForUpdate()),
+      portals: this.portals.map(b => b.serializeForUpdate()),
+      slimeBalls: nearbySlimeBalls.map(b => b.serializeForUpdate()),
+      horseKicks: nearbyHorseKicks.map(b => b.serializeForUpdate()),
+      boostPads: this.boostPads.map(b => b.serializeForUpdate()),
       leaderboard,
     };
   }

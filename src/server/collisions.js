@@ -82,6 +82,8 @@ function applyCollisions(players, otherObj, collisionType) {
         nonPlayerRadius = Constants.SLIMEBALL_RADIUS;
       } else if (collisionType == 21){
         nonPlayerRadius = Constants.HORSEKICK_RADIUS;
+      } else if (collisionType == 22){
+        nonPlayerRadius = Constants.BOOSTPAD_RADIUS;
       }
       if (player.distanceTo(otherObject) <= playerRadius + nonPlayerRadius && player.invincible != true && otherObject.invincible != true) {
         if(collisionType == 0){
@@ -357,6 +359,14 @@ function applyCollisions(players, otherObj, collisionType) {
             }
           } else{
             destroyObject = false;
+          }
+        } else if(collisionType == 22){
+          if(Math.abs(player.direction - otherObject.direction) * 180/Math.PI < 90 || (player.direction - otherObject.direction) * 180/Math.PI > 270){
+            player.x += 0.1 * player.speed * Math.sin(otherObject.direction);
+            player.y -= 0.1 * player.speed * Math.cos(otherObject.direction);
+          } else {
+            player.x -= 0.1 * player.speed * Math.sin(otherObject.direction);
+            player.y += 0.1 * player.speed * Math.cos(otherObject.direction);
           }
         }
         if(destroyObject){

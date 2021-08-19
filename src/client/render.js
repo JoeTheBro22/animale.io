@@ -31,7 +31,7 @@ window.addEventListener('resize', debounce(40, setCanvasDimensions));
 
 function render() 
 {
-  const { me, others, bullets, berries, melons, blackberries, carrots, lilypads, redMushrooms, watermelonSlices, bananas, coconuts, pears, mushroomBushes, watermelons, mushrooms, lavas, mageBalls, snakeBites, portals, slimeBalls, horseKicks /*, rocks*/} = getCurrentState();
+  const { me, others, bullets, berries, melons, blackberries, carrots, lilypads, redMushrooms, watermelonSlices, bananas, coconuts, pears, mushroomBushes, watermelons, mushrooms, lavas, mageBalls, snakeBites, portals, slimeBalls, horseKicks, boostPads /*, rocks*/} = getCurrentState();
   if (!me) {
     return;
   }
@@ -50,8 +50,10 @@ function render()
   // Draw all bullets
   //bullets.forEach(renderBullet.bind(null, me));
 
-  // Draw all lava
+  // Draw all lava and other terrain
   lavas.forEach(renderLava.bind(null, me));
+
+  boostPads.forEach(renderBoostpad.bind(null, me));
 
   // Draw all players that can hide under foods
   if(me.tier < 2){
@@ -101,7 +103,7 @@ function render()
   //Draw xp bar
   renderXPBar(me, me);
 
-  renderMinimap(me, lavas, others, portals);
+  renderMinimap(me, lavas, others, boostPads);
 
   renderLocalMessage(me);
 }
@@ -111,7 +113,7 @@ function renderBackground() {
   context.fillRect(0,0,canvas.width,canvas.height);
 }
 
-function renderMinimap(me, lavas, others, portals) {
+function renderMinimap(me, lavas, others, boostPads) {
 
   context.strokeStyle = 'black';
   context.lineWidth = 1;
@@ -135,19 +137,37 @@ function renderMinimap(me, lavas, others, portals) {
   context.fillRect(
     15,
     15,
-    115,
-    115,
+    100,
+    100,
   );
+
+
 
   for(var l = 0; l < lavas.length; l++){
     if(lavas[l].x !== null && lavas[l].y !== null){
       context.drawImage(
         getAsset('lava.png'),
-        15 + lavas[l].x/Constants.MAP_SIZE * 200 - 10/2,
-        15 + lavas[l].y/Constants.MAP_SIZE * 200 - 10/2, // lowercase L
+        lavas[l].x/Constants.MAP_SIZE * 200 + 10,
+        lavas[l].y/Constants.MAP_SIZE * 200 + 10, // lowercase L
         10,
         10,
       );
+    }
+  }
+
+  for(var l = 0; l < boostPads.length; l++){
+    if(boostPads[l].x !== null && boostPads[l].y !== null){
+      context.save();
+      context.translate(boostPads[l].x/Constants.MAP_SIZE * 200 + 15, boostPads[l].y/Constants.MAP_SIZE * 200 + 15); // lowercase L
+      context.rotate(boostPads[l].direction);
+      context.drawImage(
+        getAsset('boost pad.png'),
+        - 10/2,
+        - 10/2,
+        10,
+        10,
+      );
+      context.restore();
     }
   }
 
@@ -188,15 +208,15 @@ function renderMinimap(me, lavas, others, portals) {
     if(others[o].tier !== null && others[o].x !== null && others[o].y !== null){
       if(me.tier > others[o].tier){
         context.beginPath();
-        context.arc(15 + others[o].x/Constants.MAP_SIZE * 200, 15 + others[o].y/Constants.MAP_SIZE * 200, 3, 0, 2 * Math.PI);
+        context.arc(10 + others[o].x/Constants.MAP_SIZE * 200, 10 + others[o].y/Constants.MAP_SIZE * 200, 3, 0, 2 * Math.PI);
         context.fill();
       } else if(me.tier == others[o].tier){
         context.beginPath();
-        context.arc(15 + others[o].x/Constants.MAP_SIZE * 200, 15 + others[o].y/Constants.MAP_SIZE * 200, 5, 0, 2 * Math.PI);
+        context.arc(10 + others[o].x/Constants.MAP_SIZE * 200, 10 + others[o].y/Constants.MAP_SIZE * 200, 5, 0, 2 * Math.PI);
         context.fill();
       } else{
         context.beginPath();
-        context.arc(15 + others[o].x/Constants.MAP_SIZE * 200, 15 + others[o].y/Constants.MAP_SIZE * 200, 7, 0, 2 * Math.PI);
+        context.arc(10 + others[o].x/Constants.MAP_SIZE * 200, 10 + others[o].y/Constants.MAP_SIZE * 200, 7, 0, 2 * Math.PI);
         context.fill();
       }
     }
@@ -636,7 +656,7 @@ function renderHorseKick(me, horseKick) {
       HORSEKICK_RADIUS * 2,
     );
   }
-  
+
   context.restore();
 }
 
@@ -891,6 +911,47 @@ function renderLava(me, lava) {
       LAVA_RADIUS * 2,
     );
   }
+}
+
+function renderBoostpad(me, boostpad) {
+  const { x, y, direction } = boostpad;
+  const canvasX = canvas.width / 2 + x - me.x;
+  const canvasY = canvas.height / 2 + y - me.y;
+  context.save();
+  context.translate(canvasX, canvasY);
+  context.rotate(direction);
+
+  if(Math.abs(boostpad.x - me.x) <= canvas.width + 10 && Math.abs(boostpad.y - me.y) <= canvas.height + 10){
+    context.drawImage(
+      getAsset('boost pad.png'),
+      -Constants.BOOSTPAD_RADIUS,
+      -Constants.BOOSTPAD_RADIUS,
+      Constants.BOOSTPAD_RADIUS * 2,
+      Constants.BOOSTPAD_RADIUS * 2,
+    );
+  }
+
+  context.restore();
+
+  /*
+    const { x, y, direction } = horseKick;
+  const canvasX = canvas.width / 2 + x - me.x;
+  const canvasY = canvas.height / 2 + y - me.y;
+  context.save();
+  context.translate(canvasX, canvasY);
+  context.rotate(direction - Math.PI);
+  if(Math.abs(horseKick.x - me.x) <= canvas.width + 10 && Math.abs(horseKick.y - me.y) <= canvas.height + 10){
+    context.drawImage(
+      getAsset('horse kick.png'),
+      -HORSEKICK_RADIUS,
+      -HORSEKICK_RADIUS,
+      HORSEKICK_RADIUS * 2,
+      HORSEKICK_RADIUS * 2,
+    );
+  }
+
+  context.restore();
+  */
 }
 
 function renderMainMenu() {
