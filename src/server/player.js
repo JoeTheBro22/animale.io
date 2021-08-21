@@ -41,6 +41,10 @@ class Player extends ObjectClass {
     this.stomped = false;
     this.stompedCounter = 0;
     this.flyingChanged = false;
+    this.otherAbilityCooldown = 0;
+    this.poisoned = 0;
+    this.poisonedTimer = 0;
+    this.xpCooldown = 0;
   }
 
   // Returns a newly created bullet, or null.
@@ -49,7 +53,9 @@ class Player extends ObjectClass {
     this.checkWaterSpeed();
     this.damageCooldown -= dt;
     this.abilityCooldown -= dt;
+    this.otherAbilityCooldown -= dt;
     this.frenzyTimer -= dt;
+    this.xpCooldown -= dt;
 
     if(this.jump && this.jumpCounter < 30){
       this.preparingJump = false;
@@ -108,6 +114,29 @@ class Player extends ObjectClass {
       this.localMessage = "Preparing Jump! Press the Q key again to jump in your mouse's direction!";
     } else if (this.jump){
       this.localMessage = '';
+    }
+
+    if(this.invincible){
+      this.poisoned = false;
+    }
+
+    if(this.score < 0){
+      this.score = 0;
+    }
+
+    if(this.poisoned > 0){
+      this.poisonedTimer++;
+      if(this.poisonedTimer/40 == Math.floor(this.poisonedTimer/40) || this.poisonedTimer/40 == Math.ceil(this.poisonedTimer/40)){
+        if(this.tier == 15){
+          this.hp -= Constants.VENOM_DAMAGE/3 * this.poisoned;
+        } else {
+          this.hp -= Constants.VENOM_DAMAGE * this.poisoned;
+        }
+      }
+
+      if(this.poisonedTimer >= 180){
+        this.poisoned = 0;
+      }
     }
 
     /*if(this.tier == 6){
@@ -330,11 +359,14 @@ class Player extends ObjectClass {
   }
 
   getKillXP(otherPlayerScore) {
-    if(this.frenzyActive){
-      this.score += 2 * Math.floor(otherPlayerScore);
-    } else{
-      this.score += Math.floor(otherPlayerScore);
+    if(this.xpCooldown < 0){
+      if(this.frenzyActive){
+        this.score += 2 * Math.floor(otherPlayerScore);
+      } else{
+        this.score += Math.floor(otherPlayerScore);
+      }
     }
+    this.xpCooldown = 0.5;
   }
 
   regenHP() {
@@ -496,6 +528,9 @@ class Player extends ObjectClass {
       flyingTimer: this.flyingTimer,
       stomped: this.stomped,
       flyingChanged: this.flyingChanged,
+      otherAbilityCooldown: this.otherAbilityCooldown,
+      poisoned: this.poisoned,
+      poisonedTimer: this.poisonedTimer,
     };
   }
 }

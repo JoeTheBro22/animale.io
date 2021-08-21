@@ -106,6 +106,11 @@ module.exports = Object.freeze({
   OCELOTROAR_DAMAGE: 20,
   OCELOTROAR_HIGHER_TIER_DAMAGE: 20,
 
+  VENOM_DAMAGE: 8,
+  VENOM_LIFESPAN: 3.5,
+  VENOM_RADIUS: 25,
+  VENOM_SPEED: 300,
+
   HORSEKICK_LIFESPAN: 0.8,
   HORSEKICK_DAMAGE: 20, // Note: the horse kick does the same amount of damage to lower tiers as higher ones
   HORSEKICK_RADIUS: 60,

@@ -86,6 +86,8 @@ function applyCollisions(players, otherObj, collisionType) {
         nonPlayerRadius = Constants.BOOSTPAD_RADIUS;
       } else if (collisionType == 23){
         nonPlayerRadius = Constants.TRUNKHIT_RADIUS;
+      } else if (collisionType == 24){
+        nonPlayerRadius = Constants.VENOM_RADIUS;
       }
       if (player.distanceTo(otherObject) <= playerRadius + nonPlayerRadius && player.invincible != true && otherObject.invincible != true) {
         if(collisionType == 0){
@@ -154,7 +156,7 @@ function applyCollisions(players, otherObj, collisionType) {
           
           else{
             shouldTakeKnockback = false;
-            if(player.tier >= 14 && otherObject.tier >= 14 && otherObject.id !== player.id){  // If players are sea snakes, then let them 1v1
+            if(player.tier >= 14 && otherObject.tier >= 14 && otherObject.id !== player.id){
               tailbite = CheckTailbite(player, otherObject);
 
               if(tailbite == true){
@@ -372,7 +374,6 @@ function applyCollisions(players, otherObj, collisionType) {
           }
         } else if(collisionType == 23){
           if(player.tier != 11){
-            console.log('hit');
             player.takeProjectileDamage(Constants.TRUNKHIT_DAMAGE);
             player.takeKnockback(null, player.x - otherObject.x, player.y - otherObject.y);
             if(player.hp <= 0){
@@ -382,6 +383,12 @@ function applyCollisions(players, otherObj, collisionType) {
                 }
               }
             }
+          }
+        } else if(collisionType == 24){
+          if(player.id != otherObject.parentID && otherObject.parentID !== null){
+            player.poisonedTimer = 0;
+            player.poisoned++;
+            player.takeKnockback(null, player.x - otherObject.x, player.y - otherObject.y);
           }
         }
         if(destroyObject){

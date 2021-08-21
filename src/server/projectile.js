@@ -3,7 +3,7 @@ const ObjectClass = require('./object');
 const Constants = require('../shared/constants');
 
 class Projectle extends ObjectClass {
-  constructor(parentID, x, y, dir, speed, lifeSpan) {
+  constructor(parentID, x, y, dir, speed, lifeSpan, slowOverTime) {
     super(shortid(), x, y, dir, speed, lifeSpan);
     this.parentID = parentID;
     this.startTime = Date.now();
@@ -12,10 +12,16 @@ class Projectle extends ObjectClass {
     this.lifeSpan = lifeSpan;
     this.bounceX = true;
     this.bounceY = true;
+    this.slowOverTime = slowOverTime;
   }
     
   // Returns true if the projectile should be destroyed
   update(dt) {
+    if(this.slowOverTime == true && this.speed > 0){
+      this.speed -= 5000 * dt * this.lifeSpan/this.speed;
+    } else if(this.slowOverTime) {
+      this.speed = 0;
+    }
     this.currentTime += dt;
     if(Math.abs(this.currentTime - this.startTime) >= this.lifeSpan){
       return true;

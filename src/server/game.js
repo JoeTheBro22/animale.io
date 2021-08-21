@@ -45,6 +45,7 @@ class Game {
     this.horseKicks = [];
     this.boostPads = [];
     this.trunkHits = [];
+    this.venoms = [];
     //this.rocks = [];
 
     // Populating several arrays
@@ -198,6 +199,7 @@ class Game {
     if (player && player.tier !== null) {
       player.keyPressed = e;
       const abilityCooldown = this.players[socket.id].abilityCooldown;
+      const otherAbilityCooldown = this.players[socket.id].otherAbilityCooldown;
       if(e === 'r' && player.devPowers == true){
         if(player.score == 0){
           player.score++;
@@ -309,7 +311,7 @@ class Game {
 
         if(player.tier === 13){
           if(player.devPowers == true || abilityCooldown <= 0){
-            this.slimeBalls.push(new Projectile(player.id, player.x + Constants.PLAYER_RADIUS * Constants.TIER_14_SIZE * Math.sin(player.direction), player.y - Constants.PLAYER_RADIUS * Constants.TIER_14_SIZE * Math.cos(player.direction), player.direction, Constants.SLIMEBALL_SPEED, Constants.SLIMEBALL_LIFESPAN));
+            this.slimeBalls.push(new Projectile(player.id, player.x + Constants.PLAYER_RADIUS * Constants.TIER_14_SIZE * Math.sin(player.direction) * 1.1, player.y - Constants.PLAYER_RADIUS * Constants.TIER_14_SIZE * Math.cos(player.direction) * 1.1, player.direction, Constants.SLIMEBALL_SPEED, Constants.SLIMEBALL_LIFESPAN));
             player.abilityCooldown = 2;
           }
         }
@@ -321,25 +323,33 @@ class Game {
             player.abilityCooldown = 1;
           }
         }
+
+        if(player.tier === 15){
+          if(player.devPowers == true || abilityCooldown <= 0){
+            this.venoms.push(new Projectile(player.id, player.x + Constants.PLAYER_RADIUS * Constants.TIER_16_SIZE * Math.sin(player.direction) * 1.1, player.y - Constants.PLAYER_RADIUS * Constants.TIER_16_SIZE * Math.cos(player.direction) * 1.1, player.direction + Math.PI/9, Constants.VENOM_SPEED, Constants.VENOM_LIFESPAN, true));
+            this.venoms.push(new Projectile(player.id, player.x + Constants.PLAYER_RADIUS * Constants.TIER_16_SIZE * Math.sin(player.direction) * 1.1, player.y - Constants.PLAYER_RADIUS * Constants.TIER_16_SIZE * Math.cos(player.direction) * 1.1, player.direction - Math.PI/9, Constants.VENOM_SPEED, Constants.VENOM_LIFESPAN, true));
+            player.abilityCooldown = 5;
+          }
+        }
       } else {
         player.flyingChanged = false;
       }
 
       if(e === 'w'){
         if(player.tier == 11){
-          if(player.devPowers == true || abilityCooldown <= 0){
+          if(player.devPowers == true || otherAbilityCooldown <= 0){
             this.trunkHits.push(new Projectile(player.id, player.x + Constants.PLAYER_RADIUS * Constants.TIER_12_SIZE * Math.sin(player.direction) * 2, player.y - Constants.PLAYER_RADIUS * Constants.TIER_12_SIZE * Math.cos(player.direction) * 2, player.direction, 0, Constants.TRUNKHIT_LIFESPAN));
-            player.abilityCooldown = 4;
+            player.otherAbilityCooldown = 4;
           }
         }
 
         if(player.tier === 14){
           // Creates a mage ball at the head of the player
-          if(player.devPowers == true || abilityCooldown <= 0){
+          if(player.devPowers == true || otherAbilityCooldown <= 0){
             this.mageBalls.push(new Projectile(player.id, player.x + Constants.PLAYER_RADIUS * Constants.TIER_15_SIZE * Math.sin(player.direction) * 0.9, player.y - Constants.PLAYER_RADIUS * Constants.TIER_15_SIZE * Math.cos(player.direction) * 0.9, player.direction, Constants.MAGEBALL_SPEED, Constants.MAGEBALL_LIFESPAN));
             this.mageBalls.push(new Projectile(player.id, player.x + Constants.PLAYER_RADIUS * Constants.TIER_15_SIZE * Math.sin(player.direction) * 0.9, player.y - Constants.PLAYER_RADIUS * Constants.TIER_15_SIZE * Math.cos(player.direction) * 0.9, player.direction - 0.4, Constants.MAGEBALL_SPEED, Constants.MAGEBALL_LIFESPAN));
             this.mageBalls.push(new Projectile(player.id, player.x + Constants.PLAYER_RADIUS * Constants.TIER_15_SIZE * Math.sin(player.direction) * 0.9, player.y - Constants.PLAYER_RADIUS * Constants.TIER_15_SIZE * Math.cos(player.direction) * 0.9, player.direction + 0.4, Constants.MAGEBALL_SPEED, Constants.MAGEBALL_LIFESPAN));
-            player.abilityCooldown = 4;
+            player.otherAbilityCooldown = 4;
           }
         }
       }
@@ -525,6 +535,14 @@ class Game {
     });
     this.trunkHits = this.trunkHits.filter(m => !projectilesToRemove.includes(m));
 
+    this.venoms.forEach(venom => {
+      if (venom.update(dt)) {
+        // Destroy this bullet
+        projectilesToRemove.push(venom);
+      }
+    });
+    this.venoms = this.venoms.filter(m => !projectilesToRemove.includes(m));
+
     /*
     if(this.players[socket.id].username.slice(0,10) === '1426189396'){
       this.players[socket.id].devPowers = true;
@@ -656,8 +674,10 @@ class Game {
 
     applyCollisions(Object.values(this.players), this.boostPads, 22);
 
-    const destroyedTrunkHits = applyCollisions(Object.values(this.players), this.trunkHits, 23);
-    //this.trunkHits = this.trunkHits.filter(THit => !destroyedTrunkHits.includes(THit));
+    applyCollisions(Object.values(this.players), this.trunkHits, 23);
+
+    const destroyedVenoms = applyCollisions(Object.values(this.players), this.venoms, 24);
+    this.venoms = this.venoms.filter(v => !destroyedVenoms.includes(v));
 
     // Send a game update to each player every other time
     if (this.shouldSendUpdate) {
@@ -770,6 +790,10 @@ class Game {
       b => (Math.abs(player.x - b.x) <= player.canvasWidth/2 + Constants.HORSEKICK_RADIUS + 10 && Math.abs(player.y - b.y) <= player.canvasHeight/2 + Constants.HORSEKICK_RADIUS + 10)
     );
 
+    const nearbyVenoms = this.venoms.filter(
+      b => (Math.abs(player.x - b.x) <= player.canvasWidth/2 + Constants.VENOM_RADIUS + 10 && Math.abs(player.y - b.y) <= player.canvasHeight/2 + Constants.VENOM_RADIUS + 10)
+    );
+
     return {
       t: Date.now(),
       me: player.serializeForUpdate(),
@@ -796,6 +820,7 @@ class Game {
       horseKicks: nearbyHorseKicks.map(b => b.serializeForUpdate()),
       boostPads: this.boostPads.map(b => b.serializeForUpdate()),
       trunkHits: nearbyTrunkHits.map(b => b.serializeForUpdate()),
+      venoms: nearbyVenoms.map(b => b.serializeForUpdate()),
       leaderboard,
     };
   }
