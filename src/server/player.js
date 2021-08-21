@@ -40,6 +40,7 @@ class Player extends ObjectClass {
     this.flyingTimer = 0;
     this.stomped = false;
     this.stompedCounter = 0;
+    this.flyingChanged = false;
   }
 
   // Returns a newly created bullet, or null.
@@ -85,54 +86,71 @@ class Player extends ObjectClass {
       }
     }
 
+    var changeGrazingDetector;
+
     if(this.hp != Constants.PLAYER_MAX_HP || this.tier != 8){
+      changeGrazingDetector = false;
       this.grazing = false;
     }
 
     if(this.grazing){
-      var changeGrazingDetector = false;
+      changeGrazingDetector = true;
       this.score += dt * Constants.GRAZING_XP * this.speed/this.maxSpeed;
       this.localMessage = "Grazing Active! Move around to get XP!";
     } else{
-      if(!changeGrazingDetector){
-        changeGrazingDetector = true;
+      if(changeGrazingDetector){
+        changeGrazingDetector = false;
         this.localMessage = '';
       }
     }
 
     if(this.preparingJump && this.tier == 9){
       this.localMessage = "Preparing Jump! Press the Q key again to jump in your mouse's direction!";
+    } else if (this.jump){
+      this.localMessage = '';
     }
 
-    var changeFlyingDetector = true;
-    if(this.tier == 6){
-      if(this.flying /*&& this.tier == 6*/){
+    /*if(this.tier == 6){
+      if(this.flying){
         this.flightSizeOffset = 1.5;
         this.invincible = true;
         this.localMessage = "Flying Active! Move your cursor to fly around!";
-        changeFlyingDetector = false;
-        if(changeFlyingDetector){
+        this.flying = true;
+
+        if(this.changeFlyingState){
+          this.flying = false;
+          this.localMessage = '';
+          this.invincible = false;
           this.flyingTimer = 0;
-        } else{
+        } else {
           this.flyingTimer++;
         }
-
-        if(this.flyingTimer >= 900){
-          this.flying = false;
-          this.flyingTimer = 0;
-        }
-      } else{
-        if(!changeFlyingDetector){
-          this.flyingTimer = 0;
-          this.flightSizeOffset = 1;
-          changeFlyingDetector = true;
-          this.localMessage = '';
-        }
-  
-        if(this.tier == 6){
-          this.invincible = false;
-        }
       }
+    }*/
+
+    if(this.flyingTimer > 900 || this.tier != 6){
+      if(this.flying){
+        this.flyingChanged = true;
+      }
+      this.flying = false;
+    } else {
+      this.flyingTimer++;
+    }
+
+    if(this.flyingChanged){
+      if(this.flying){ // This means that flying has changed from false to true; we should start flying
+        this.flightSizeOffset = 1.5;
+        this.invincible = true;
+        this.localMessage = "Flying Active! Move your cursor to fly around!";
+        this.flying = true;
+      } else{
+        this.flying = false;
+        this.flightSizeOffset = 1;
+        this.localMessage = '';
+        this.invincible = false;
+        this.flyingTimer = 0;
+      }
+      this.flyingChanged = false;
     }
 
     // Update score
@@ -183,7 +201,6 @@ class Player extends ObjectClass {
     if(this.tier != changeTierDetector){
       // We have detected a change in tier
       this.preparingJump = false;
-      this.frenzyActive = false;
       this.grazing = false;
       this.jump = false;
       this.jumpCounter = 0;
@@ -328,7 +345,7 @@ class Player extends ObjectClass {
     // If it is a tail bite, then use the smaller player's direction
     // Otherwise, use the bigger player's direction
     // Use the negative values to knock back the players.
-    if(x == null || x == undefined){
+    if((x == null || x == undefined) && this.damageCooldown <= 0){
       this.x += Math.sin(direction);
       this.y -= Math.cos(direction);
     } else{
@@ -478,6 +495,7 @@ class Player extends ObjectClass {
       flying: this.flying,
       flyingTimer: this.flyingTimer,
       stomped: this.stomped,
+      flyingChanged: this.flyingChanged,
     };
   }
 }

@@ -1,7 +1,7 @@
 // Learn more about this file at:
 // https://victorzhou.com/blog/build-an-io-game-part-1/#5-client-rendering
 import { debounce } from 'throttle-debounce';
-import { BERRY_RADIUS, MELON_RADIUS, BLACKBERRY_RADIUS, CARROT_RADIUS, LILYPAD_RADIUS, RED_MUSHROOM_RADIUS, WATERMELON_SLICE_RADIUS, BANANA_RADIUS, COCONUT_RADIUS, PEAR_RADIUS, MUSHROOM_BUSH_RADIUS, WATERMELON_RADIUS, MUSHROOM_RADIUS, LAVA_RADIUS, MAGEBALL_RADIUS, SNAKEBITE_RADIUS, PORTAL_RADIUS, SLIMEBALL_RADIUS, HORSEKICK_RADIUS } from '../shared/constants';
+import { BERRY_RADIUS, MELON_RADIUS, BLACKBERRY_RADIUS, CARROT_RADIUS, LILYPAD_RADIUS, RED_MUSHROOM_RADIUS, WATERMELON_SLICE_RADIUS, BANANA_RADIUS, COCONUT_RADIUS, PEAR_RADIUS, MUSHROOM_BUSH_RADIUS, WATERMELON_RADIUS, MUSHROOM_RADIUS, LAVA_RADIUS, MAGEBALL_RADIUS, SNAKEBITE_RADIUS, PORTAL_RADIUS, SLIMEBALL_RADIUS, HORSEKICK_RADIUS, TRUNKHIT_RADIUS } from '../shared/constants';
 import { ROCK_RADIUS } from '../shared/constants';
 import { TIER_1_SIZE, TIER_2_SIZE, TIER_3_SIZE, TIER_4_SIZE, TIER_5_SIZE, TIER_6_SIZE, TIER_7_SIZE, TIER_8_SIZE, TIER_9_SIZE, TIER_10_SIZE, TIER_11_SIZE, TIER_12_SIZE, TIER_13_SIZE, TIER_14_SIZE, TIER_15_SIZE, TIER_16_SIZE, } from '../shared/constants';
 import { RelativeSizes } from '../shared/constants';
@@ -31,7 +31,7 @@ window.addEventListener('resize', debounce(40, setCanvasDimensions));
 
 function render() 
 {
-  const { me, others, bullets, berries, melons, blackberries, carrots, lilypads, redMushrooms, watermelonSlices, bananas, coconuts, pears, mushroomBushes, watermelons, mushrooms, lavas, mageBalls, snakeBites, portals, slimeBalls, horseKicks, boostPads /*, rocks*/} = getCurrentState();
+  const { me, others, bullets, berries, melons, blackberries, carrots, lilypads, redMushrooms, watermelonSlices, bananas, coconuts, pears, mushroomBushes, watermelons, mushrooms, lavas, mageBalls, snakeBites, portals, slimeBalls, horseKicks, boostPads, trunkHits /*, rocks*/} = getCurrentState();
   if (!me) {
     return;
   }
@@ -86,6 +86,7 @@ function render()
   slimeBalls.forEach(renderSlimeball.bind(null, me));
   snakeBites.forEach(renderSnakebite.bind(null, me));
   horseKicks.forEach(renderHorseKick.bind(null, me));
+  trunkHits.forEach(renderTrunkHit.bind(null, me));
 
   // Draw all players that can't hide under foods
   if(me.tier >= 2){
@@ -614,6 +615,19 @@ function renderMageball(me, mageBall) {
   }
 }
 
+/*function renderObject(me, object, assetName, assetRadius) {
+  const { x, y } = object;
+  if(Math.abs(object.x - me.x) <= canvas.width + 10 && Math.abs(object.y - me.y) <= canvas.height + 10){
+    context.drawImage(
+      getAsset(assetName),
+      canvas.width / 2 + x - me.x - assetRadius,
+      canvas.height / 2 + y - me.y - assetRadius,
+      assetRadius * 2,
+      assetRadius * 2,
+    );
+  }
+}*/
+
 function renderSlimeball(me, slimeBall) {
   const { x, y } = slimeBall;
   if(Math.abs(slimeBall.x - me.x) <= canvas.width + 10 && Math.abs(slimeBall.y - me.y) <= canvas.height + 10){
@@ -638,6 +652,26 @@ function renderSnakebite(me, snakeBite) {
       SNAKEBITE_RADIUS * 2,
     );
   }
+}
+
+function renderTrunkHit(me, trunkHit) {
+  const { x, y, direction } = trunkHit;
+  const canvasX = canvas.width / 2 + x - me.x;
+  const canvasY = canvas.height / 2 + y - me.y;
+  context.save();
+  context.translate(canvasX, canvasY);
+  context.rotate(direction);
+  if(Math.abs(trunkHit.x - me.x) <= canvas.width + 10 && Math.abs(trunkHit.y - me.y) <= canvas.height + 10){
+    context.drawImage(
+      getAsset('mammoth trunk swing.png'),
+      -TRUNKHIT_RADIUS,
+      -TRUNKHIT_RADIUS,
+      TRUNKHIT_RADIUS * 2,
+      TRUNKHIT_RADIUS * 2,
+    );
+  }
+
+  context.restore();
 }
 
 function renderHorseKick(me, horseKick) {

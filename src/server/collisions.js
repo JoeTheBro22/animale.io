@@ -1,6 +1,6 @@
 const e = require('express');
 const { debug } = require('webpack');
-const { HORSEKICK_DAMAGE } = require('../shared/constants');
+const { HORSEKICK_DAMAGE, TRUNKHIT_DAMAGE } = require('../shared/constants');
 const constants = require('../shared/constants');
 const Constants = require('../shared/constants');
 
@@ -84,6 +84,8 @@ function applyCollisions(players, otherObj, collisionType) {
         nonPlayerRadius = Constants.HORSEKICK_RADIUS;
       } else if (collisionType == 22){
         nonPlayerRadius = Constants.BOOSTPAD_RADIUS;
+      } else if (collisionType == 23){
+        nonPlayerRadius = Constants.TRUNKHIT_RADIUS;
       }
       if (player.distanceTo(otherObject) <= playerRadius + nonPlayerRadius && player.invincible != true && otherObject.invincible != true) {
         if(collisionType == 0){
@@ -264,7 +266,7 @@ function applyCollisions(players, otherObj, collisionType) {
             if(player.hp <= 0){
               for(let a = 0; a < players.length; a++){
                 if(players[a].id === otherObject.parentID){
-                  players[a].getKillXP(player.score * 0.5 + player.score * 0.05);
+                  players[a].getKillXP(player.score * 0.5);
                 }
               }
             }
@@ -286,7 +288,7 @@ function applyCollisions(players, otherObj, collisionType) {
             if(player.hp <= 0){
               for(let b = 0; b < players.length; b++){
                 if(players[b].id === otherObject.parentID){
-                  players[b].getKillXP(player.score * 0.5 + player.score * 0.05);
+                  players[b].getKillXP(player.score * 0.5);
                 }
               }
             }
@@ -296,7 +298,7 @@ function applyCollisions(players, otherObj, collisionType) {
             if(player.hp <= 0){
               for(let b = 0; b < players.length; b++){
                 if(players[b].id === otherObject.parentID){
-                  players[b].getKillXP(player.score * 0.5 + player.score * 0.05);
+                  players[b].getKillXP(player.score * 0.5);
                 }
               }
             }
@@ -353,7 +355,7 @@ function applyCollisions(players, otherObj, collisionType) {
             if(player.hp <= 0){
               for(let b = 0; b < players.length; b++){
                 if(players[b].id === otherObject.parentID){
-                  players[b].getKillXP(player.score * 0.5 + player.score * 0.05);
+                  players[b].getKillXP(player.score * 0.5);
                 }
               }
             }
@@ -367,6 +369,19 @@ function applyCollisions(players, otherObj, collisionType) {
           } else {
             player.x -= 0.1 * player.speed * Math.sin(otherObject.direction);
             player.y += 0.1 * player.speed * Math.cos(otherObject.direction);
+          }
+        } else if(collisionType == 23){
+          if(player.tier != 11){
+            console.log('hit');
+            player.takeProjectileDamage(Constants.TRUNKHIT_DAMAGE);
+            player.takeKnockback(null, player.x - otherObject.x, player.y - otherObject.y);
+            if(player.hp <= 0){
+              for(let b = 0; b < players.length; b++){
+                if(players[b].id === otherObject.parentID){
+                  players[b].getKillXP(player.score * 0.5);
+                }
+              }
+            }
           }
         }
         if(destroyObject){

@@ -65,6 +65,7 @@ const ASSET_NAMES = [
   'barn owl flying.png',
   'horse kick.png',
   'boost pad.png',
+  'mammoth trunk swing.png',
   //REMEBER TO ADD ALL ASSETS TO THIS :D
 ];
 

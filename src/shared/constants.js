@@ -90,7 +90,7 @@ module.exports = Object.freeze({
 
   MAGEBALL_RADIUS: 30,
   MAGEBALL_SPEED: 250,
-  MAGEBALL_DAMAGE: 30,
+  MAGEBALL_DAMAGE: 20,
   MAGEBALL_HIGHER_TIER_DAMAGE: 8,
   MAGEBALL_LIFESPAN: 3,
 
@@ -107,11 +107,16 @@ module.exports = Object.freeze({
   OCELOTROAR_HIGHER_TIER_DAMAGE: 20,
 
   HORSEKICK_LIFESPAN: 0.8,
-  HORSEKICK_DAMAGE: 20,
-  // Note: the horse kick does the same amount of damage to lower tiers as higher ones
+  HORSEKICK_DAMAGE: 20, // Note: the horse kick does the same amount of damage to lower tiers as higher ones
   HORSEKICK_RADIUS: 60,
 
   GRAZING_XP: 1000,
+
+  TRUNKHIT_RADIUS: 100,
+  TRUNKHIT_DAMAGE: 30,
+  TRUNKHIT_HIGHER_TIER_DAMAGE: 20,
+  TRUNKHIT_LIFESPAN: 1,
+
   
   // Tiers
   //ORIGINAL VALUES:
