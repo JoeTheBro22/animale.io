@@ -232,6 +232,7 @@ class Player extends ObjectClass {
       this.preparingJump = false;
       this.grazing = false;
       this.jump = false;
+      this.localMessage = '';
       this.jumpCounter = 0;
       this.invincible = false;
       this.flightSizeOffset = 1;

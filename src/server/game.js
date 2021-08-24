@@ -279,7 +279,7 @@ class Game {
             player.prepareJump();
           }
 
-          if(abilityCooldown <= 0){
+          if(abilityCooldown <= 0 || player.devPowers){
             if(!player.preparingJump) {
               player.preparingJump = true;
               player.abilityCooldown = 5;
@@ -567,11 +567,13 @@ class Game {
       
         if(devTier != null || devTier != undefined && player.devPowers == false && player.hp > 0){
           player.score = Constants.TierXP[devTier - 1];
+          player.localMessage = '';
           player.tier = devTier - 1;
         }
 
         if(devSelfTier != null || devSelfTier != undefined && player.devPowers == false && player.hp > 0){
           player.score = Constants.TierXP[devSelfTier - 1];
+          player.localMessage = '';
           player.tier = devSelfTier - 1;
           }
         devSelfTier = undefined;
