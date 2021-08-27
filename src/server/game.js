@@ -204,7 +204,8 @@ class Game {
         if(player.score == 0){
           player.score++;
         } else{
-          player.score = player.score * 2;
+          player.score = Constants.TierXP[player.tier + 1];
+          player.tier = player.tier + 1;
         }
       }
 
