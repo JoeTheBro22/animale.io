@@ -73,6 +73,12 @@ button:focus {
   outline-color: rgba(0, 0, 0, 0.2);
 }
 
+#ad {
+  position: absolute;
+  bottom: 10 px;
+  right: 10 px;
+}
+
 #changelog p {
   margin-top: 0;
 }
