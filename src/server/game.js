@@ -201,11 +201,19 @@ class Game {
       const abilityCooldown = this.players[socket.id].abilityCooldown;
       const otherAbilityCooldown = this.players[socket.id].otherAbilityCooldown;
       if(e === 'r' && player.devPowers == true){
-        if(player.score == 0){
-          player.score++;
-        } else{
-          player.score = Constants.TierXP[player.tier + 1];
-          player.tier = player.tier + 1;
+        player.score = Constants.TierXP[player.tier + 1];
+        player.tier = player.tier + 1;
+      }
+
+      if(e === 't' && player.devPowers == true){
+        player.score = Constants.TierXP[player.tier - 1];
+        player.tier = player.tier - 1;
+      }
+
+      if(e === 'y' && player.devPowers == true){
+        player.scoreLock = !player.scoreLock;
+        if(player.scoreLock){
+          player.scoreLockXP = player.score;
         }
       }
 

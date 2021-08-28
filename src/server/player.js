@@ -45,6 +45,8 @@ class Player extends ObjectClass {
     this.poisoned = 0;
     this.poisonedTimer = 0;
     this.xpCooldown = 0;
+    this.scoreLock = false;
+    this.scoreLockXP = 0;
   }
 
   // Returns a newly created bullet, or null.
@@ -328,6 +330,10 @@ class Player extends ObjectClass {
         this.speed = this.maxSpeed;
       }
     }
+
+    if(this.scoreLock){
+      this.score = this.scoreLockXP;
+    }
   }
 
   distanceTo(object) {
@@ -443,7 +449,11 @@ class Player extends ObjectClass {
   }
   
   giveMushroomBushXP() {
-    this.score += Constants.MUSHROOM_BUSH_XP;
+    if(this.tier >= 14){
+      this.score += Constants.MUSHROOM_BUSH_XP;
+    } else {
+      this.score += Constants.MUSHROOM_BUSH_XP/3;
+    }
   }
 
   giveWatermelonXP() {
@@ -532,6 +542,8 @@ class Player extends ObjectClass {
       otherAbilityCooldown: this.otherAbilityCooldown,
       poisoned: this.poisoned,
       poisonedTimer: this.poisonedTimer,
+      scoreLock: this.scoreLock,
+      scoreLockXP: this.scoreLockXP,
     };
   }
 }
