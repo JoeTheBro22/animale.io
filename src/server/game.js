@@ -18,6 +18,7 @@ const { PEAR_AMOUNT } = require('../shared/constants');
 const { MUSHROOM_BUSH_AMOUNT } = require('../shared/constants');
 const { WATERMELON_AMOUNT } = require('../shared/constants');
 const { MUSHROOM_AMOUNT } = require('../shared/constants');
+const { LAKE_AMOUNT } = require('../shared/constants');
 
 class Game {
   constructor() {
@@ -46,6 +47,7 @@ class Game {
     this.boostPads = [];
     this.trunkHits = [];
     this.venoms = [];
+    this.lakes = [];
     //this.rocks = [];
 
     // Populating several arrays
@@ -69,6 +71,11 @@ class Game {
 
     var posGenerator;
 
+    for(var i = 0; i < LAKE_AMOUNT; i++){
+      var lake = generateRandomNotWaterPos();
+      this.lakes[i] = new Berry(lake[0], lake[1]);
+    }
+
     for(var i = 0; i < BERRY_AMOUNT; i++){
       posGenerator = generateRandomPos();
       this.berries[i] = new Berry(posGenerator[0], posGenerator[1]);
@@ -90,8 +97,9 @@ class Game {
     }
 
     for(var c = 0; c < LILYPAD_AMOUNT; c++){
-      posGenerator = generateRandomPos();
-      this.lilypads[c] = new Berry(posGenerator[0], posGenerator[1]);
+      var lakeNumber = Math.floor(Math.random() * Constants.LAKE_AMOUNT);
+      var direction = Math.random() * 2 * Math.PI - Math.PI;
+      this.lilypads[c] = new Berry(this.lakes[lakeNumber].x + Math.sin(direction) * Constants.LAKE_RADIUS * Math.random(), this.lakes[lakeNumber].y + Math.cos(direction) * Constants.LAKE_RADIUS * Math.random());
     }
 
     for(var d = 0; d < RED_MUSHROOM_AMOUNT; d++){
@@ -397,7 +405,6 @@ class Game {
   }
 
   update() {
-
     function generateRandomPos() {
       var berryPosX = Constants.MAP_SIZE * (Math.random());
       var berryPosY = Constants.MAP_SIZE * (Math.random());
@@ -617,6 +624,7 @@ class Game {
     });
 
     Object.keys(this.sockets).forEach(playerID => {
+      this.players[playerID].onLake = false;
       if(this.players[playerID]){
         getTier(this.players[playerID].tier);
       }
@@ -689,6 +697,9 @@ class Game {
 
     const destroyedVenoms = applyCollisions(Object.values(this.players), this.venoms, 24);
     this.venoms = this.venoms.filter(v => !destroyedVenoms.includes(v));
+
+    
+    applyCollisions(Object.values(this.players), this.lakes, 25);
 
     // Send a game update to each player every other time
     if (this.shouldSendUpdate) {
@@ -832,6 +843,7 @@ class Game {
       boostPads: this.boostPads.map(b => b.serializeForUpdate()),
       trunkHits: nearbyTrunkHits.map(b => b.serializeForUpdate()),
       venoms: nearbyVenoms.map(b => b.serializeForUpdate()),
+      lakes: this.lakes.map(b => b.serializeForUpdate()),
       leaderboard,
     };
   }

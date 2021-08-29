@@ -88,8 +88,10 @@ function applyCollisions(players, otherObj, collisionType) {
         nonPlayerRadius = Constants.TRUNKHIT_RADIUS;
       } else if (collisionType == 24){
         nonPlayerRadius = Constants.VENOM_RADIUS;
+      } else if (collisionType == 25){
+        nonPlayerRadius = Constants.LAKE_RADIUS;
       }
-      if (player.distanceTo(otherObject) <= playerRadius + nonPlayerRadius && player.invincible != true && otherObject.invincible != true) {
+      if (player.distanceTo(otherObject) <= playerRadius + nonPlayerRadius && !player.invincible && !otherObject.invincible) {
         if(collisionType == 0){
           player.giveBerryXP();
         } else if (collisionType == 1){
@@ -390,6 +392,9 @@ function applyCollisions(players, otherObj, collisionType) {
             player.poisoned++;
             player.takeKnockback(null, player.x - otherObject.x, player.y - otherObject.y);
           }
+        } else if(collisionType == 25){
+          var playerOnLakeBeforeState = player.onLake;
+          player.onLake = true;
         }
         if(destroyObject){
           destroyedObj.push(otherObject);
@@ -398,6 +403,8 @@ function applyCollisions(players, otherObj, collisionType) {
       }
     }
   }
+
+
   return destroyedObj;
 }
 

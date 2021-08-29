@@ -98,6 +98,7 @@ export function getCurrentState() {
       boostPads: interpolateObjectArray(baseUpdate.boostPads, next.boostPads, ratio),
       trunkHits: interpolateObjectArray(baseUpdate.trunkHits, next.trunkHits, ratio),
       venoms: interpolateObjectArray(baseUpdate.venoms, next.venoms, ratio),
+      lakes: interpolateObjectArray(baseUpdate.lakes, next.lakes, ratio),
       //rocks: interpolateObjectArray(baseUpdate.rocks, next.rocks, ratio),
     };
   }

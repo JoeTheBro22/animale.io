@@ -35,7 +35,7 @@ module.exports = Object.freeze({
 
   LILYPAD_XP: 75,
   LILYPAD_RADIUS: 40,
-  LILYPAD_AMOUNT: 125,
+  LILYPAD_AMOUNT: 50,
 
   RED_MUSHROOM_XP: 275,
   RED_MUSHROOM_RADIUS: 25,
@@ -78,6 +78,9 @@ module.exports = Object.freeze({
 
   BOOSTPAD_RADIUS: 100,
   BOOSTPAD_AMOUNT: 20,
+
+  LAKE_RADIUS: 500,
+  LAKE_AMOUNT: 4,
 
   // HP and player
   REGEN_AMOUNT: 0.03,

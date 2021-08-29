@@ -1,7 +1,7 @@
 // Learn more about this file at:
 // https://victorzhou.com/blog/build-an-io-game-part-1/#5-client-rendering
 import { debounce } from 'throttle-debounce';
-import { BERRY_RADIUS, MELON_RADIUS, BLACKBERRY_RADIUS, CARROT_RADIUS, LILYPAD_RADIUS, RED_MUSHROOM_RADIUS, WATERMELON_SLICE_RADIUS, BANANA_RADIUS, COCONUT_RADIUS, PEAR_RADIUS, MUSHROOM_BUSH_RADIUS, WATERMELON_RADIUS, MUSHROOM_RADIUS, LAVA_RADIUS, MAGEBALL_RADIUS, SNAKEBITE_RADIUS, PORTAL_RADIUS, SLIMEBALL_RADIUS, HORSEKICK_RADIUS, TRUNKHIT_RADIUS, PLAYER_FIRE_COOLDOWN } from '../shared/constants';
+import { BERRY_RADIUS, MELON_RADIUS, BLACKBERRY_RADIUS, CARROT_RADIUS, LILYPAD_RADIUS, RED_MUSHROOM_RADIUS, WATERMELON_SLICE_RADIUS, BANANA_RADIUS, COCONUT_RADIUS, PEAR_RADIUS, MUSHROOM_BUSH_RADIUS, WATERMELON_RADIUS, MUSHROOM_RADIUS, LAVA_RADIUS, MAGEBALL_RADIUS, SNAKEBITE_RADIUS, PORTAL_RADIUS, SLIMEBALL_RADIUS, HORSEKICK_RADIUS, TRUNKHIT_RADIUS, LAKE_RADIUS, PLAYER_FIRE_COOLDOWN } from '../shared/constants';
 import { ROCK_RADIUS } from '../shared/constants';
 import { TIER_1_SIZE, TIER_2_SIZE, TIER_3_SIZE, TIER_4_SIZE, TIER_5_SIZE, TIER_6_SIZE, TIER_7_SIZE, TIER_8_SIZE, TIER_9_SIZE, TIER_10_SIZE, TIER_11_SIZE, TIER_12_SIZE, TIER_13_SIZE, TIER_14_SIZE, TIER_15_SIZE, TIER_16_SIZE, } from '../shared/constants';
 import { RelativeSizes } from '../shared/constants';
@@ -31,7 +31,7 @@ window.addEventListener('resize', debounce(40, setCanvasDimensions));
 
 function render() 
 {
-  const { me, others, bullets, berries, melons, blackberries, carrots, lilypads, redMushrooms, watermelonSlices, bananas, coconuts, pears, mushroomBushes, watermelons, mushrooms, lavas, mageBalls, snakeBites, portals, slimeBalls, horseKicks, boostPads, trunkHits, venoms /*, rocks*/} = getCurrentState();
+  const { me, others, bullets, berries, melons, blackberries, carrots, lilypads, redMushrooms, watermelonSlices, bananas, coconuts, pears, mushroomBushes, watermelons, mushrooms, lavas, mageBalls, snakeBites, portals, slimeBalls, horseKicks, boostPads, trunkHits, venoms, lakes /*, rocks*/} = getCurrentState();
   if (!me) {
     return;
   }
@@ -41,6 +41,8 @@ function render()
 
   // Draw Water
   renderWater(me);
+
+  lakes.forEach(renderLake.bind(null, me));
 
   // Draw boundaries
   context.strokeStyle = 'black';
@@ -105,7 +107,7 @@ function render()
   //Draw xp bar
   renderXPBar(me, me);
 
-  renderMinimap(me, lavas, others, boostPads);
+  renderMinimap(me, lavas, others, boostPads, lakes);
 
   renderLocalMessage(me);
 }
@@ -115,7 +117,7 @@ function renderBackground() {
   context.fillRect(0,0,canvas.width,canvas.height);
 }
 
-function renderMinimap(me, lavas, others, boostPads) {
+function renderMinimap(me, lavas, others, boostPads, lakes) {
 
   context.strokeStyle = 'black';
   context.lineWidth = 1;
@@ -143,7 +145,17 @@ function renderMinimap(me, lavas, others, boostPads) {
     100,
   );
 
-
+  for(var l = 0; l < lakes.length; l++){
+    if(lakes[l].x !== null && lakes[l].y !== null){
+      context.drawImage(
+        getAsset('lake.png'),
+        lakes[l].x/Constants.MAP_SIZE * 200 + 15 - (Constants.LAKE_RADIUS/Constants.MAP_SIZE * 200)/2,
+        lakes[l].y/Constants.MAP_SIZE * 200 + 15 - (Constants.LAKE_RADIUS/Constants.MAP_SIZE * 200)/2, // lowercase L
+        Constants.LAKE_RADIUS/Constants.MAP_SIZE * 200,
+        Constants.LAKE_RADIUS/Constants.MAP_SIZE * 200,
+      );
+    }
+  }
 
   for(var l = 0; l < lavas.length; l++){
     if(lavas[l].x !== null && lavas[l].y !== null){
@@ -377,13 +389,23 @@ function renderPlayer(me, player) {
     }
 
     else if(player.tier <10){
-      context.drawImage(
-        getAsset('kangaroo.png'),
-        -PLAYER_RADIUS * TIER_10_SIZE * player.flightSizeOffset,
-        -PLAYER_RADIUS * TIER_10_SIZE * player.flightSizeOffset,
-        PLAYER_RADIUS * 2 * TIER_10_SIZE * player.flightSizeOffset,
-        PLAYER_RADIUS * 2 * TIER_10_SIZE * player.flightSizeOffset,
-      );
+      if(player.jump){
+        context.drawImage(
+          getAsset('kangaroo jump.png'),
+          -PLAYER_RADIUS * TIER_10_SIZE * player.flightSizeOffset,
+          -PLAYER_RADIUS * TIER_10_SIZE * player.flightSizeOffset,
+          PLAYER_RADIUS * 2 * TIER_10_SIZE * player.flightSizeOffset,
+          PLAYER_RADIUS * 2 * TIER_10_SIZE * player.flightSizeOffset,
+        );
+      }else {
+        context.drawImage(
+          getAsset('kangaroo.png'),
+          -PLAYER_RADIUS * TIER_10_SIZE * player.flightSizeOffset,
+          -PLAYER_RADIUS * TIER_10_SIZE * player.flightSizeOffset,
+          PLAYER_RADIUS * 2 * TIER_10_SIZE * player.flightSizeOffset,
+          PLAYER_RADIUS * 2 * TIER_10_SIZE * player.flightSizeOffset,
+        );
+      }
     }
 
     else if(player.tier <11){
@@ -616,6 +638,20 @@ function renderLocalMessage(me) {
   context.textAlign = "center";
   context.fillText(Math.floor(player.score) + " xp (Ability Cooldown: " + Math.floor(player.abilityCooldown) + " seconds)", canvas.width / 2, canvas.height - 37.5);
 }*/
+
+
+function renderLake(me, lake) {
+  const { x, y } = lake;
+  if(Math.abs(lake.x - me.x) <= canvas.width + 10 && Math.abs(lake.y - me.y) <= canvas.height + 10){
+    context.drawImage(
+      getAsset('lake.png'),
+      canvas.width / 2 + x - me.x - LAKE_RADIUS,
+      canvas.height / 2 + y - me.y - LAKE_RADIUS,
+      LAKE_RADIUS * 2,
+      LAKE_RADIUS * 2,
+    );
+  }
+}
 
 function renderMageball(me, mageBall) {
   const { x, y } = mageBall;

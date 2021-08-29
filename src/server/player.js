@@ -47,9 +47,9 @@ class Player extends ObjectClass {
     this.xpCooldown = 0;
     this.scoreLock = false;
     this.scoreLockXP = 0;
+    this.onLake = false;
   }
 
-  // Returns a newly created bullet, or null.
   update(dt) {
     super.update(dt);
     this.checkWaterSpeed();
@@ -323,6 +323,12 @@ class Player extends ObjectClass {
       if(this.speed > this.maxSpeed * 2.5){
         this.speed = this.maxSpeed * 2.5;
       }
+    } else if(this.onLake && this.tier != 4 && this.tier < 13){
+      this.speed = 5 * this.maxSpeed * Math.abs(Math.sqrt((x - canvasWidth/2) * (x - canvasWidth/2) / canvasWidth / canvasWidth + (y - canvasHeight/2) * (y - canvasHeight/2) / canvasHeight / canvasHeight)); 
+
+      if(this.speed > this.maxSpeed * 0.5){
+        this.speed = this.maxSpeed * 0.5;
+      }
     } else{
       this.speed = 10 * this.maxSpeed * Math.abs(Math.sqrt((x - canvasWidth/2) * (x - canvasWidth/2) / canvasWidth / canvasWidth + (y - canvasHeight/2) * (y - canvasHeight/2) / canvasHeight / canvasHeight)); 
 
@@ -544,6 +550,8 @@ class Player extends ObjectClass {
       poisonedTimer: this.poisonedTimer,
       scoreLock: this.scoreLock,
       scoreLockXP: this.scoreLockXP,
+      jump: this.jump,
+      onLake: this.onLake,
     };
   }
 }
