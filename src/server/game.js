@@ -445,8 +445,14 @@ class Game {
     }
 
     while(this.lilypads.length < LILYPAD_AMOUNT){
-      var lily = generateRandomPos();
-      this.lilypads[this.lilypads.length] = new Berry(lily[0], lily[1]);  
+      if(Math.random() > 0.95){
+        var lakeNumber = Math.floor(Math.random() * Constants.LAKE_AMOUNT);
+        var direction = Math.random() * 2 * Math.PI - Math.PI;
+        this.lilypads[this.lilypads.length] = new Berry(this.lakes[lakeNumber].x + Math.sin(direction) * Constants.LAKE_RADIUS * Math.random(), this.lakes[lakeNumber].y + Math.cos(direction) * Constants.LAKE_RADIUS * Math.random());
+      } else {
+        var lily = generateRandomPos();
+        this.lilypads[this.lilypads.length] = new Berry(lily[0], lily[1]);  
+      }
     }
 
     while(this.redMushrooms.length < RED_MUSHROOM_AMOUNT){
@@ -573,6 +579,10 @@ class Game {
       const player = this.players[playerID];
       if(player){
         player.update(dt);
+        if(player.tier == 5){
+          chickenAmount++;
+        }
+
         if(player.message.slice(0,6) == 'ETier:' && player.devPowers == true){
           devTier = player.message.slice(6);
           player.message = '';

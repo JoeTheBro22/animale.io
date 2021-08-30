@@ -37,8 +37,8 @@ class Object {
 
   boost(boostCooldown, autoBoost) {
     if(!autoBoost && boostCooldown <= 0){
-      this.x += 35 * Math.sin(this.direction);
-      this.y -= 35 * Math.cos(this.direction);
+      this.x += 35 * Math.sin(this.direction) * this.speed/100;
+      this.y -= 35 * Math.cos(this.direction) * this.speed/100;
       /*if(this.devPowers){
         this.score = this.score * 2;
       }*/

@@ -248,8 +248,8 @@ class Player extends ObjectClass {
 
     // Auto Boost if needed
     if(this.boostCooldown <= 0 && this.autoBoost){
-      this.x += 35 * Math.sin(this.direction);
-      this.y -= 35 * Math.cos(this.direction);
+      this.x += 35 * Math.sin(this.direction) * this.speed/100;
+      this.y -= 35 * Math.cos(this.direction) * this.speed/100;
       if(this.tier != 10){
         this.boostCooldown = Constants.BOOST_COOLDOWN;
       } else{
