@@ -192,41 +192,56 @@ class Player extends ObjectClass {
 
     if(this.score < Constants.TIER_2_XP){
       this.tier = 0;
+      this.animalType = 0;
     }    else if (this.score < Constants.TIER_3_XP){
       this.tier = 1;
+      this.animalType = 0;
     }    else if (this.score < Constants.TIER_4_XP){
       this.tier = 2;
+      this.animalType = 0;
     }    else if (this.score < Constants.TIER_5_XP){
       this.tier = 3;
+      this.animalType = 0;
     }    else if (this.score < Constants.TIER_6_XP){
       this.tier = 4;
+      this.animalType = 0;
     }    else if (this.score < Constants.TIER_7_XP){
       this.tier = 5;
+      this.animalType = 0;
     }    else if (this.score < Constants.TIER_8_XP){
       this.tier = 6;
+      this.animalType = 0;
     }    else if (this.score < Constants.TIER_9_XP){
       this.tier = 7;
+      this.animalType = 0;
     }    else if (this.score < Constants.TIER_10_XP){
       this.tier = 8;
+      this.animalType = 0;
     }    else if (this.score < Constants.TIER_11_XP){
       this.tier = 9;
+      this.animalType = 0;
     }    else if (this.score < Constants.TIER_12_XP){
       this.tier = 10;
+      this.animalType = 0;
     }    else if (this.score < Constants.TIER_13_XP){
       this.tier = 11;
+      this.animalType = 0;
     }    else if (this.score < Constants.TIER_14_XP){
       this.tier = 12;
+      this.animalType = 0;
     }    else if (this.score < Constants.TIER_15_XP){
       this.tier = 13;
+      this.animalType = 0;
     }    else if (this.score < Constants.TIER_16_XP){
       this.tier = 14;
+      this.animalType = 0;
     } else{
       this.tier = 15;
       if(this.animalType == 0){
         this.x = 100;
         this.y = 100;
-        this.animalType = 1;
       }
+      this.animalType = 1;
     }
 
     if(this.tier != changeTierDetector){
