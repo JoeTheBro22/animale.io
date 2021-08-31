@@ -113,7 +113,7 @@ function render()
 }
 
 function renderBackground() {
-  context.fillStyle = "#40ba55";
+  context.fillStyle = "#40BA55";
   context.fillRect(0,0,canvas.width,canvas.height);
 }
 
