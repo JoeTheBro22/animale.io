@@ -222,15 +222,15 @@ function renderMinimap(me, lavas, others, boostPads, lakes) {
     if(others[o].tier !== null && others[o].x !== null && others[o].y !== null){
       if(me.tier > others[o].tier){
         context.beginPath();
-        context.arc(10 + others[o].x/Constants.MAP_SIZE * 200, 10 + others[o].y/Constants.MAP_SIZE * 200, 3, 0, 2 * Math.PI);
+        context.arc(10 + (others[o].x * (1 + 10/200))/Constants.MAP_SIZE * 200, 10 + (others[o].y * (1 + 10/200))/Constants.MAP_SIZE * 200, 3, 0, 2 * Math.PI);
         context.fill();
       } else if(me.tier == others[o].tier){
         context.beginPath();
-        context.arc(10 + others[o].x/Constants.MAP_SIZE * 200, 10 + others[o].y/Constants.MAP_SIZE * 200, 5, 0, 2 * Math.PI);
+        context.arc(10 + (others[o].x * (1 + 10/200))/Constants.MAP_SIZE * 200, 10 + (others[o].y * (1 + 10/200))/Constants.MAP_SIZE * 200, 5, 0, 2 * Math.PI);
         context.fill();
       } else{
         context.beginPath();
-        context.arc(10 + others[o].x/Constants.MAP_SIZE * 200, 10 + others[o].y/Constants.MAP_SIZE * 200, 7, 0, 2 * Math.PI);
+        context.arc(10 + (others[o].x * (1 + 10/200))/Constants.MAP_SIZE * 200, 10 + (others[o].y * (1 + 10/200))/Constants.MAP_SIZE * 200, 7, 0, 2 * Math.PI);
         context.fill();
       }
     }
@@ -240,7 +240,7 @@ function renderMinimap(me, lavas, others, boostPads, lakes) {
   /*context.ellipse(15 + me.x/Constants.MAP_SIZE * 200, 15 + me.y/Constants.MAP_SIZE * 200, 5, 5, Math.PI / 4, 0, 2 * Math.PI);
   context.fill();*/
   context.beginPath();
-  context.arc(15 + me.x/Constants.MAP_SIZE * 200, 15 + me.y/Constants.MAP_SIZE * 200, 5, 0, 2 * Math.PI);
+  context.arc(15 + (me.x * (1+15/200))/Constants.MAP_SIZE * 200, 15 + (me.y * (1+15/200))/Constants.MAP_SIZE * 200, 5, 0, 2 * Math.PI);
   context.fill();
 }
 
@@ -379,13 +379,23 @@ function renderPlayer(me, player) {
     }
 
     else if(player.tier <9){
-      context.drawImage(
-        getAsset('zebra.png'),
-        -PLAYER_RADIUS * TIER_9_SIZE,
-        -PLAYER_RADIUS * TIER_9_SIZE,
-        PLAYER_RADIUS * 2 * TIER_9_SIZE,
-        PLAYER_RADIUS * 2 * TIER_9_SIZE,
-      );
+      if(player.tierIndex == 0){
+        context.drawImage(
+          getAsset('zebra.png'),
+          -PLAYER_RADIUS * TIER_9_SIZE,
+          -PLAYER_RADIUS * TIER_9_SIZE,
+          PLAYER_RADIUS * 2 * TIER_9_SIZE,
+          PLAYER_RADIUS * 2 * TIER_9_SIZE,
+        );
+      } else if(player.tierIndex == 1){
+        context.drawImage(
+          getAsset('cow.png'),
+          -PLAYER_RADIUS * TIER_9_SIZE,
+          -PLAYER_RADIUS * TIER_9_SIZE,
+          PLAYER_RADIUS * 2 * TIER_9_SIZE,
+          PLAYER_RADIUS * 2 * TIER_9_SIZE,
+        );
+      }
     }
 
     else if(player.tier <10){
@@ -492,7 +502,11 @@ function renderPlayer(me, player) {
     context.globalAlpha = 1;
 
     // Draw name
-    context.fillStyle = "white";
+    if(player.devPowers){
+      context.fillStyle = "blue";
+    } else {
+      context.fillStyle = "white";
+    }
     context.font = "15px Arial";
     context.textAlign = "center";
     let UsernameFix = player.username.replace('NaN','');
@@ -614,7 +628,7 @@ function renderLocalMessage(me) {
 
 /*function renderAbilityBar(me, player, abilityCooldown) {
   const { x, y } = player;
-  console.log(abilityCooldown);
+  console. log(abilityCooldown);
   // Draw the actual bar
   context.fillStyle = 'white';
   context.fillRect(

@@ -311,7 +311,7 @@ function applyCollisions(players, otherObj, collisionType) {
           }
         } /*else if (collisionType == 18){
           for(let a = 0; a < players.length; a++){
-            console.log(players[a].id + ' ' + otherObject.parentID);
+            console. log(players[a].id + ' ' + otherObject.parentID);
             if(players[a].id === player.parentID){
               players[a].getKillXP(otherObject.score * 0.5 + player.score * 0.05);
             }

@@ -80,7 +80,7 @@ module.exports = Object.freeze({
   BOOSTPAD_AMOUNT: 20,
 
   LAKE_RADIUS: 500,
-  LAKE_AMOUNT: 4,
+  LAKE_AMOUNT: 5,
 
   // HP and player
   REGEN_AMOUNT: 0.03,
@@ -196,5 +196,8 @@ module.exports = Object.freeze({
     GAME_OVER: 'dead',
     KEY_PRESSED: 'keypressed',
     CHAT: 'chat',
+    UPGRADE: 'upgrade',
+    DISPLAY_TIER_CHANGE_BUTTON: 'displaytierchangebutton',
+    DO_NOT_DISPLAY_TIER_CHANGE_BUTTON: 'donotdisplaytierchangebutton',
   },
 });

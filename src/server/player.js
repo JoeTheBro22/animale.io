@@ -48,9 +48,59 @@ class Player extends ObjectClass {
     this.scoreLock = false;
     this.scoreLockXP = 0;
     this.onLake = false;
+    this.tierChange = 0;
+    this.tierIndex = 0;
+    this.autoUpgradeTimer = 0;
   }
 
   update(dt) {
+    var changeTierDetector = this.tier;
+    var wouldBeTier = this.tier;
+
+    if(this.score < Constants.TIER_2_XP){
+      wouldBeTier = 0;
+    }    else if (this.score < Constants.TIER_3_XP){
+      wouldBeTier = 1;
+    }    else if (this.score < Constants.TIER_4_XP){
+      wouldBeTier = 2;
+    }    else if (this.score < Constants.TIER_5_XP){
+      wouldBeTier = 3;
+    }    else if (this.score < Constants.TIER_6_XP){
+      wouldBeTier = 4;
+    }    else if (this.score < Constants.TIER_7_XP){
+      wouldBeTier = 5;
+    }    else if (this.score < Constants.TIER_8_XP){
+      wouldBeTier = 6;
+    }    else if (this.score < Constants.TIER_9_XP){
+      wouldBeTier = 7;
+    }    else if (this.score < Constants.TIER_10_XP){
+      wouldBeTier = 8;
+    }    else if (this.score < Constants.TIER_11_XP){
+      wouldBeTier = 9;
+    }    else if (this.score < Constants.TIER_12_XP){
+      wouldBeTier = 10;
+    }    else if (this.score < Constants.TIER_13_XP){
+      wouldBeTier = 11;
+    }    else if (this.score < Constants.TIER_14_XP){
+      wouldBeTier = 12;
+    }    else if (this.score < Constants.TIER_15_XP){
+      wouldBeTier = 13;
+    }    else if (this.score < Constants.TIER_16_XP){
+      wouldBeTier = 14;
+    } else{
+      wouldBeTier = 15;
+    }
+
+    if(wouldBeTier != changeTierDetector){
+      if(wouldBeTier == 8){
+        this.tierChange = 2;
+      } else {
+        this.tierChange = 1;
+      }
+    } else {
+      this.tierChange = 0;
+    }
+
     super.update(dt);
     this.checkWaterSpeed();
     this.damageCooldown -= dt;
@@ -103,7 +153,11 @@ class Player extends ObjectClass {
 
     if(this.grazing){
       changeGrazingDetector = true;
-      this.score += dt * Constants.GRAZING_XP * this.speed/this.maxSpeed;
+      if(this.index = 0){
+        this.score += dt * Constants.GRAZING_XP * this.speed/this.maxSpeed;
+      } else {
+        this.score += dt * Constants.GRAZING_XP * 1.5 * this.speed/this.maxSpeed;
+      }
       this.localMessage = "Grazing Active! Move around to get XP!";
     } else{
       if(changeGrazingDetector){
@@ -184,79 +238,6 @@ class Player extends ObjectClass {
       this.flyingChanged = false;
     }
 
-    // Update score
-    //this.score += dt * Constants.SCORE_PER_SECOND;
-
-    // Update tier based on XP
-    var changeTierDetector = this.tier;
-
-    if(this.score < Constants.TIER_2_XP){
-      this.tier = 0;
-      this.animalType = 0;
-    }    else if (this.score < Constants.TIER_3_XP){
-      this.tier = 1;
-      this.animalType = 0;
-    }    else if (this.score < Constants.TIER_4_XP){
-      this.tier = 2;
-      this.animalType = 0;
-    }    else if (this.score < Constants.TIER_5_XP){
-      this.tier = 3;
-      this.animalType = 0;
-    }    else if (this.score < Constants.TIER_6_XP){
-      this.tier = 4;
-      this.animalType = 0;
-    }    else if (this.score < Constants.TIER_7_XP){
-      this.tier = 5;
-      this.animalType = 0;
-    }    else if (this.score < Constants.TIER_8_XP){
-      this.tier = 6;
-      this.animalType = 0;
-    }    else if (this.score < Constants.TIER_9_XP){
-      this.tier = 7;
-      this.animalType = 0;
-    }    else if (this.score < Constants.TIER_10_XP){
-      this.tier = 8;
-      this.animalType = 0;
-    }    else if (this.score < Constants.TIER_11_XP){
-      this.tier = 9;
-      this.animalType = 0;
-    }    else if (this.score < Constants.TIER_12_XP){
-      this.tier = 10;
-      this.animalType = 0;
-    }    else if (this.score < Constants.TIER_13_XP){
-      this.tier = 11;
-      this.animalType = 0;
-    }    else if (this.score < Constants.TIER_14_XP){
-      this.tier = 12;
-      this.animalType = 0;
-    }    else if (this.score < Constants.TIER_15_XP){
-      this.tier = 13;
-      this.animalType = 0;
-    }    else if (this.score < Constants.TIER_16_XP){
-      this.tier = 14;
-      this.animalType = 0;
-    } else{
-      this.tier = 15;
-      if(this.animalType == 0){
-        this.x = 100;
-        this.y = 100;
-      }
-      this.animalType = 1;
-    }
-
-    if(this.tier != changeTierDetector){
-      // We have detected a change in tier
-      this.preparingJump = false;
-      this.grazing = false;
-      this.jump = false;
-      this.localMessage = '';
-      this.jumpCounter = 0;
-      this.invincible = false;
-      this.flightSizeOffset = 1;
-      this.slimeBallSlow = false;
-      this.flying = false;
-      this.stomped = false;
-    }
 
     this.radius = Constants.RelativeSizes[this.tier] * Constants.PLAYER_RADIUS;
     this.boostCooldown -= dt;
@@ -297,7 +278,7 @@ class Player extends ObjectClass {
     // Check if the player is in water
     if(!this.flying){
       if(this.x <= Constants.MAP_SIZE / 2 && this.y <= Constants.MAP_SIZE / 2){ // If we are in the water
-        if(this.tier != 15){
+        if(this.tier < 13 && this.tier != 4){
           this.maxSpeed = 20;
         } else {
           this.maxSpeed = 100;
@@ -354,6 +335,18 @@ class Player extends ObjectClass {
 
     if(this.scoreLock){
       this.score = this.scoreLockXP;
+    }
+
+    if(this.tierChange > 0){
+      this.autoUpgradeTimer++;
+    } else {
+      this.autoUpgradeTimer = 0;
+    }
+
+    if(this.autoUpgradeTimer > 600){
+      this.tierChange = 0;
+      this.autoUpgradeTimer = 0;
+      this.upgrade();
     }
   }
 
@@ -498,6 +491,83 @@ class Player extends ObjectClass {
     return this.tier;
   }
 
+  upgrade(index){
+    this.tierIndex = index;
+    var changeTierDetector = this.tier;
+
+    if(this.score < Constants.TIER_2_XP){
+      this.tier = 0;
+      this.animalType = 0;
+    }    else if (this.score < Constants.TIER_3_XP){
+      this.tier = 1;
+      this.animalType = 0;
+    }    else if (this.score < Constants.TIER_4_XP){
+      this.tier = 2;
+      this.animalType = 0;
+    }    else if (this.score < Constants.TIER_5_XP){
+      this.tier = 3;
+      this.animalType = 0;
+    }    else if (this.score < Constants.TIER_6_XP){
+      this.tier = 4;
+      this.animalType = 0;
+    }    else if (this.score < Constants.TIER_7_XP){
+      this.tier = 5;
+      this.animalType = 0;
+    }    else if (this.score < Constants.TIER_8_XP){
+      this.tier = 6;
+      this.animalType = 0;
+    }    else if (this.score < Constants.TIER_9_XP){
+      this.tier = 7;
+      this.animalType = 0;
+    }    else if (this.score < Constants.TIER_10_XP){
+      this.tier = 8;
+      this.animalType = 0;
+    }    else if (this.score < Constants.TIER_11_XP){
+      this.tier = 9;
+      this.animalType = 0;
+    }    else if (this.score < Constants.TIER_12_XP){
+      this.tier = 10;
+      this.animalType = 0;
+    }    else if (this.score < Constants.TIER_13_XP){
+      this.tier = 11;
+      this.animalType = 0;
+    }    else if (this.score < Constants.TIER_14_XP){
+      this.tier = 12;
+      this.animalType = 0;
+    }    else if (this.score < Constants.TIER_15_XP){
+      this.tier = 13;
+      this.animalType = 0;
+    }    else if (this.score < Constants.TIER_16_XP){
+      this.tier = 14;
+      this.animalType = 0;
+    } else{
+      this.tier = 15;
+      if(this.animalType == 0){
+        this.x = 100;
+        this.y = 100;
+      }
+      this.animalType = 1;
+    }
+
+    if(this.tier < changeTierDetector){
+      if(changeTierDetector == 8){
+        this.tierChange = 2;
+      } else {
+        this.tierChange = 1;
+      }
+      this.preparingJump = false;
+      this.grazing = false;
+      this.jump = false;
+      this.localMessage = '';
+      this.jumpCounter = 0;
+      this.invincible = false;
+      this.flightSizeOffset = 1;
+      this.slimeBallSlow = false;
+      this.flying = false;
+      this.stomped = false;
+    }
+  }
+
   prepareJump(){
     this.jumpCounter = 0;
     this.jump = true;
@@ -567,6 +637,8 @@ class Player extends ObjectClass {
       scoreLockXP: this.scoreLockXP,
       jump: this.jump,
       onLake: this.onLake,
+      tierChange: this.tierChange,
+      tierIndex: this.tierIndex,
     };
   }
 }

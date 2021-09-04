@@ -29,6 +29,45 @@ export const connect = onGameOver => (
   })
 );
 
+export const clickUpgradeButton = throttle(20, click => {
+  if(document.getElementById("tier-button") !== undefined){
+    document.getElementById("tier-button").onclick = function () {
+      socket.emit(Constants.MSG_TYPES.UPGRADE, 0);
+    };
+  }
+
+  if(document.getElementById("second-tier-button") !== undefined){
+    document.getElementById("second-tier-button").onclick = function () {
+      console.log('second button pressed');
+      socket.emit(Constants.MSG_TYPES.UPGRADE, 1);
+    };
+  }
+});
+
+var shouldShowUpgradeButton;
+var shouldShowSecondUpgradeButton;
+
+export const showUpgradeButton = show => {
+  socket.on(Constants.MSG_TYPES.DISPLAY_TIER_CHANGE_BUTTON, function (numberToDisplay) {
+    shouldShowUpgradeButton = true;
+    if(numberToDisplay >= 2){
+      shouldShowSecondUpgradeButton = true;
+    }
+  });
+  socket.on(Constants.MSG_TYPES.DO_NOT_DISPLAY_TIER_CHANGE_BUTTON, function () { shouldShowUpgradeButton = false; shouldShowSecondUpgradeButton = false;});
+  if(shouldShowUpgradeButton){
+    document.getElementById('tier-button').classList.remove('hidden');
+  } else {
+    document.getElementById('tier-button').classList.add('hidden');
+  }
+
+  if(shouldShowSecondUpgradeButton){
+    document.getElementById('second-tier-button').classList.remove('hidden');
+  } else {
+    document.getElementById('second-tier-button').classList.add('hidden');
+  }
+};
+
 export const play = username => {
   socket.emit(Constants.MSG_TYPES.JOIN_GAME, username);
 };
@@ -36,6 +75,7 @@ export const play = username => {
 export const updateChat = throttle(20, message => {
   const chat = document.getElementById('chat-text').value;
   socket.emit(Constants.MSG_TYPES.CHAT, chat);
+  document.getElementById('chat-text').value = '';
 });
 
 export const updateDirection = throttle(20, dir => {

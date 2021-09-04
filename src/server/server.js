@@ -38,6 +38,7 @@ io.on('connection', socket => {
   socket.on(Constants.MSG_TYPES.KEY_PRESSED, handleKeyInput);
   socket.on(Constants.MSG_TYPES.SPEED_INPUT, handleSpeed);
   socket.on(Constants.MSG_TYPES.CHAT, handleChat);
+  socket.on(Constants.MSG_TYPES.UPGRADE, handleUpgrade);
   socket.on('disconnect', onDisconnect);
 });
 
@@ -54,6 +55,10 @@ function handleInput(dir) {
 
 function handleClick() {
   game.handleClick(this);
+}
+
+function handleUpgrade(index) {
+  game.handleUpgrade(this, index);
 }
 
 function handleChat(message) {

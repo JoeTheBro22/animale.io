@@ -73,7 +73,7 @@ class Game {
 
     for(var i = 0; i < LAKE_AMOUNT; i++){
       var lake = generateRandomNotWaterPos();
-      this.lakes[i] = new Berry(lake[0], lake[1]);
+      this.lakes[i] = new Berry(lake[0] * (Constants.MAP_SIZE - Constants.LAKE_RADIUS)/Constants.MAP_SIZE, lake[1] * (Constants.MAP_SIZE - Constants.LAKE_RADIUS)/Constants.MAP_SIZE);
     }
 
     for(var i = 0; i < BERRY_AMOUNT; i++){
@@ -153,10 +153,10 @@ class Game {
     }
 
     // Portals
-    this.portals.push(new Berry(Constants.PORTAL_RADIUS, Constants.PORTAL_RADIUS));
+    /*this.portals.push(new Berry(Constants.PORTAL_RADIUS, Constants.PORTAL_RADIUS));
     this.portals.push(new Berry(Constants.MAP_SIZE - Constants.PORTAL_RADIUS, Constants.PORTAL_RADIUS));
     this.portals.push(new Berry(Constants.PORTAL_RADIUS, Constants.MAP_SIZE - Constants.PORTAL_RADIUS));
-    this.portals.push(new Berry(Constants.MAP_SIZE - Constants.PORTAL_RADIUS, Constants.MAP_SIZE - Constants.PORTAL_RADIUS));
+    this.portals.push(new Berry(Constants.MAP_SIZE - Constants.PORTAL_RADIUS, Constants.MAP_SIZE - Constants.PORTAL_RADIUS));*/
 
     //Rocks
     /*function generateRandomRockPos() {
@@ -183,7 +183,7 @@ class Game {
     const x = Constants.MAP_SIZE * (0.25 + Math.random() * 0.5);
     const y = Constants.MAP_SIZE * (0.25 + Math.random() * 0.5);
     this.players[socket.id] = new Player(socket.id, username, x, y);
-    if(this.players[socket.id].username.slice(0,10) === '1426189396'){
+    if(this.players[socket.id].username.slice(0,10) === '2625127946'){
       this.players[socket.id].devPowers = true;
       this.players[socket.id].username = this.players[socket.id].username.slice(10 ,this.players[socket.id].username.length);
     }
@@ -199,6 +199,12 @@ class Game {
   handleInput(socket, dir) {
     if (this.players[socket.id]) {
       this.players[socket.id].setDirection(dir);
+    }
+  }
+
+  handleUpgrade(socket, index) {
+    if (this.players[socket.id]) {
+      this.players[socket.id].upgrade(index);
     }
   }
 
@@ -619,6 +625,14 @@ class Game {
     Object.keys(this.sockets).forEach(playerID => {
       const socket = this.sockets[playerID];
       const player = this.players[playerID];
+
+      if(player.tierChange > 0){
+        // Show Tier Change Button
+        socket.emit(Constants.MSG_TYPES.DISPLAY_TIER_CHANGE_BUTTON, player.tierChange);
+      } else {
+        socket.emit(Constants.MSG_TYPES.DO_NOT_DISPLAY_TIER_CHANGE_BUTTON);
+      }
+
       if (player && player.hp <= 0) {
         socket.emit(Constants.MSG_TYPES.GAME_OVER);
         this.removePlayer(socket);
