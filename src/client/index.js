@@ -42,9 +42,6 @@ Promise.all([
     play(usernameInput.value);
     playMenu.classList.add('hidden');
     changelog.classList.add('hidden');
-    mobileAbilityButton.classList.remove('hidden');
-    secondMobileAbilityButton.classList.remove('hidden');
-    boostButton.classList.remove('hidden');
     initState();
     startCapturingInput();
     startRendering();

@@ -633,7 +633,7 @@ class Game {
       const socket = this.sockets[playerID];
       const player = this.players[playerID];
 
-      if(player.canvasWidth <= 1000 && player.canvasHeight <= 750){
+      if(player.canvasHeight < 960 && player.canvasWidth < 960){
         socket.emit(Constants.MSG_TYPES.DISPLAY_MOBILE_BUTTONS);
       }
 
