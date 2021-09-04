@@ -54,6 +54,9 @@ class Player extends ObjectClass {
   }
 
   update(dt) {
+    if(!this.grazing && this.localMessage === 'Grazing Active! Move around to get XP!'){
+      this.localMessage = '';
+    }
     var changeTierDetector = this.tier;
     var wouldBeTier = this.tier;
 
@@ -152,12 +155,12 @@ class Player extends ObjectClass {
     }
 
     if(this.grazing){
-      changeGrazingDetector = true;
       if(this.index = 0){
         this.score += dt * Constants.GRAZING_XP * this.speed/this.maxSpeed;
       } else {
         this.score += dt * Constants.GRAZING_XP * 1.5 * this.speed/this.maxSpeed;
       }
+      changeGrazingDetector = true;
       this.localMessage = "Grazing Active! Move around to get XP!";
     } else{
       if(changeGrazingDetector){
