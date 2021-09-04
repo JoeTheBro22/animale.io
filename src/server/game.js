@@ -632,11 +632,7 @@ class Game {
     Object.keys(this.sockets).forEach(playerID => {
       const socket = this.sockets[playerID];
       const player = this.players[playerID];
-
-      if(player.canvasHeight < 960 && player.canvasWidth < 960){
-        socket.emit(Constants.MSG_TYPES.DISPLAY_MOBILE_BUTTONS);
-      }
-
+      
       if(player.tierChange > 0){
         // Show Tier Change Button
         socket.emit(Constants.MSG_TYPES.DISPLAY_TIER_CHANGE_BUTTON, player.tierChange);

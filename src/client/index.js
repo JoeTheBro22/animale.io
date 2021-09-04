@@ -32,10 +32,6 @@ Promise.all([
   playMenu.classList.remove('hidden');
   changelog.classList.remove('hidden');
   tierButton.classList.add('hidden');
-  secondTierButton.classList.add('hidden');
-  mobileAbilityButton.classList.add('hidden');
-  secondMobileAbilityButton.classList.add('hidden');
-  boostButton.classList.add('hidden');
   usernameInput.focus();
   playButton.onclick = () => {
     // Play!
@@ -55,9 +51,5 @@ function onGameOver() {
   playMenu.classList.remove('hidden');
   changelog.classList.remove('hidden');
   tierButton.classList.add('hidden');
-  mobileAbilityButton.classList.add('hidden');
-  secondMobileAbilityButton.classList.add('hidden');
-  secondTierButton.classList.add('hidden');
-  boostButton.classList.add('hidden');
   setLeaderboardHidden(true);
 }

@@ -63,6 +63,26 @@ export const clickMobileButton = click => {
   }
 };
 
+var showMobileButtonPressedCounter = 1;
+
+export const showMobileButton = show => {
+  if(document.getElementById("mobile-mode-button") !== undefined){
+    document.getElementById("mobile-mode-button").onclick = function () {
+      showMobileButtonPressedCounter++;
+    };
+  }
+
+  if(showMobileButtonPressedCounter%2 == 0){
+    document.getElementById('mobile-ability-button').classList.remove('hidden');
+    document.getElementById('second-mobile-ability-button').classList.remove('hidden');
+    document.getElementById('boost-button').classList.remove('hidden');
+  } else {
+    document.getElementById('mobile-ability-button').classList.add('hidden');
+    document.getElementById('second-mobile-ability-button').classList.add('hidden');
+    document.getElementById('boost-button').classList.add('hidden');
+  }
+}
+
 var shouldShowUpgradeButton;
 var shouldShowSecondUpgradeButton;
 
@@ -85,14 +105,6 @@ export const showUpgradeButton = show => {
   } else {
     document.getElementById('second-tier-button').classList.add('hidden');
   }
-};
-
-export const showMobileButton = show => {
-  socket.on(Constants.MSG_TYPES.DISPLAY_MOBILE_BUTTONS, function() {
-    document.getElementById('mobile-ability-button').classList.remove('hidden');
-    document.getElementById('second-mobile-ability-button').classList.remove('hidden');
-    document.getElementById('boost-button').classList.remove('hidden');
-  });
 };
 
 export const play = username => {
