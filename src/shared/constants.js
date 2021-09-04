@@ -199,5 +199,9 @@ module.exports = Object.freeze({
     UPGRADE: 'upgrade',
     DISPLAY_TIER_CHANGE_BUTTON: 'displaytierchangebutton',
     DO_NOT_DISPLAY_TIER_CHANGE_BUTTON: 'donotdisplaytierchangebutton',
+    MOBILE_ABILITY: 'mobileability',
+    SECOND_MOBILE_ABILITY: 'secondmobileability',
+    MOBILE_BOOST: 'mobileboost',
+    DISPLAY_MOBILE_BUTTONS: 'displaymobilebuttons',
   },
 });

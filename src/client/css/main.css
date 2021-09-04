@@ -85,6 +85,48 @@ button:focus {
   text-align: center;
 }
 
+#mobile-ability-button {
+  position: absolute;
+  bottom: 100px;
+  right: 0px;
+  padding: 20px 30px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 5px;
+  user-select: none;
+  text-align: center;
+}
+
+#second-mobile-ability-button {
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+  padding: 20px 30px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 5px;
+  user-select: none;
+  text-align: center;
+}
+
+#boost-button {
+  position: absolute;
+  right: 0px;
+  bottom: 200px;
+  padding: 20px 30px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 5px;
+  user-select: none;
+  text-align: center;
+}
+
 #changelog {
   position: absolute;
   width: min(20%, 400px);

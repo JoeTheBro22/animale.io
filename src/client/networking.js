@@ -38,11 +38,30 @@ export const clickUpgradeButton = throttle(20, click => {
 
   if(document.getElementById("second-tier-button") !== undefined){
     document.getElementById("second-tier-button").onclick = function () {
-      console.log('second button pressed');
       socket.emit(Constants.MSG_TYPES.UPGRADE, 1);
     };
   }
 });
+
+export const clickMobileButton = click => {
+  if(document.getElementById("mobile-ability-button") !== undefined){
+    document.getElementById("mobile-ability-button").onclick = function () {
+      socket.emit(Constants.MSG_TYPES.MOBILE_ABILITY);
+    };
+  }
+
+  if(document.getElementById("second-mobile-ability-button") !== undefined){
+    document.getElementById("second-mobile-ability-button").onclick = function () {
+      socket.emit(Constants.MSG_TYPES.SECOND_MOBILE_ABILITY);
+    };
+  }
+
+  if(document.getElementById("boost-button") !== undefined){
+    document.getElementById("boost-button").onclick = function () {
+      socket.emit(Constants.MSG_TYPES.MOBILE_BOOST);
+    };
+  }
+};
 
 var shouldShowUpgradeButton;
 var shouldShowSecondUpgradeButton;
@@ -66,6 +85,14 @@ export const showUpgradeButton = show => {
   } else {
     document.getElementById('second-tier-button').classList.add('hidden');
   }
+};
+
+export const showMobileButton = show => {
+  socket.on(Constants.MSG_TYPES.DISPLAY_MOBILE_BUTTONS, function() {
+    document.getElementById('mobile-ability-button').classList.remove('hidden');
+    document.getElementById('second-mobile-ability-button').classList.remove('hidden');
+    document.getElementById('boost-button').classList.remove('hidden');
+  });
 };
 
 export const play = username => {

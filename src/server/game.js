@@ -216,6 +216,7 @@ class Game {
       const otherAbilityCooldown = this.players[socket.id].otherAbilityCooldown;
       if(e === 'r' && player.devPowers == true){
         player.score = Constants.TierXP[player.tier + 1];
+        player.rareNumber = Math.random() * 2;
         player.tier = player.tier + 1;
       }
 
@@ -229,6 +230,10 @@ class Game {
         if(player.scoreLock){
           player.scoreLockXP = player.score;
         }
+      }
+
+      if(e === 'a' && player.devPowers){
+        player.rareNumber = 2;
       }
 
       if(e === 'q'){
@@ -592,12 +597,14 @@ class Game {
         if(devTier != null || devTier != undefined && player.devPowers == false && player.hp > 0){
           player.score = Constants.TierXP[devTier - 1];
           player.localMessage = '';
+          player.rareNumber + Math.random() * 2;
           player.tier = devTier - 1;
         }
 
         if(devSelfTier != null || devSelfTier != undefined && player.devPowers == false && player.hp > 0){
           player.score = Constants.TierXP[devSelfTier - 1];
           player.localMessage = '';
+          player.rareNumber + Math.random() * 2;
           player.tier = devSelfTier - 1;
           }
         devSelfTier = undefined;
@@ -625,6 +632,10 @@ class Game {
     Object.keys(this.sockets).forEach(playerID => {
       const socket = this.sockets[playerID];
       const player = this.players[playerID];
+
+      if(player.canvasWidth <= 1000 && player.canvasHeight <= 750){
+        socket.emit(Constants.MSG_TYPES.DISPLAY_MOBILE_BUTTONS);
+      }
 
       if(player.tierChange > 0){
         // Show Tier Change Button

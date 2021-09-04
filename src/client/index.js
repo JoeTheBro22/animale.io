@@ -1,6 +1,6 @@
 // Learn more about this file at:
 // https://victorzhou.com/blog/build-an-io-game-part-1/#3-client-entrypoints
-import { connect, play, updateChat, clickUpgradeButton, showUpgradeButton } from './networking';
+import { connect, play, updateChat, clickUpgradeButton, showUpgradeButton, showMobileButton } from './networking';
 import { startRendering, stopRendering } from './render';
 import { startCapturingInput, stopCapturingInput } from './input';
 import { downloadAssets } from './assets';
@@ -19,7 +19,11 @@ const playButton = document.getElementById('play-button');
 // Use the same systems for chat as username input
 const tierButton = document.getElementById('tier-button');
 const secondTierButton = document.getElementById('tier-button');
+const mobileAbilityButton = document.getElementById('mobile-ability-button');
+const secondMobileAbilityButton = document.getElementById('second-mobile-ability-button');
+const boostButton = document.getElementById('boost-button');
 const usernameInput = document.getElementById('username-input');
+
 
 Promise.all([
   connect(onGameOver),
@@ -29,13 +33,18 @@ Promise.all([
   changelog.classList.remove('hidden');
   tierButton.classList.add('hidden');
   secondTierButton.classList.add('hidden');
+  mobileAbilityButton.classList.add('hidden');
+  secondMobileAbilityButton.classList.add('hidden');
+  boostButton.classList.add('hidden');
   usernameInput.focus();
   playButton.onclick = () => {
     // Play!
     play(usernameInput.value);
     playMenu.classList.add('hidden');
     changelog.classList.add('hidden');
-    //tierButton.classList.add('hidden');
+    mobileAbilityButton.classList.remove('hidden');
+    secondMobileAbilityButton.classList.remove('hidden');
+    boostButton.classList.remove('hidden');
     initState();
     startCapturingInput();
     startRendering();
@@ -49,6 +58,9 @@ function onGameOver() {
   playMenu.classList.remove('hidden');
   changelog.classList.remove('hidden');
   tierButton.classList.add('hidden');
+  mobileAbilityButton.classList.add('hidden');
+  secondMobileAbilityButton.classList.add('hidden');
   secondTierButton.classList.add('hidden');
+  boostButton.classList.add('hidden');
   setLeaderboardHidden(true);
 }

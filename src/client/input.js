@@ -1,6 +1,6 @@
 // Learn more about this file at:
 // https://victorzhou.com/blog/build-an-io-game-part-1/#6-client-input-%EF%B8%8F
-import { updateDirection, updateSpeed, updateChat, clickMessage, updateKeyPressed, clickUpgradeButton, showUpgradeButton } from './networking';
+import { updateDirection, updateSpeed, updateChat, clickMessage, updateKeyPressed, clickUpgradeButton, showUpgradeButton, clickMobileButton, showMobileButton } from './networking';
 
 var mouseX;
 var mouseY;
@@ -13,6 +13,8 @@ function onMouseInput(e) {
 setInterval(function(){ 
   updateSpeed(mouseX, mouseY, Math.max(1, 800 / window.innerWidth) * window.innerWidth, Math.max(1, 800 / window.innerWidth) * window.innerHeight);
   showUpgradeButton();
+  showMobileButton();
+  clickMobileButton();
 }, 100);
 
 function onMouseClick() {

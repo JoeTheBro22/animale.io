@@ -49,6 +49,7 @@ const ASSET_NAMES = [
   'kangaroo jump.png',
   'lake.png',
   'cow.png',
+  'red impostor.png',
   //REMEBER TO ADD ALL ASSETS TO THIS :D
 ];
 

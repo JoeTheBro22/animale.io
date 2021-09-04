@@ -39,6 +39,9 @@ io.on('connection', socket => {
   socket.on(Constants.MSG_TYPES.SPEED_INPUT, handleSpeed);
   socket.on(Constants.MSG_TYPES.CHAT, handleChat);
   socket.on(Constants.MSG_TYPES.UPGRADE, handleUpgrade);
+  socket.on(Constants.MSG_TYPES.MOBILE_ABILITY, handleMobileAbility);
+  socket.on(Constants.MSG_TYPES.SECOND_MOBILE_ABILITY, handleSecondMobileAbility);
+  socket.on(Constants.MSG_TYPES.MOBILE_BOOST, handleMobileBoost);
   socket.on('disconnect', onDisconnect);
 });
 
@@ -67,6 +70,18 @@ function handleChat(message) {
 
 function handleKeyInput(keyPressed) {
   game.handleKeyPressed(this, keyPressed);
+}
+
+function handleMobileAbility(){
+  game.handleKeyPressed(this, 'q');
+}
+
+function handleSecondMobileAbility(){
+  game.handleKeyPressed(this, 'w');
+}
+
+function handleMobileBoost(){
+  game.handleKeyPressed(this, 'e');
 }
 
 function handleSpeed(x, y, canvasWidth, canvasHeight) {

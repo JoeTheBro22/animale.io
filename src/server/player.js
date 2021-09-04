@@ -642,6 +642,8 @@ class Player extends ObjectClass {
       onLake: this.onLake,
       tierChange: this.tierChange,
       tierIndex: this.tierIndex,
+      canvasWidth: this.canvasWidth,
+      canvasHeight: this.canvasHeight,
     };
   }
 }

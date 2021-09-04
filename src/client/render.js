@@ -478,13 +478,23 @@ function renderPlayer(me, player) {
     }
 
     else if(player.tier <15){
-      context.drawImage(
-        getAsset('wizard.png'),
-        -PLAYER_RADIUS * TIER_15_SIZE,
-        -PLAYER_RADIUS * TIER_15_SIZE,
-        PLAYER_RADIUS * 2 * TIER_15_SIZE,
-        PLAYER_RADIUS * 2 * TIER_15_SIZE,
-      );
+      if(player.rareNumber < 1.98){
+        context.drawImage(
+          getAsset('wizard.png'),
+          -PLAYER_RADIUS * TIER_15_SIZE,
+          -PLAYER_RADIUS * TIER_15_SIZE,
+          PLAYER_RADIUS * 2 * TIER_15_SIZE,
+          PLAYER_RADIUS * 2 * TIER_15_SIZE,
+        );
+      } else {
+        context.drawImage(
+          getAsset('red impostor.png'),
+          -PLAYER_RADIUS * TIER_15_SIZE,
+          -PLAYER_RADIUS * TIER_15_SIZE,
+          PLAYER_RADIUS * 2 * TIER_15_SIZE,
+          PLAYER_RADIUS * 2 * TIER_15_SIZE,
+        );
+      }
     }
 
     else if(player.tier <16){
@@ -496,7 +506,6 @@ function renderPlayer(me, player) {
         PLAYER_RADIUS * 2 * TIER_16_SIZE,
       );
     } 
-    
     }
     context.restore();
     context.globalAlpha = 1;
