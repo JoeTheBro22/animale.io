@@ -153,10 +153,10 @@ class Game {
     }
 
     // Portals
-    /*this.portals.push(new Berry(Constants.PORTAL_RADIUS, Constants.PORTAL_RADIUS));
+    this.portals.push(new Berry(Constants.PORTAL_RADIUS, Constants.PORTAL_RADIUS));
     this.portals.push(new Berry(Constants.MAP_SIZE - Constants.PORTAL_RADIUS, Constants.PORTAL_RADIUS));
     this.portals.push(new Berry(Constants.PORTAL_RADIUS, Constants.MAP_SIZE - Constants.PORTAL_RADIUS));
-    this.portals.push(new Berry(Constants.MAP_SIZE - Constants.PORTAL_RADIUS, Constants.MAP_SIZE - Constants.PORTAL_RADIUS));*/
+    this.portals.push(new Berry(Constants.MAP_SIZE - Constants.PORTAL_RADIUS, Constants.MAP_SIZE - Constants.PORTAL_RADIUS));
 
     //Rocks
     /*function generateRandomRockPos() {
@@ -632,7 +632,7 @@ class Game {
     Object.keys(this.sockets).forEach(playerID => {
       const socket = this.sockets[playerID];
       const player = this.players[playerID];
-      
+
       if(player.tierChange > 0){
         // Show Tier Change Button
         socket.emit(Constants.MSG_TYPES.DISPLAY_TIER_CHANGE_BUTTON, player.tierChange);
